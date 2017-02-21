@@ -5,7 +5,7 @@ build:
 
 run:
 	mkdir -p marytts/wikidump && cp wkdb.conf marytts/wikidump/ && cd -
-	docker run --name marytts -p 59125:59125 -it --link marytts-mysql:mysql -v ${PWD}/marytts:/opt/marytts techiaith/marytts bash
+	docker run --name marytts -p 59125:59125 -it --link marytts-mysql:mysql -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix -v ${PWD}/marytts:/home/marytts techiaith/marytts bash
 
 stop:
 	docker stop marytts
