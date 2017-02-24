@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 RUN apt-get update \
-	&& apt-get install -y openjdk-7-jdk maven git curl wget zip mysql-client
+	&& apt-get install -y openjdk-7-jdk maven git curl wget zip python3-mysql.connect
 
 RUN export uid=1000 gid=1000 && \
 	mkdir -p /home/marytts && \

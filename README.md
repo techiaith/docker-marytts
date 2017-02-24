@@ -26,4 +26,6 @@ $ wkdb_collect.sh wkdb.conf
 
 $ wkdb_featuremaker.sh wkdb.conf
 
+$ wkdb_database_selector.sh wkdb.conf
+
 
