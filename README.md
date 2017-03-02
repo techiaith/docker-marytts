@@ -18,7 +18,7 @@ $ ./update-marytts-server.sh
 
 ## Paratoi sgriptiau..
 
-$ cd /opt/marytts
+$ cd /home/marytts
 
 $ cd wikidump
 
@@ -27,5 +27,12 @@ $ wkdb_collect.sh wkdb.conf
 $ wkdb_featuremaker.sh wkdb.conf
 
 $ wkdb_database_selector.sh wkdb.conf
+
+$ cd /home/marytts/marytts-languages/marytts-lang-cy/
+
+$ ./selectedtext-dbexport.sh /home/marytts/wikidump/wkdb.conf Prompts.py
+
+
+
 
 
