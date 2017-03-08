@@ -16,6 +16,7 @@ $ cd marytts-languages/mary-lang-cy
 $ ./update-marytts-server.sh
 
 
+
 ## Paratoi sgriptiau..
 
 $ cd /home/marytts
@@ -33,6 +34,16 @@ $ cd /home/marytts/marytts-languages/marytts-lang-cy/
 $ ./selectedtext-dbexport.sh /home/marytts/wikidump/wkdb.conf Prompts.py
 
 
+
+## Paratoi sgriptiau o ffynhonnell amgen..
+
+
+
+## Recordio llais..
+
+
+
+## Creu testun i leferydd..
 
 
 
