@@ -6,24 +6,24 @@ RUN apt-get update \
 						  build-essential speech-tools praat tclsh libsnack2 sox \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN export uid=1000 gid=1000 && \
+RUN export uid=UID gid=GID && \
 	mkdir -p /home/marytts && \
-	echo "marytts:x:${uid}:${gid}:Developer,,,:/home/marytts:/bin/bash" >> /etc/passwd && \
+	echo "marytts:x:${uid}:${gid}:MaryTTS,,,:/home/marytts:/bin/bash" >> /etc/passwd && \
 	echo "marytts:x:${uid}:" >> /etc/group && \
 	echo "marytts ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/marytts && \
 	chmod 0440 /etc/sudoers.d/marytts && \
 	chown ${uid}:${gid} -R /home/marytts
 
-RUN mkdir -p /home/marytts
-
-USER marytts
+ADD marytts /home/marytts
 
 ENV PATH="/home/marytts/target/marytts-builder-5.2/bin:${PATH}"
 ENV HOME="/home/marytts"
 ENV EHMMDIR="/home/marytts/lib/external/ehmm"
 
-ADD marytts /home/marytts
+USER marytts
+
 WORKDIR /home/marytts
+
 RUN mvn install
 RUN make --directory=/home/marytts/lib/external/ehmm
 

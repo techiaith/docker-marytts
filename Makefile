@@ -1,7 +1,11 @@
 default: build
 
-build:
+build: inject_dockerfile_with_uid_gid
+	
 	docker build -t techiaith/marytts .
+
+inject_dockerfile_with_uid_gid:
+	./scripts/inject_uid_gid_into_dockerfile.sh
 
 run:
 	if [ ! -f text/wkdb.conf ] ; \
