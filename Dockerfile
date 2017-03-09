@@ -1,12 +1,16 @@
 FROM ubuntu:14.04
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
+RUN dpkg --add-architecture i386
+
 RUN apt-get update \
 	&& apt-get install -y openjdk-7-jdk maven git curl wget zip python3-mysql.connect \
-						  build-essential speech-tools praat tclsh libsnack2 sox \
+						  build-essential speech-tools praat tclsh libsnack2 \
+						  gcc-multilib libx11-dev:i386 zlib1g-dev libtool autotools-dev automake \
+						  sox alsa-utils pulseaudio audacity \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN export uid=UID gid=GID && \
+RUN export uid=1001 gid=1001 && \
 	mkdir -p /home/marytts && \
 	echo "marytts:x:${uid}:${gid}:MaryTTS,,,:/home/marytts:/bin/bash" >> /etc/passwd && \
 	echo "marytts:x:${uid}:" >> /etc/group && \
@@ -14,17 +18,32 @@ RUN export uid=UID gid=GID && \
 	chmod 0440 /etc/sudoers.d/marytts && \
 	chown ${uid}:${gid} -R /home/marytts
 
+ADD HTK-3.4.1.tar.gz /usr/local/src
+ADD HTK-samples-3.4.1.tar.gz /usr/local/src/htk/
+
+# Install HTK
+WORKDIR /usr/local/src/htk
+
+RUN ./configure
+RUN make all
+RUN make install
+
+RUN perl -i -pe 'y|\r||d' /usr/local/src/htk/samples/RMHTK/perl_scripts/*.prl
+
+WORKDIR /usr/local/src/htk/samples/HTKDemo
+RUN mkdir -p proto test hmms/hmm.0 hmms/hmm.1 hmms/hmm.2 hmms/tmp 
+RUN ./runDemo configs/monPlainM1S1.dcf
+
+# Add and Install MaryTTS
 ADD marytts /home/marytts
 
 ENV PATH="/home/marytts/target/marytts-builder-5.2/bin:${PATH}"
 ENV HOME="/home/marytts"
-ENV EHMMDIR="/home/marytts/lib/external/ehmm"
 
 USER marytts
 
 WORKDIR /home/marytts
 
 RUN mvn install
-RUN make --directory=/home/marytts/lib/external/ehmm
 
 EXPOSE 59125

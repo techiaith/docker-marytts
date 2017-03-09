@@ -1,3 +1,5 @@
 marytts/
 audio/
 text/
+HTK-*
+*.pyc

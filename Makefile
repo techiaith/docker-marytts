@@ -12,7 +12,13 @@ run:
 	then \
 		cp wkdb.conf text/; \
 	fi;
-	docker run --name marytts -p 59125:59125 -it --link marytts-mysql:mysql -e DISPLAY=${DISPLAY} -v /tmp/.X11-unix:/tmp/.X11-unix -v ${PWD}/audio:/home/marytts/marytts-languages/marytts-lang-cy/scripts/audio -v ${PWD}/text:/home/marytts/text techiaith/marytts bash
+	docker run --name marytts -p 59125:59125 -it \
+		--link marytts-mysql:mysql \
+		-e DISPLAY=${DISPLAY} \
+		--device /dev/snd \
+		-v /tmp/.X11-unix:/tmp/.X11-unix \
+		-v ${PWD}/voices:/home/marytts/voices \
+		techiaith/marytts bash
 
 stop:
 	docker stop marytts
@@ -31,3 +37,4 @@ mysql-clean:
 github:
 	 git clone https://github.com/techiaith/marytts.git
 	 cd marytts && git checkout branch marytts-lang-cy
+	 
