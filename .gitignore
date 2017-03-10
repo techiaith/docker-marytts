@@ -1,5 +1,8 @@
 marytts/
 audio/
 text/
+voices/cmu_arctic/*
+!voices/cmu_arctic/prepare.sh
+!voices/cmu_arctic/*.config
 HTK-*
 *.pyc
