@@ -1,7 +1,6 @@
 default: build
 
 build: inject_dockerfile_with_uid_gid
-	
 	docker build -t techiaith/marytts .
 
 inject_dockerfile_with_uid_gid:
@@ -10,6 +9,7 @@ inject_dockerfile_with_uid_gid:
 run:
 	if [ ! -f text/wkdb.conf ] ; \
 	then \
+		mkdir -p text/; \
 		cp wkdb.conf text/; \
 	fi;
 	docker run --name marytts -p 59125:59125 -it \

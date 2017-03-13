@@ -3,5 +3,5 @@
 uid="$(id -u)"
 gid="$(id -g)"
 
-sed -i -- "s/UID/${uid}/g" Dockerfile
-sed -i -- "s/GID/${gid}/g" Dockerfile
+sed -i -- "s/export uid=.* gid=.* && \ /export uid=${uid} gid=${gid} && \ /g" Dockerfile
+
