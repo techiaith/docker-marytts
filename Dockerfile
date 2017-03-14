@@ -30,11 +30,11 @@ RUN ./runDemo configs/monPlainM1S1.dcf
 # Add and Install MaryTTS
 ADD marytts /home/marytts
 
-ENV PATH="/home/marytts/target/marytts-builder-5.2/bin:${PATH}"
+ENV PATH="/home/marytts/target/marytts-builder-5.2/bin:/home/marytts/marytts-languages/marytts-lang-cy/bin:${PATH}"
 ENV HOME="/home/marytts"
 
 # Running GUI apps with Docker : http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker
-RUN export uid=1000 gid=1000 && \
+RUN export uid=1001 gid=1001 && \
 	mkdir -p /home/marytts && \
 	echo "marytts:x:${uid}:${gid}:MaryTTS,,,:/home/marytts:/bin/bash" >> /etc/passwd && \
 	echo "marytts:x:${uid}:" >> /etc/group && \
@@ -45,7 +45,8 @@ RUN export uid=1000 gid=1000 && \
 USER marytts
 WORKDIR /home/marytts
 
-RUN mvn install
+#RUN mvn install
+RUN update-marytts-server.sh
 
 EXPOSE 59125
 
