@@ -7,17 +7,13 @@ inject_dockerfile_with_uid_gid:
 	./scripts/inject_uid_gid_into_dockerfile.sh
 
 run:
-	if [ ! -f text/wkdb.conf ] ; \
-	then \
-		mkdir -p text/; \
-		cp wkdb.conf text/; \
-	fi;
 	docker run --name marytts -p 59125:59125 -it \
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v ${PWD}/voices:/home/marytts/voices \
+		-v ${PWD}/texts:/home/marytts/texts \
 		techiaith/marytts bash
 
 stop:

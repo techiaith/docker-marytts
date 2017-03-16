@@ -1,6 +1,10 @@
 marytts/
 audio/
-text/
+texts/wici/*
+!texts/wici/wkdb.conf
+texts/alt/*
+!texts/alt/wkdb.conf
+voices/*
 voices/cmu_arctic/*
 !voices/cmu_arctic/prepare.sh
 !voices/cmu_arctic/*.config
