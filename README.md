@@ -72,25 +72,23 @@ Rydych yn barod nawr i reocrdio eich lais er mwyn creu system testun-i-leferydd 
 Rhaid dod allan o'r amgylchedd Docker er mwyn recordio. Os rydych chi wedi dilyn y camau uchod rhaid nawr dod
 allan o'r amgylchedd Docker trwy: 
 
-$ exit
+`$ exit`
 
 Ewch i voice-builder
 
-$ cd voice-builder/recorder
+`$ cd voice-builder/recorder`
 
 Fe welwch ffeil 'Prompts.py' ac ffolder o'r enw 'audio', yn ogystal a ddau ffeil cod Python. 
 Er mwyn sicrhau bod holl cydrannau Python yn bodoli ar eich cyfrifiadur, defnyddiwch:
 
-$ sudo pip install -r requirements.txt
+`$ sudo pip install -r requirements.txt`
 
 Yna, 
 
-$ python Record-Prompts-GUI.py
+`$ python Record-Prompts-GUI.py`
 
 
 ## Cynhyrchu llais testun i leferydd
-Creu ffolder ar gyfer y llais newydd o dan ../voice-builder/. Gallwch rhoi unrhyw enw iddo. Yma rydyn yn dewis 'Macsen'
+Creu ffolder ar gyfer y llais newydd o dan ../voice-builder/. Gallwch rhoi unrhyw enw iddo. Yma rydyn yn dewis 'macsen'
 
-`$ mkdir -p voice-builder/macsen`
-
-
+`$ ./init-voice-build.sh macsen`

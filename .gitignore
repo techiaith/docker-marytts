@@ -12,8 +12,10 @@ voice-builder/cmu_arctic/*
 !voice-builder/cmu_arctic/*.config
 
 voice-builder/recorder/*
+!voice-builder/recorder/*.sh
 !voice-builder/recorder/*.py
 !voice-builder/recorder/*.txt
+!voice-builder/recorder/*.template
 
 voice-builder/recorder/audio/*
 

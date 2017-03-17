@@ -12,7 +12,7 @@ run:
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v ${PWD}/voices:/home/marytts/voices \
+		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
 		-v ${PWD}/texts:/home/marytts/texts \
 		techiaith/marytts bash
 
