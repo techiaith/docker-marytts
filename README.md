@@ -26,9 +26,6 @@ Bydd ddwy ffeil, HTK-3.4.1.tar.gz a HTK-samples-3.4.1.tar.gz yn bodoli o fewn y 
 
 Bydd yr amgylchedd Docker yn cychwyn:
 
-`$ cd /home/marytts`
-
-`$ cd texts`
 
 
 
@@ -65,20 +62,35 @@ Oddi fewn texts/wici neu texts/alt, defnyddiwch:
 
 `$ wkdb_database_selector.sh wkdb.conf`
 
+`$ selectedtext-dbexport.sh wkdb.conf`
 
-Creu ffolder ar gyfer y llais newydd o dan ../voices/
-
-`$ mkdir -p ../voices/<enwllais>`
-
-`$ ./selectedtext-dbexport.sh wkdb.conf ../voices/<enwllais>/Prompts.py`
-
+Rydych yn barod nawr i reocrdio eich lais er mwyn creu system testun-i-leferydd eich hunain
 
 
 ## Recordio llais..
 
+Rhaid dod allan o'r amgylchedd Docker er mwyn recordio. Os rydych chi wedi dilyn y camau uchod rhaid nawr dod
+allan o'r amgylchedd Docker trwy: 
+
+$ exit
+
+Ewch i voice-builder
+
+$ cd voice-builder/recorder
+
+Fe welwch ffeil 'Prompts.py' ac ffolder o'r enw 'audio', yn ogystal a ddau ffeil cod Python. 
+Er mwyn sicrhau bod holl cydrannau Python yn bodoli ar eich cyfrifiadur, defnyddiwch:
+
+$ sudo pip install -r requirements.txt
+
+Yna, 
+
+$ python Record-Prompts-GUI.py
 
 
-## Creu'r testun i leferydd..
+## Cynhyrchu llais testun i leferydd
+Creu ffolder ar gyfer y llais newydd o dan ../voice-builder/. Gallwch rhoi unrhyw enw iddo. Yma rydyn yn dewis 'Macsen'
 
+`$ mkdir -p voice-builder/macsen`
 
 

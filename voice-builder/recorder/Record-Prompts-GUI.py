@@ -1,6 +1,6 @@
 #!/usr/bin/python
-
 import os
+import io
 import pygame
 import textwrap
 import Prompts 
@@ -53,8 +53,8 @@ def display_clear():
     screen.fill((255, 255, 255))
     pygame.display.flip()
 
-def display_prompt(prompt_idx):
-    text = outstanding_prompts[prompt_idx]["text"]
+def display_prompt(text):
+    print text
     print textwrap.wrap(text, text_width)
     texts = textwrap.wrap(text, text_width)
     for idx, t in enumerate(texts):
@@ -94,6 +94,9 @@ display_clear()
 display_message("Bysell bwlch i gychwyn")
 current_wav_file = None
 sound = None
+rerecord = False
+
+festvox_donefile = io.open('txt.done.data','w',encoding='utf-8')
 
 while not done:
 
@@ -109,13 +112,17 @@ while not done:
 
             if event.key == pygame.K_SPACE:
                 current_prompt_idx += 1
+                rerecord = False
+            else:
+                rerecord = True
 
             if sound is not None:
                 sound.stop()
 
             display_clear()
-            display_prompt(current_prompt_idx)
-            display_message("recordio...")
+            text = outstanding_prompts[current_prompt_idx]["text"]
+            display_prompt(text)
+            display_message("Recordio...")
             print "Recordio......"
 
             fname = outstanding_prompts[current_prompt_idx]["identifier"]
@@ -133,6 +140,10 @@ while not done:
             print "Stop recordio"
             recorder.stop_recording()
             recording = False
+
+            if not rerecord:
+                festvox_donefile.write("( " + outstanding_prompts[current_prompt_idx]["identifier"] \
+                                    + " \"" + outstanding_prompts[current_prompt_idx]["text"] + "\" )\n")
 
             sound = pygame.mixer.Sound(current_wav_file)
             sound.play()
@@ -152,3 +163,5 @@ while not done:
             done = True
 
     #clock.tick(60)
+
+festvox_donefile.close()
