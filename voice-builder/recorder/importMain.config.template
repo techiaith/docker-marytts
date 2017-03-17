@@ -18,7 +18,6 @@ group labeling Automatic Labeling
 
 #marytts.tools.voiceimport.EndpointDetector labeling
 marytts.tools.voiceimport.AllophonesExtractor labeling
-marytts.tools.voiceimport.EHMMLabeler labeling
 marytts.tools.voiceimport.HTKLabeler labeling
 marytts.tools.voiceimport.LabelPauseDeleter labeling
 marytts.tools.voiceimport.LabelledFilesInspector labeling
@@ -68,16 +67,6 @@ marytts.tools.voiceimport.JoinCostFileMaker us_files
 #marytts.tools.voiceimport.JoinModeller us_files
 marytts.tools.voiceimport.CARTBuilder us_files
 
-group hts_trainer HMM Voice Trainer
-
-marytts.tools.voiceimport.HMMVoiceDataPreparation hts_trainer
-marytts.tools.voiceimport.HMMVoiceConfigure hts_trainer
-#marytts.tools.voiceimport.HMMVoiceConfigureAdapt hts_trainer
-marytts.tools.voiceimport.HMMVoiceFeatureSelection hts_trainer
-marytts.tools.voiceimport.HMMVoiceMakeData hts_trainer
-marytts.tools.voiceimport.HMMVoiceMakeVoice hts_trainer
-
 group install Install Voice
 
 marytts.tools.voiceimport.VoiceCompiler install
-marytts.tools.voiceimport.HMMVoiceCompiler install

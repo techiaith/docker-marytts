@@ -33,4 +33,4 @@ cp txt.done.data ../${VOICE_NAME}
 cp -v audio/* ../${VOICE_NAME}/recordings
 
 cp importMain.config.template ../${VOICE_NAME}/importMain.config
-sed 's/VOICENAME/${VOICE_NAME}/g' database.config.template > ../${VOICE_NAME}/database.config
+sed s/VOICENAME/${VOICE_NAME}/g database.config.template > ../${VOICE_NAME}/database.config

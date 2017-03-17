@@ -92,3 +92,27 @@ Yna,
 Creu ffolder ar gyfer y llais newydd o dan ../voice-builder/. Gallwch rhoi unrhyw enw iddo. Yma rydyn yn dewis 'macsen'
 
 `$ ./init-voice-build.sh macsen`
+
+Mae gweddill y camau angen mynd yn ol i amgylchedd MaryTTS o fewn Docker. Felly:
+
+$ docker exec -it marytts bash
+
+$ cd /home/marytts/voice-builder/macsen
+
+A cychwyn y rhaglen llnau a gwella ansawdd eich recordiadau
+
+$ audio_converter_GUI.sh
+
+Dewis y ffolder:
+
+ - `/home/marytts/voice-builder/macsen/recordings`
+
+ar gyfer 'Input Wave directory', ac yna:
+
+ - `/home/marytts/voice-builder/macsen/wav`
+
+ar gyfer 'Output Wave directory (*mae'n bosib creu'r ffolder 'wav' o fewn y GUI os nad yw'n bodoli eisoes*)
+
+
+
+

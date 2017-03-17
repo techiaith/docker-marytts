@@ -9,7 +9,7 @@ db.halfphoneLabDir /home/marytts/voice-builder/VOICENAME/halfphonelab/
 db.hplabExtension .hplab
 db.labDir /home/marytts/voice-builder/VOICENAME/lab/
 db.labExtension .lab
-db.locale en_US
+db.locale cy
 db.maryServerHost localhost
 db.maryServerPort 59125
 db.marybase /home/marytts
@@ -28,7 +28,7 @@ db.samplingrate 16000
 db.textDir /home/marytts/voice-builder/VOICENAME/text/
 db.textExtension .txt
 db.vocalizationsDir /home/marytts/voice-builder/VOICENAME/vocalizations/
-db.voicename my_VOICENAME
+db.voicename VOICENAME
 db.wavDir /home/marytts/voice-builder/VOICENAME/wav/
 
 # Properties for module PraatPitchmarker:
@@ -241,10 +241,10 @@ HMMVoiceMakeData.questionsUttFile hts/data/questions/questions_utt_qst001.hed
 HMMVoiceMakeData.trickyPhonesFile mary/trickyPhones.txt
 
 # Properties for module VoiceCompiler:
-VoiceCompiler.compileDir /home/marytts/voice-builder/VOICENAME/mary/voice-my_VOICENAME/
+VoiceCompiler.compileDir /home/marytts/voice-builder/VOICENAME/mary/voice-VOICENAME/
 VoiceCompiler.mavenBin /usr/bin/mvn
 
 # Properties for module HMMVoiceCompiler:
-HMMVoiceCompiler.compileDir /home/marytts/voice-builder/VOICENAME/mary/voice-my_VOICENAME-hsmm/
+HMMVoiceCompiler.compileDir /home/marytts/voice-builder/VOICENAME/mary/voice-VOICENAME-hsmm/
 HMMVoiceCompiler.mavenBin /usr/bin/mvn
 
