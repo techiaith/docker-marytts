@@ -95,13 +95,13 @@ Creu ffolder ar gyfer y llais newydd o dan ../voice-builder/. Gallwch rhoi unrhy
 
 Mae gweddill y camau angen mynd yn ol i amgylchedd MaryTTS o fewn Docker. Felly:
 
-$ docker exec -it marytts bash
+`$ docker exec -it marytts bash`
 
-$ cd /home/marytts/voice-builder/macsen
+`$ cd /home/marytts/voice-builder/macsen`
 
 A cychwyn y rhaglen llnau a gwella ansawdd eich recordiadau
 
-$ audio_converter_GUI.sh
+`$ audio_converter_GUI.sh`
 
 Dewis y ffolder:
 
@@ -112,6 +112,29 @@ ar gyfer 'Input Wave directory', ac yna:
  - `/home/marytts/voice-builder/macsen/wav`
 
 ar gyfer 'Output Wave directory (*mae'n bosib creu'r ffolder 'wav' o fewn y GUI os nad yw'n bodoli eisoes*)
+
+
+Ar ol i'r broses llnau a gwella'r recordiadau cwblhau, defnyddiwch yr orchymun canlynol:
+
+`$ voice-import-cy.sh`
+
+Bydd hyn yn achosi i raglen GUI newydd ymddangos, gyda cyfres o gamau sydd eu hangen ar gyfer creu testun i leferydd
+'unit selection'. 
+
+Ticiwch pob un yn eu tro, gan troi pob un rhes yn wyrdd. 
+
+Caewch y rhaglen ar ol cwblhau 'Compile voice', a bydd ffeiliau newydd sy'n pecynnu'r llais newydd ar gael yn 
+
+`$ /home/marytts/voice-builder/macsen/mary/voice-macsen/target`
+
+Yn benodol:
+
+ - `voice-macsen-5.2-component.xml`
+ - `voice-macsen-5.2.zip`
+
+Golygwch y ffeil XML er mwyn rhoi cwblhau manylion llawn eich lais newydd, e.e. rhoi enw iddo. 
+
+
 
 
 
