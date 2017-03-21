@@ -132,7 +132,17 @@ Yn benodol:
  - `voice-macsen-5.2-component.xml`
  - `voice-macsen-5.2.zip`
 
-Golygwch y ffeil XML er mwyn rhoi cwblhau manylion llawn eich lais newydd, e.e. rhoi enw iddo. 
+Defnyddiwch y gorchymyn canlynol er mwyn gosod y ffeiliau hyn i fewn i weinydd MaryTTS:
+
+`$ voice-install-cy.sh macsen`
+
+Defnyddiwch y gorchymyn canlynol i gychwyn weinydd MaryTTS a'ch lais newydd:
+
+`$ cd /home/marytts`
+
+`$ ./target/marytts-5.2/bin/marytts-server`
+
+Agorwch porwr ac eich i `http://localhost:59125` i brofi a fwynhau eich lais synthetig Cymraeg newydd.
 
 
 
