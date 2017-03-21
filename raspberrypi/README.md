@@ -16,13 +16,13 @@ Yna rhedwch `make run` i greu'r amgylchedd MaryTTS.
 
 Yna
 
-$ cd voice-building
+`$ cd voice-building`
 
-$ voice-install.sh <enw eich llais>
+`$ voice-install.sh <enw eich llais>`
 
 I gychwyn y llais, teipiwch:
 
-$ ~/target/marytts-5.2/bin/marytts-server
+`$ ~/target/marytts-5.2/bin/marytts-server`
 
 Bydd gwefan darparu'r llais yn cychwyn ac ar gael ar y rhwydwaith o borth 59125 eich Raspberry Pi. 
 
@@ -30,6 +30,8 @@ h.y. os agorwch chi porwr ar eich Pi, a mynd at http://localhost:59125 bydd duda
 
 Os nad oes modd rhedeg porwr (e.e. rydych chi'n defnyddio'r llinell gorchymun yn unig), yna mae modd profi'r llais drwy CURL: 
 
-$ curl -v "http://localhost:59125/process?INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&INPUT_TEXT=dyma%20llais%20meri%20ti%20ti%20ti%20es%20cymraeg%20ar%20y%20rasperi%20pai&LOCALE=cy&VOICE=<enw eich llais&AUDIO=WAVE_FILE" > llaisnewydd.wav
-$ aplay llaisnewydd.wav
+`$ curl -v "http://localhost:59125/process?INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&INPUT_TEXT=dyma%20llais%20meri%20ti%20ti%20ti%20es%20cymraeg%20ar%20y%20rasperi%20pai&LOCALE=cy&VOICE=<enw eich llais&AUDIO=WAVE_FILE" > llaisnewydd.wav`
+
+
+`$ aplay llaisnewydd.wav`
 
