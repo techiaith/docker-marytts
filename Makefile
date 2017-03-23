@@ -14,6 +14,7 @@ run:
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
 		-v ${PWD}/texts:/home/marytts/texts \
+		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/home/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts bash
 
 stop:

@@ -48,8 +48,7 @@ RUN export uid=1001 gid=1001 && \
 USER marytts
 WORKDIR /home/marytts
 
-#RUN mvn install
-RUN update-marytts-server.sh
+RUN update-marytts-server-cy.sh
 
 EXPOSE 59125
 
