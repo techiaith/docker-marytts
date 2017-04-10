@@ -1,6 +1,15 @@
 # Docker MaryTTS 
 
-Yma ceir adnoddau ar gyfer datblygu testun-i-leferydd Cymraeg gan ddefnyddio Mary TTS yn hwylus iawn gyda'r amgylchedd Docker. Mae modd llwytho i lawr Docker ar gyfer eich cyfrifiadur Mac neu Linux o'r dudalen we canlynol:
+Yma ceir adnoddau ar gyfer datblygu testun-i-leferydd Cymraeg gan ddefnyddio Mary TTS yn hwylus iawn gyda'r amgylchedd Docker. 
+
+Dyma engreifftiau o leisiau dau aelod o'r techiaith wedi'i trosi i lais cyfrifiadurol:
+
+ - [Gwryw](http://techiaith.cymru/wp-content/uploads/2017/03/MaryTTS-CY-1.wav)
+
+ - [Benyw](http://techiaith.cymru/wp-content/uploads/2017/03/MaryTTS-CY-2.wav)
+
+
+Mae modd llwytho i lawr Docker ar gyfer eich cyfrifiadur Mac neu Linux o'r dudalen we canlynol:
 
 https://www.docker.com/community-edition
 
