@@ -24,7 +24,7 @@ class SimpleRecorder(object):
                                     input=True,
                                     frames_per_buffer=self._framesperbuffer)
 
-        print "Recording......"
+        print ("Recording......")
 
 
     def continue_recording(self):
