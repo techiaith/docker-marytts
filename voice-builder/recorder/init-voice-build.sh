@@ -30,7 +30,8 @@ VOICE_NAME=$1
 
 mkdir -p ../${VOICE_NAME}/recordings
 cp txt.done.data ../${VOICE_NAME}
-cp -v audio/* ../${VOICE_NAME}/recordings
+cp audio/* ../${VOICE_NAME}/recordings
 
+echo "Creating config files for voice-import...."
 cp importMain.config.template ../${VOICE_NAME}/importMain.config
 sed s/VOICENAME/${VOICE_NAME}/g database.config.template > ../${VOICE_NAME}/database.config

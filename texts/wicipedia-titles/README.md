@@ -17,9 +17,9 @@ I'w greu defnyddiwch:
 
 `$ alt-cleantext-import.sh wkdb.conf lexicon.cy`
 
-`$ python3 BuildWicipediaTitlesLexicon.py`
+`$ wkdb_featuremaker.sh wkdb.conf`
 
-`$ create-database-docker.sh wkdb.conf`
+`$ wkdb_database_selector.sh wkdb.conf`
 
 
 *Diolch i Robin Owain am ddarparu'r rhestr deitlau Wicipedia Cymraeg*

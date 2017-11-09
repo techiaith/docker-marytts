@@ -218,4 +218,3 @@ Defnyddiwch y gorchymyn canlynol i gychwyn gweinydd MaryTTS a'ch llais newydd:
 Agorwch borwr ac ewch i `http://localhost:59125` i brofi a mwynhau eich llais 
 synthetig Cymraeg newydd.
 
-

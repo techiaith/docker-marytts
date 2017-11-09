@@ -6,7 +6,13 @@ build: inject_dockerfile_with_uid_gid
 inject_dockerfile_with_uid_gid:
 	./scripts/inject_uid_gid_into_dockerfile.sh
 
-run:
+runtime:
+	docker run --name marytts -p 59125:59125 -it \
+		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
+		-v ${PWD}/texts:/home/marytts/texts \
+		techiaith/marytts bash
+
+voicebuild:
 	docker run --name marytts -p 59125:59125 -it \
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \

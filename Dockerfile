@@ -14,7 +14,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install basic NLP components. 
-RUN pip3 install cld2-cffi spacy
+RUN pip3 install cld2-cffi spacy wget
 
 # Install HTK
 ADD HTK-3.4.1.tar.gz /usr/local/src
