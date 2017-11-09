@@ -1,7 +1,10 @@
-default: build
+default: build-runtime
 
-build: inject_dockerfile_with_uid_gid
-	docker build -t techiaith/marytts .
+build-runtime: 
+	docker build -t techiaith/marytts -f Dockerfile.runtime .
+
+build-voicebuild: inject_dockerfile_with_uid_gid
+	docker build -t techiaith/marytts -f Dockerfile.voicebuild .
 
 inject_dockerfile_with_uid_gid:
 	./scripts/inject_uid_gid_into_dockerfile.sh
@@ -38,6 +41,6 @@ mysql-clean:
 	docker rm -v marytts-mysql
 
 github:
-	 git clone https://github.com/techiaith/marytts.git
-	 cd marytts && git checkout branch marytts-lang-cy
+	git clone https://github.com/techiaith/marytts.git
+	cd marytts && git checkout branch marytts-lang-cy
 	 
