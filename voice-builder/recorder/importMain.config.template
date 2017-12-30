@@ -20,7 +20,8 @@ group labeling Automatic Labeling
 marytts.tools.voiceimport.AllophonesExtractor labeling
 marytts.tools.voiceimport.HTKLabeler labeling
 marytts.tools.voiceimport.LabelPauseDeleter labeling
-marytts.tools.voiceimport.LabelledFilesInspector labeling
+#marytts.tools.voiceimport.LabelledFilesInspector labeling
+marytts.tools.voiceimport.LabelledFilesInspectorHeadless labeling
 
 group labels_align Label-Transcript Alignment 
 
@@ -30,7 +31,8 @@ marytts.tools.voiceimport.TranscriptionAligner labels_align
 
 group text_features Feature Extraction
 
-marytts.tools.voiceimport.FeatureSelection text_features
+#marytts.tools.voiceimport.FeatureSelection text_features
+marytts.tools.voiceimport.FeatureSelectionHeadless text_features
 marytts.tools.voiceimport.PhoneUnitFeatureComputer text_features
 marytts.tools.voiceimport.HalfPhoneUnitFeatureComputer text_features
 
