@@ -49,7 +49,7 @@ clean:
 	docker rmi techiaith/marytts
 
 mysql:
-	docker run --name marytts-mysql -e MYSQL_ROOT_PASSWORD=wiki123 -d mysql
+	docker run --name marytts-mysql -v ${PWD}/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=wiki123 -d mysql
 
 mysql-clean:
 	docker stop marytts-mysql
