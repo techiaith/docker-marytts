@@ -6,6 +6,10 @@ build-runtime:
 build-voicebuild: inject_dockerfile_with_uid_gid
 	docker build -t techiaith/marytts -f Dockerfile.voicebuild .
 
+build-voicebuild-api:
+	docker build -t techiaith/marytts -f Dockerfile.voicebuildapi .
+
+
 inject_dockerfile_with_uid_gid:
 	./scripts/inject_uid_gid_into_dockerfile.sh
 
@@ -16,7 +20,8 @@ runtime:
 		techiaith/marytts bash
 
 voicebuild:
-	docker run --name marytts -p 59125:59125 -it \
+	docker run --name marytts -it \
+ 		-p 59125:59125 \
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
@@ -25,6 +30,16 @@ voicebuild:
 		-v ${PWD}/texts:/home/marytts/texts \
 		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/home/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts bash
+
+voicebuild-api:
+	docker run --name marytts -it \
+ 		-p 8008:8008 \
+		--link marytts-mysql:mysql \
+		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
+		-v ${PWD}/texts:/home/marytts/texts \
+		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/home/marytts/marytts-languages/marytts-lang-cy \
+		techiaith/marytts bash
+
 
 stop:
 	docker stop marytts
