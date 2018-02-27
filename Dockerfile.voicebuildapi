@@ -12,6 +12,7 @@ RUN apt-get update \
 						  gcc-multilib libx11-dev:i386 zlib1g-dev libtool autotools-dev automake \
 						  sox alsa-utils pulseaudio audacity python3-pip \
 						  libpq-dev supervisor python3-dev \
+						  rabbitmq-server \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install basic NLP components. 
@@ -48,11 +49,12 @@ RUN update-marytts-server-cy.sh
 
 # Install marytts-api
 ADD marytts-api /opt/marytts-api
-RUN mv /opt/marytts-api/supervisord.conf /etc/supervisord.conf \ 
-	&& pip install -r /opt/marytts-api/requirements.txt \
+RUN pip install -r /opt/marytts-api/requirements.txt \
 	&& mkdir -p /var/log/gunicorn \
+	&& mkdir -p /var/log/celery \
 	&& touch /var/log/gunicorn/marytts-api.error.log
 
 EXPOSE 8008 
 
-CMD supervisord -c /etc/supervisord.conf -n
+WORKDIR /opt/marytts-api
+

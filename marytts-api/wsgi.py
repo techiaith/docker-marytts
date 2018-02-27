@@ -6,6 +6,8 @@ import subprocess
 import tempfile
 import os
 
+from marytts_api_tasks import generate_voice
+
 class GenerateVoice(object):
 
     def __init__(self):
@@ -17,7 +19,10 @@ class GenerateVoice(object):
 
     @cherrypy.expose
     def v1(self, uid, **kwargs):
+
         cherrypy.log("generating voice for '%s'" % uid)
+        generate_voice.delay(uid)
+        cherrypy.log("generating voice request sent")
 
 
     @cherrypy.expose
