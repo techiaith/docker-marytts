@@ -5,6 +5,7 @@ import mysql.connector
 
 from shutil import copyfile
 from celery import Celery
+from subprocess import call
 
 mysql_connection = {
     'user':'root',
@@ -20,19 +21,15 @@ def generate_voice(uid):
 
     init_voice_build(uid)
 
-    # java instructions...
-    ## audio_converter
+    audio_converter(uid)
 
-    ###BINDIR="`dirname "$0"`"
-    ###export MARY_BASE="`(cd "$BINDIR"/.. ; pwd)`"
-    ###echo $MARY_BASE
-    ###java -showversion -Xmx1024m -Dmary.base="$MARY_BASE" -cp "$MARY_BASE/lib/*" marytts.util.data.audio.AudioConverterHeadless $1
 
     ###BINDIR="`dirname "$0"`"
     ###export MARY_BASE="`(cd "$BINDIR"/.. ; pwd)`"
     ###java -showversion -Xmx1024m -Dmary.base="$MARY_BASE" -cp "$MARY_BASE/lib/*" marytts.tools.voiceimport.DatabaseImportMainHeadless $*
 
     return True
+
 
 def init_voice_build(uid):
 
@@ -85,3 +82,16 @@ def init_voice_build(uid):
             trgt.write(line.rstrip() + '\n')
 
 
+def audio_converter(uid):
+
+    # java instructions...
+    ## audio_converter
+    marytts_home = os.environ['MARYTTS_HOME']
+    marytts_version = os.environ['MARYTTS_VERSION']
+
+    marytts_base = os.path.join(marytts_home, 'target', 'marytts-builder-' + marytts_version)
+    voice_build_dir = os.path.join('/opt/marytts/voice-builder/', uid)
+
+
+    #call(['java','-showversion', '-Xmx1024m', '-Dmary.base="%s"' % (marytts_base,), '-cp "%s/lib/*"' % (marytts_base,), 'marytts.util.data.audio.AudioConverterHeadless', '%s' % (voice_build_dir,)])
+    call(['java -showversion -Xmx1024m -Dmary.base="%s" -cp "%s/lib/*" marytts.util.data.audio.AudioConverterHeadless %s' % (marytts_base, marytts_base, voice_build_dir,)], shell=True)
