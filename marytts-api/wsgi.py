@@ -18,7 +18,7 @@ class GenerateVoice(object):
         return u"ERROR %s: %s" % (status, message)
 
     @cherrypy.expose
-    def v1(self, uid, **kwargs):
+    def generate_voice(self, uid, **kwargs):
 
         cherrypy.log("generating voice for '%s'" % uid)
         generate_voice.delay(uid)
