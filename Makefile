@@ -32,7 +32,7 @@ voicebuild:
 		techiaith/marytts bash
 
 voicebuild-api:
-	docker run --name marytts --restart=always -it \
+	docker run --name marytts-voicebuild-api --restart=always -it \
  		-p 8008:8008 \
 		--link marytts-mysql:mysql \
 		--link lleisiwr-mysql:lleisiwr_mysql \
@@ -40,7 +40,11 @@ voicebuild-api:
 		-v ${PWD}/../docker-common-voice-lleisiwr/recordings/:/commonvoice-recordings \
 		-v ${PWD}/texts/:/opt/marytts/texts \
 		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
-		techiaith/marytts bash
+		techiaith/marytts bash -c "/opt/marytts-api/start.sh"
+
+stop-voicebuild-api:
+	docker stop marytts-voicebuild-api
+	docker rm marytts-voicebuild-api
 
 stop:
 	docker stop marytts
