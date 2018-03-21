@@ -59,4 +59,4 @@ EXPOSE 8008
 
 WORKDIR /opt/voice-builder-api
 
-CMD ["/opt/voice-builder-api/start.sh"]
+CMD ["/bin/bash", "-c", "/opt/voice-builder-api/start.sh"]

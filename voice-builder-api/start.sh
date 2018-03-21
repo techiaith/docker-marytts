@@ -8,3 +8,4 @@ supervisord -c supervisord/celery.conf
 echo "Starting CherryPy..."
 supervisord -c supervisord/cherrypy.conf
 
+sleep infinity
