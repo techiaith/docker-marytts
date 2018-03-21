@@ -6,7 +6,7 @@ import subprocess
 import tempfile
 import os
 
-from marytts_api_tasks import generate_voice
+from voice_builder_api_tasks import generate_voice
 
 class GenerateVoice(object):
 

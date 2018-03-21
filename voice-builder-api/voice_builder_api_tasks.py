@@ -1,18 +1,28 @@
 import os
+import subprocess
 import codecs
 
 import mysql.connector
 
 from shutil import copyfile
 from celery import Celery
-from subprocess import call
 
-mysql_connection = {
+
+mysql_connection_cy = {
     'user':'root',
     'password':'commonvoice123',
     'host':'lleisiwr_mysql',
     'database':'lleisiwrvoiceweb',
 }
+
+
+mysql_connection_en = {
+    'user':'root',
+    'password':'commonvoice123',
+    'host':'lleisiwr_mysql',
+    'database':'lleisiwrvoiceweb_en',
+}
+
 
 app = Celery('marytts_api_tasks', broker='pyamqp://guest@localhost//')
 
@@ -25,7 +35,17 @@ def generate_voice(uid):
 
     voice_import(uid)
 
+    return True
 
+def is_valid_wav(wavfile):
+    if not wavfile.endswith(".wav"):
+        return False;
+
+    sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
+
+    if 'WARN' in sox_output:
+        return False
+    
     return True
 
 
@@ -53,6 +73,9 @@ def init_voice_build(uid):
         guid = row[0]
         txtfile = os.path.join(commonvoice_recordings_dir, guid + '.txt')
         wavfile = os.path.join(commonvoice_recordings_dir, guid + '.wav')
+
+        # verify wav file. 
+
         wavfile_dest = os.path.join(voice_build_recordings_dir, guid + '.wav')
         copyfile(wavfile, wavfile_dest)
 
@@ -89,7 +112,7 @@ def audio_converter(uid):
     marytts_base = os.path.join(marytts_home, 'target', 'marytts-builder-' + marytts_version)
     voice_build_dir = os.path.join(marytts_home, 'voice-builder/', uid)
 
-    call(['java -showversion -Xmx1024m -Dmary.base="%s" -cp "%s/lib/*" marytts.util.data.audio.AudioConverterHeadless %s' % (marytts_base, marytts_base, voice_build_dir,)], shell=True)
+    subprocess.call(['java -showversion -Xmx1024m -Dmary.base="%s" -cp "%s/lib/*" marytts.util.data.audio.AudioConverterHeadless %s' % (marytts_base, marytts_base, voice_build_dir,)], shell=True)
 
 
 
@@ -101,6 +124,6 @@ def voice_import(uid):
     marytts_base = os.path.join(marytts_home, 'target', 'marytts-builder-' + marytts_version)
     voice_build_dir = os.path.join(marytts_home, '/opt/marytts/voice-builder/', uid)
 
-    call(['java -showversion -Xmx1024m -Dmary.base="%s" -cp "%s/lib/*" marytts.tools.voiceimport.DatabaseImportMainHeadless %s' % (marytts_base, marytts_base, voice_build_dir,)], shell=True)
+    subprocess.call(['java -showversion -Xmx1024m -Dmary.base="%s" -cp "%s/lib/*" marytts.tools.voiceimport.DatabaseImportMainHeadless %s' % (marytts_base, marytts_base, voice_build_dir,)], shell=True)
     
 
