@@ -102,4 +102,5 @@ def voice_import(uid):
     voice_build_dir = os.path.join(marytts_home, '/opt/marytts/voice-builder/', uid)
 
     call(['java -showversion -Xmx1024m -Dmary.base="%s" -cp "%s/lib/*" marytts.tools.voiceimport.DatabaseImportMainHeadless %s' % (marytts_base, marytts_base, voice_build_dir,)], shell=True)
+    
 

@@ -47,14 +47,14 @@ ENV MARYTTS_CY_HOME="/opt/marytts/marytts-languages/marytts-lang-cy"
 
 RUN update-marytts-server-cy.sh
 
-# Install marytts-api
-ADD marytts-api /opt/marytts-api
-RUN pip install -r /opt/marytts-api/requirements.txt \
+# Install voice-builder-api
+ADD voice-builder-api /opt/voice-builder-api
+RUN pip install -r /opt/voice-builder-api/requirements.txt \
 	&& mkdir -p /var/log/gunicorn \
 	&& mkdir -p /var/log/celery \
-	&& touch /var/log/gunicorn/marytts-api.error.log
+	&& touch /var/log/gunicorn/voice-builder-api.error.log
 
 EXPOSE 8008 
 
-WORKDIR /opt/marytts-api
+WORKDIR /opt/voice-builder-api
 
