@@ -29,7 +29,7 @@ inject_dockerfile_with_uid_gid:
 	./scripts/inject_uid_gid_into_dockerfile.sh
 
 voicebuild: mysql
-	docker run --name marytts -it \
+	docker run --name marytts-voicebuild -it \
  		-p 59125:59125 \
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \
@@ -38,7 +38,15 @@ voicebuild: mysql
 		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
 		-v ${PWD}/texts:/home/marytts/texts \
 		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/home/marytts/marytts-languages/marytts-lang-cy \
-		techiaith/marytts bash
+		techiaith/marytts-voicebuild bash
+
+stop-voicebuild:
+	docker stop marytts-voicebuild
+	docker rm marytts-voicebuild
+
+clean-voicebuild:
+	docker stop marytts-voicebuild
+	docker rm marytts-voicebuild
 
 
 
@@ -57,7 +65,7 @@ voicebuild-api:
 		-v ${PWD}/../docker-common-voice-lleisiwr-en/recordings/:/commonvoice-recordings-en \
 		-v ${PWD}/texts/:/opt/marytts/texts \
 		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
-		techiaith/marytts
+		techiaith/marytts-voicebuild-api
 
 stop-voicebuild-api:
 	docker stop marytts-voicebuild-api
@@ -92,7 +100,10 @@ clean-runtime-api:
 # --- MySQL -----------------------------------------------------------------------------------
 
 mysql:
-	docker run --name marytts-mysql -v ${PWD}/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=wiki123 -d mysql
+	docker run --name marytts-mysql --restart=always \
+		-d -v ${PWD}/mysql:/var/lib/mysql \
+		-e MYSQL_ROOT_PASSWORD=wiki123 \
+		mysql
 
 
 mysql-clean:

@@ -47,6 +47,7 @@ ENV MARYTTS_CY_HOME="/opt/marytts/marytts-languages/marytts-lang-cy"
 
 RUN update-marytts-server-cy.sh
 
+
 # Install voice-builder-api
 ADD voice-builder-api /opt/voice-builder-api
 RUN pip install -r /opt/voice-builder-api/requirements.txt \
@@ -58,3 +59,4 @@ EXPOSE 8008
 
 WORKDIR /opt/voice-builder-api
 
+CMD ["/opt/voice-builder-api/start.sh"]

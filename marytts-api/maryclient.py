@@ -120,6 +120,6 @@ class maryclient:
         conn.request("POST", "/process", params, headers)
         response = conn.getresponse()
         if response.status != 200:
-            print response.getheaders()
+            #print response.getheaders()
             raise RuntimeError("{0}: {1}".format(response.status, response.reason))
         return response.read()

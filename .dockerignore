@@ -1,4 +1,4 @@
 .git
-voice-builder*
-texts*
-mysql*
+voice-builder/*
+texts/*
+mysql/*
