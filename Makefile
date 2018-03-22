@@ -1,20 +1,12 @@
 default: build
 
-build: inject_dockerfile_with_uid_gid
+build: 
 	docker build -t techiaith/marytts .
-
-inject_dockerfile_with_uid_gid:
-	./scripts/inject_uid_gid_into_dockerfile.sh
 
 run:
 	docker run --name marytts -p 59125:59125 -it \
-		--link marytts-mysql:mysql \
-		-e DISPLAY=${DISPLAY} \
-		--device /dev/snd \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
 		-v ${PWD}/texts:/home/marytts/texts \
-		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/home/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts bash
 
 stop:
@@ -23,13 +15,6 @@ stop:
 
 clean:
 	docker rmi techiaith/marytts
-
-mysql:
-	docker run --name marytts-mysql -e MYSQL_ROOT_PASSWORD=wiki123 -d mysql
-
-mysql-clean:
-	docker stop marytts-mysql
-	docker rm -v marytts-mysql
 
 github:
 	 git clone https://github.com/techiaith/marytts.git
