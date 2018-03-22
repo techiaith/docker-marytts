@@ -73,15 +73,12 @@ def init_voice_build(uid):
         guid = row[0]
         txtfile = os.path.join(commonvoice_recordings_dir, guid + '.txt')
         wavfile = os.path.join(commonvoice_recordings_dir, guid + '.wav')
-
-        # verify wav file. 
-
-        wavfile_dest = os.path.join(voice_build_recordings_dir, guid + '.wav')
-        copyfile(wavfile, wavfile_dest)
-
-        with codecs.open(txtfile, 'r', encoding='utf-8') as t:
-            text = t.read()
-            txt_done_data[guid]=text
+        if is_valid_wav(wavfile): 
+            wavfile_dest = os.path.join(voice_build_recordings_dir, guid + '.wav')
+            copyfile(wavfile, wavfile_dest)
+            with codecs.open(txtfile, 'r', encoding='utf-8') as t:
+                text = t.read()
+                txt_done_data[guid]=text
 
     cursor.close()
     cnx.close()
