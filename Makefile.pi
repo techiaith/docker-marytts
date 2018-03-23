@@ -1,7 +1,7 @@
 default: build
 
 build: 
-	docker build -t techiaith/marytts .
+	docker build -t techiaith/marytts -f Dockerfile.pi .
 
 run:
 	docker run --name marytts -p 59125:59125 -it \
