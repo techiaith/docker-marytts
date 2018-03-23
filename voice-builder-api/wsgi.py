@@ -34,7 +34,7 @@ class GenerateVoice(object):
 function llefaru() {
     var testun = document.getElementById('llais').value.trim();
     var audioElement = document.createElement('audio');
-    var url = location.href + 'v1?uid=' + encodeURI(testun)
+    var url = location.href + 'generate_voice?uid=' + encodeURI(testun)
     audioElement.setAttribute('src', url);
     audioElement.play();
 }
@@ -89,7 +89,8 @@ cherrypy.config.update({
     'environment': 'production',
     'log.screen': False,
     'response.stream': True,
-    'log.error_file': 'marytts-api.error.log',
+    'log.access_file': 'voice-builder-api.access.log',
+    'log.error_file': 'voice-builder-api.error.log',
 })
 
 # Tell CherryPy to call "connect" for each thread, when it starts up 

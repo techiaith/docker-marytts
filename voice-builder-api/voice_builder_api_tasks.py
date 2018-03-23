@@ -24,7 +24,7 @@ mysql_connection_en = {
 }
 
 
-app = Celery('marytts_api_tasks', broker='pyamqp://guest@localhost//')
+app = Celery('voice_builder_api_tasks', broker='pyamqp://guest@localhost//')
 
 @app.task
 def generate_voice(uid):
@@ -65,7 +65,7 @@ def init_voice_build(uid):
         os.makedirs(voice_build_recordings_dir)
 
     # fetch list of recordings for uid from database
-    cnx = mysql.connector.connect(**mysql_connection)
+    cnx = mysql.connector.connect(**mysql_connection_cy)
     cursor = cnx.cursor()
     query = "select guid from RecordedSentences where uid=%s"
     cursor.execute(query, (uid,))

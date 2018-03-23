@@ -83,9 +83,9 @@ build-runtime-api: build-runtime
 
 runtime-api:
 	docker run --name marytts-api --restart=always \
-    -d -p 5300:8008 -p 59125:59125 \
-		-v ${PWD}/voice-builder/:/opt/marytts/voice-builder \
-		techiaith/marytts-api
+    	-d -p 5300:8008  \
+	-v ${PWD}/voice-builder/:/opt/marytts/voice-builder \
+	techiaith/marytts-api
 
 stop-runtime-api:
 	docker stop marytts-api
