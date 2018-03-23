@@ -73,8 +73,7 @@ stop-voicebuild-api:
 	docker rm marytts-voicebuild-api
 
 clean-voicebuild-api:
-	docker stop marytts-voicebuild-api
-	docker rm marytts-voicebuild-api
+	docker rmi techiaith/marytts-voicebuild-api
 
 
 # --- MaryTTS Server with Python REST API  ----------------------------------------------------
