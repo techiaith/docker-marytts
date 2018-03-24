@@ -63,14 +63,25 @@ def is_valid_wav(wavfile):
     if not wavfile.endswith(".wav"):
         return False;
 
-    marytts_home = os.environ['MARYTTS_HOME']
-    voice_build_base = os.path.join(marytts_home, 'voice-builder')
     sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
 
     if 'WARN' in sox_output:
         return False
 
     return True
+
+
+def is_silent(wavfile):
+    
+    sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
+    for attribute in sox_output.split('\n'):
+        if attribute.startswith("Maximum amplitude:"):
+            max_volume = float(attribute.split(':')[1].strip())
+            if max_volume < 0.0001:
+                return True
+            else:
+                return False
+
 
 
 def pad_with_silence(wavfile):
@@ -117,13 +128,14 @@ def init_voice_build(uid):
         guid = row[0]
         txtfile = os.path.join(commonvoice_recordings_dir, guid + '.txt')
         wavfile = os.path.join(commonvoice_recordings_dir, guid + '.wav')
-        if is_valid_wav(wavfile): 
-            wavfile_dest = os.path.join(voice_build_recordings_dir, guid + '.wav')
-            copyfile(wavfile, wavfile_dest)
-            pad_with_silence(wavfile_dest) 
-            with codecs.open(txtfile, 'r', encoding='utf-8') as t:
-                text = t.read()
-                txt_done_data[guid]=text
+        if is_valid_wav(wavfile):
+            if not is_silent(wavfile):  
+                wavfile_dest = os.path.join(voice_build_recordings_dir, guid + '.wav')
+                copyfile(wavfile, wavfile_dest)
+                pad_with_silence(wavfile_dest) 
+                with codecs.open(txtfile, 'r', encoding='utf-8') as t:
+                    text = t.read()
+                    txt_done_data[guid]=text
 
     cursor.close()
     cnx.close()
