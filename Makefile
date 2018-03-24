@@ -59,6 +59,7 @@ build-voicebuild-api: mysql
 voicebuild-api:
 	docker run --name marytts-voicebuild-api --restart=always \
  		-d -p 8008:8008 \
+		--link marytts-api:marytts-api \
 		--link marytts-mysql:mysql \
 		--link lleisiwr-mysql:lleisiwr_mysql \
 		-v ${PWD}/voice-builder/:/opt/marytts/voice-builder \
@@ -74,6 +75,7 @@ stop-voicebuild-api:
 
 clean-voicebuild-api:
 	docker rmi techiaith/marytts-voicebuild-api
+
 
 
 # --- MaryTTS Server with Python REST API  ----------------------------------------------------
@@ -93,7 +95,6 @@ stop-runtime-api:
 
 clean-runtime-api:
 	docker rmi techiaith/marytts-api
-
 
 
 
