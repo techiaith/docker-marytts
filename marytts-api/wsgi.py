@@ -78,9 +78,9 @@ class MaryTTSAPI(object):
 
 
     @cherrypy.expose
-    def speak(self, text, format='mp3', **kwargs):
+    def speak(self, text, uid='wispr', format='mp3', **kwargs):
         
-        cherrypy.log("speaking '%s'" % text)
+        cherrypy.log("%s speaking '%s'" % (uid, text))
 
         try:
             format = format.lower()
@@ -88,73 +88,17 @@ class MaryTTSAPI(object):
                 raise ValueError("'format' must be either 'mp3' or 'wav")
         except ValueError as e:
             return "ERROR: %s" % str(e)
-
+        
+        is_wispr = (uid.lower() == 'wispr')
+        if not is_wispr:
+            self.maryttsclient.set_voice(uid)
+   
         is_mp3 = (format.lower() == 'mp3')
         tmpfile = self.ttsToMp3(text.encode('utf-8')) if is_mp3 else self.ttsToWav(text.encode('utf-8'))
 
         cherrypy.response.headers["Content-Type"] = "audio/%s" % ('mpeg' if is_mp3 else 'wav')
         return tmpfile.read()
 
-
-    @cherrypy.expose
-    def index(self):
-	return """
-<html>
-<head>
-<script type='text/javascript'>
-function llefaru() {
-    var testun = document.getElementById('llais').value.trim();
-    var audioElement = document.createElement('audio');
-    var url = location.href + 'speak?text=' + encodeURIComponent(testun)    
-    audioElement.setAttribute('src', url);
-    audioElement.play();
-}
-</script>
-<style>
-.logos {
- 	background-color: #333333;
-    	height: 90px;
-}
-
-.uti {
-    float: left;
-    padding-left: 32px;
-    padding-top: 12px;
-}
-
-.pb {
-    float: right;
-    padding-right: 24px;
-    padding-top: 12px;
-}
-
-h1, p, textarea {
- 	font-family: "Vectora W02_55 Roman","Voces";
-}
-
-#llais {
-        width:100%;
-        display:block;
-	padding:10px;
-}
-
-</style>
-</head>
-<body>
-<div class="logos">
-	<div class="uti"><a href="http://www.bangor.ac.uk"><img src="http://techiaith.cymru/wp-content/uploads/2017/10/pb.jpg"></a></div>
-	<div class="pb"><a href="http://techiaith.bangor.ac.uk"><img src="http://techiaith.cymru/wp-content/uploads/2017/10/uti.jpg"></a></div>
-</div>
-
-<h1>DEMO TESTUN-I-LEFERYDD MARYTTS ~ MARYTTS TEXT-TO-SPEECH DEMO</h1>
-
-<textarea id='llais' placeholder="Ysgrifennwch rhywbeth i'w llefaru"></textarea>
-
-<p>
-<button onclick="llefaru()">Chwarae / Play</button>
-</p>
-
-"""
 
 cherrypy.config.update({
     'environment': 'production',

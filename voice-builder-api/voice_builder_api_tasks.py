@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import subprocess
 import codecs
@@ -66,24 +67,52 @@ def is_valid_wav(wavfile):
     if not wavfile.endswith(".wav"):
         return False;
 
-    sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
-
-    if 'WARN' in sox_output:
+    try:
+        sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
+        if 'WARN' in sox_output:
+            return False
+    except:
         return False
 
     return True
 
 
 def is_silent(wavfile):
-    
-    sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
-    for attribute in sox_output.split('\n'):
-        if attribute.startswith("Maximum amplitude:"):
-            max_volume = float(attribute.split(':')[1].strip())
-            if max_volume < 0.0001:
-                return True
-            else:
-                return False
+
+    # Typical sox output.... (not necessarily of a silent file)   
+    # Samples read:             57920
+    # Length (seconds):      3.620000
+    # Scaled by:         2147483647.0
+    # Maximum amplitude:     0.555573
+    # Minimum amplitude:    -0.720520
+    # Midline amplitude:    -0.082474
+    # Mean    norm:          0.029584
+    # Mean    amplitude:     0.000014
+    # RMS     amplitude:     0.074104
+    # Maximum delta:         0.677338
+    # Minimum delta:         0.000000
+    # Mean    delta:         0.005242
+    # RMS     delta:         0.013970
+    # Rough   frequency:          480
+    # Volume adjustment:        1.388
+
+    try: 
+        sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
+        for attribute in sox_output.split('\n'):
+            attribute = re.sub(' +', ' ', attribute)
+            if attribute.startswith("Mean amplitude:"):
+                mean_amplitude = float(attribute.split(':')[1].strip())
+                if mean_amplitude < 0.000002 and mean_amplitude > 0.0:
+                    return True
+            if attribute.startswith("Maximum amplitude:"):
+                max_volume = float(attribute.split(':')[1].strip())
+                if max_volume < 0.0001:
+                    return True
+
+        return False
+
+    except:
+        return True
 
 
 def pad_with_silence(wavfile):

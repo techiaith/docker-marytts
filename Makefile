@@ -80,7 +80,7 @@ clean-voicebuild-api:
 
 # --- MaryTTS Server with Python REST API  ----------------------------------------------------
 
-build-runtime-api: build-runtime
+build-runtime-api: 
 	docker build --rm -t techiaith/marytts-api -f Dockerfile.runtimeapi .
 
 runtime-api:
