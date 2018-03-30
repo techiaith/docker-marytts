@@ -76,10 +76,15 @@ LabelPauseDeleter.pauseDurationThreshold 100
 # Properties for module HalfPhoneUnitLabelComputer:
 HalfPhoneUnitLabelComputer.energyBasedTransientSplitting false
 
-# Properties for module FeatureSelection:
-FeatureSelection.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
-FeatureSelection.maryServerHost localhost
-FeatureSelection.maryServerPort 59125
+## Properties for module FeatureSelection:
+#FeatureSelection.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
+#FeatureSelection.maryServerHost localhost
+#FeatureSelection.maryServerPort 59125
+
+# Properties for module FeatureSelectionHeadless:
+FeatureSelectionHeadless.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
+FeatureSelectionHeadless.maryServerHost localhost
+FeatureSelectionHeadless.maryServerPort 59125
 
 # Properties for module PhoneUnitFeatureComputer:
 PhoneUnitFeatureComputer.allophonesDir /home/marytts/voice-builder/VOICENAME/allophones/

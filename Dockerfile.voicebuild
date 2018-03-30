@@ -32,12 +32,13 @@ WORKDIR /usr/local/src/htk/samples/HTKDemo
 RUN mkdir -p proto test hmms/hmm.0 hmms/hmm.1 hmms/hmm.2 hmms/tmp 
 RUN ./runDemo configs/monPlainM1S1.dcf
 
-
 # Add and Install MaryTTS
 ADD marytts /home/marytts
 
-ENV PATH="/home/marytts/target/marytts-builder-5.2/bin:/home/marytts/marytts-languages/marytts-lang-cy/bin:${PATH}"
-ENV HOME="/home/marytts"
+ENV MARYTTS_HOME="/home/marytts"
+ENV PATH="${MARYTTS_HOME}/target/marytts-builder-5.2/bin:${MARYTTS_HOME}/marytts-languages/marytts-lang-cy/bin:${PATH}"
+ENV MARYTTS_VERSION="5.2"
+ENV MARYTTS_CY_HOME="${MARYTTS_HOME}/marytts-languages/marytts-lang-cy"
 
 # Running GUI apps with Docker : http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker
 RUN export uid=1000 gid=1000 && \
@@ -54,4 +55,5 @@ WORKDIR /home/marytts
 RUN update-marytts-server-cy.sh
 
 EXPOSE 59125
+
 

@@ -1,0 +1,63 @@
+FROM ubuntu:14.04
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+RUN dpkg --add-architecture i386
+
+RUN locale-gen cy_GB.UTF-8
+ENV LANG='cy_GB.UTF-8' LANGUAGE='cy_GB:cy' LC_ALL='cy_GB.UTF-8'
+
+RUN apt-get update \
+	&& apt-get install -y openjdk-7-jdk maven git curl wget zip python3-mysql.connect mysql-client \
+						  build-essential speech-tools praat tclsh libsnack2 libffi-dev \
+						  gcc-multilib libx11-dev:i386 zlib1g-dev libtool autotools-dev automake \
+						  sox alsa-utils pulseaudio audacity python3-pip \
+						  libpq-dev supervisor python3-dev \
+						  rabbitmq-server \
+	&& rm -rf /var/lib/apt/lists/*
+
+# Install basic NLP components. 
+RUN pip3 install --upgrade pip \
+	&& pip3 install cld2-cffi spacy wget
+
+
+# Install and Verify HTK
+ADD HTK-3.4.1.tar.gz /usr/local/src
+ADD HTK-samples-3.4.1.tar.gz /usr/local/src/htk/
+
+WORKDIR /usr/local/src/htk
+
+RUN ./configure
+RUN make all
+RUN make install
+
+RUN perl -i -pe 'y|\r||d' /usr/local/src/htk/samples/RMHTK/perl_scripts/*.prl
+
+WORKDIR /usr/local/src/htk/samples/HTKDemo
+RUN mkdir -p proto test hmms/hmm.0 hmms/hmm.1 hmms/hmm.2 hmms/tmp 
+RUN ./runDemo configs/monPlainM1S1.dcf
+
+
+# Add and Install MaryTTS
+ADD marytts /opt/marytts
+WORKDIR /opt/marytts
+ENV PATH="/opt/marytts/target/marytts-builder-5.2/bin:/opt/marytts/marytts-languages/marytts-lang-cy/bin:${PATH}"
+ENV MARYTTS_VERSION="5.2"
+ENV MARYTTS_HOME="/opt/marytts"
+ENV MARYTTS_CY_HOME="/opt/marytts/marytts-languages/marytts-lang-cy"
+
+
+RUN update-marytts-server-cy.sh
+
+
+# Install voice-builder-api
+ADD voice-builder-api /opt/voice-builder-api
+RUN pip install -r /opt/voice-builder-api/requirements.txt \
+	&& mkdir -p /var/log/gunicorn \
+	&& mkdir -p /var/log/celery \
+	&& touch /var/log/gunicorn/voice-builder-api.error.log
+
+EXPOSE 8008 
+
+WORKDIR /opt/voice-builder-api
+
+CMD ["/bin/bash", "-c", "/opt/voice-builder-api/start.sh"]

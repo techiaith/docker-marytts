@@ -4,6 +4,8 @@ texts/wici/*
 !texts/wici/wkdb.conf
 texts/alt/*
 !texts/alt/wkdb.conf
+texts/en/*
+!texts/en/wikipedia/wkdb.conf
 
 texts/wicipedia-titles/lexicon*
 texts/wicipedia-titles/log/*
@@ -29,3 +31,4 @@ voice-builder/recorder/audio/*
 
 HTK-*
 *.pyc
+mysql/*

@@ -1,0 +1,4 @@
+CherryPy==3.6.0
+gunicorn==19.2.1
+aiohttp==0.12.0
+psutil==5.4.3
