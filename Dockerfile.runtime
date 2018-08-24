@@ -20,3 +20,4 @@ ENV MARYTTS_CY_HOME="/opt/marytts/marytts-languages/marytts-lang-cy"
 RUN update-marytts-server-cy.sh
 
 EXPOSE 59125
+
