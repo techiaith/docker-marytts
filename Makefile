@@ -35,10 +35,11 @@ voicebuild: mysql
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
+		--user marytts \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
-		-v ${PWD}/texts:/home/marytts/texts \
-		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/home/marytts/marytts-languages/marytts-lang-cy \
+		-v ${PWD}/voice-builder:/opt/marytts/voice-builder \
+		-v ${PWD}/texts:/opt/marytts/texts \
+		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts-voicebuild bash
 
 stop-voicebuild:
@@ -100,7 +101,7 @@ clean-runtime-api:
 
 # --- MySQL -----------------------------------------------------------------------------------
 
-mysql:
+mysql-run:
 	docker run --name marytts-mysql --restart=always \
 		-d -v ${PWD}/mysql:/var/lib/mysql \
 		-e MYSQL_ROOT_PASSWORD=wiki123 \
