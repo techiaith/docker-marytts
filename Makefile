@@ -8,9 +8,9 @@ build-runtime:
 
 runtime:
 	docker run --name marytts --restart=always \
-    -d -p 59125:59125 \
-		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
-		techiaith/marytts 
+    	-it -p 59125:59125 \
+	-v ${PWD}/voice-builder:/home/marytts/voice-builder \
+	techiaith/marytts bash
 
 stop:
 	docker stop marytts
