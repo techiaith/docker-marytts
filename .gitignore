@@ -17,6 +17,8 @@ texts/wicipedia-titles/selection/*
 
 voices/*
 
+recordings/*
+
 HTK-*
 *.pyc
 mysql/*

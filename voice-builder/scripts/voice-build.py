@@ -14,13 +14,15 @@ marytts_home = os.environ['MARYTTS_HOME']
 marytts_version = os.environ['MARYTTS_VERSION']
 marytts_builder_base = os.path.join(marytts_home, 'target', 'marytts-builder-' + marytts_version)
 
+voices_builder_base = os.path.join(marytts_home,'voice-builder')
 voices_home = os.environ['MARYTTS_VOICES_HOME']
 
 
+logging.getLogger().setLevel(logging.INFO)
+
 def get_silence_file(samplerate):
-   
-    voice_build_base = os.path.join(marytts_home, 'voice-builder')
-    silence_file = os.path.join(voice_build_base, "silence_%skHz.wav" % samplerate)
+       
+    silence_file = os.path.join(voices_builder_base, "silence_%skHz.wav" % samplerate)
     
     if not os.path.isfile(silence_file):
        cmd = "sox -n -r %s -b 16 -c 1 %s trim 0.0 2.0" % (samplerate, silence_file,)
@@ -97,6 +99,7 @@ def pad_with_silence(wavfile):
 
 def execute_java_cmd(cmd):
     try:
+        logging.info(cmd)
         cmd_output = subprocess.check_output(shlex.split(cmd)).decode('utf-8')
     except:
         raise
@@ -143,11 +146,14 @@ def init_voice_build(source_dir, voice_name):
 	    for key,value in txt_done_data.items():
 		    txtdone.write("( " + key + " \"" + value + "\" )\n")
 
+
+    logging.info("init_voice_build %s copying templates.." % voice_name)
+
     # importMain.config
-    copyfile(os.path.join('templates', 'importMain.config.template'), os.path.join(voice_build_dir,'importMain.config'))
+    copyfile(os.path.join(voices_builder_base ,'templates', 'importMain.config.template'), os.path.join(voice_build_dir,'importMain.config'))
     
     # database.config
-    with open(os.path.join('templates', 'database.config.template'), 'r', encoding='utf-8') as src:
+    with open(os.path.join(voices_builder_base, 'templates', 'database.config.template'), 'r', encoding='utf-8') as src:
         lines = src.readlines()
 
     with open(os.path.join(voice_build_dir, 'database.config'), 'w', encoding='utf-8') as trgt:
