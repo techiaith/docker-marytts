@@ -27,7 +27,7 @@ build-voicebuild: inject_dockerfile_with_uid_gid
 	docker build --rm -t techiaith/marytts-voicebuild -f Dockerfile.voicebuild .
 
 inject_dockerfile_with_uid_gid:
-	./scripts/inject_uid_gid_into_dockerfile.sh
+	./voice-builder/scripts/inject_uid_gid_into_dockerfile.sh
 
 voicebuild: mysql
 	docker run --name marytts-voicebuild -it \
@@ -37,7 +37,8 @@ voicebuild: mysql
 		--device /dev/snd \
 		--user marytts \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v ${PWD}/voice-builder:/opt/marytts/voice-builder \
+		-v ${PWD}/recordings:/recordings \
+		-v ${PWD}/voices:/opt/marytts/voices \
 		-v ${PWD}/texts:/opt/marytts/texts \
 		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts-voicebuild bash
@@ -46,9 +47,8 @@ stop-voicebuild:
 	docker stop marytts-voicebuild
 	docker rm marytts-voicebuild
 
-clean-voicebuild:
-	docker stop marytts-voicebuild
-	docker rm marytts-voicebuild
+clean-voicebuild:	
+	docker rmi techiaith/marytts-voicebuild
 
 
 

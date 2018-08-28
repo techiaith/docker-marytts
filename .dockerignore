@@ -1,4 +1,5 @@
 .git
-voice-builder/*
+voices/*
 texts/*
 mysql/*
+recordings/*

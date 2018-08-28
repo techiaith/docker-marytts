@@ -34,13 +34,16 @@ RUN mkdir -p proto test hmms/hmm.0 hmms/hmm.1 hmms/hmm.2 hmms/tmp
 RUN ./runDemo configs/monPlainM1S1.dcf
 
 # Add and Install MaryTTS
-ENV MARYTTS_HOME="/opt/marytts"
 ENV MARYTTS_VERSION="5.2"
+ENV MARYTTS_HOME="/opt/marytts"
+ENV MARYTTS_VOICES_HOME=${MARYTTS_HOME}/voices
 ENV MARYTTS_CY_HOME="${MARYTTS_HOME}/marytts-languages/marytts-lang-cy"
 
-ENV PATH="${MARYTTS_HOME}/target/marytts-builder-${MARYTTS_VERSION}/bin:${MARYTTS_CY_HOME}/bin:${PATH}"
-
 ADD marytts ${MARYTTS_HOME}
+ADD voice-builder ${MARYTTS_HOME}/voice-builder
+
+ENV PATH="${MARYTTS_HOME}/target/marytts-builder-${MARYTTS_VERSION}/bin:${MARYTTS_CY_HOME}/bin:${MARYTTS_HOME}/voice-builder/scripts:${PATH}"
+
 WORKDIR ${MARYTTS_HOME}
 
 # Running GUI apps with Docker : http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker
@@ -53,7 +56,5 @@ RUN export uid=1000 gid=1000 && \
 	chown ${uid}:${gid} -R /home/marytts
 
 RUN update-marytts-server-cy.sh
-
-# USER marytts
 
 EXPOSE 59125

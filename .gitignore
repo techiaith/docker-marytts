@@ -15,20 +15,9 @@ texts/wicipedia-titles/selected.log
 texts/wicipedia-titles/selected_text_transcription.log
 texts/wicipedia-titles/selection/*
 
-voice-builder/*
-
-voice-builder/cmu_arctic/*
-!voice-builder/cmu_arctic/prepare.sh
-!voice-builder/cmu_arctic/*.config
-
-voice-builder/recorder/*
-!voice-builder/recorder/*.sh
-!voice-builder/recorder/*.py
-!voice-builder/recorder/*.txt
-!voice-builder/recorder/*.template
-
-voice-builder/recorder/audio/*
+voices/*
 
 HTK-*
 *.pyc
 mysql/*
+.vscode/*
