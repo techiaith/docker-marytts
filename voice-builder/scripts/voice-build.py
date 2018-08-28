@@ -46,7 +46,6 @@ def is_valid_wav(wavfile):
 
 
 def is_silent(wavfile):
-
     # Typical sox output.... (not necessarily of a silent file)   
     # Samples read:             57920
     # Length (seconds):      3.620000
@@ -63,7 +62,6 @@ def is_silent(wavfile):
     # RMS     delta:         0.013970
     # Rough   frequency:          480
     # Volume adjustment:        1.388
-
     try: 
         sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
         for attribute in sox_output.split('\n'):
@@ -142,7 +140,7 @@ def init_voice_build(source_dir, voice_name):
                             txt_done_data[key]=value
 
     
-    with open(os.path.join(voice_build_recordings_dir, 'txt.done.data'), 'w', encoding='utf-8') as txtdone:
+    with open(os.path.join(voice_build_dir, 'txt.done.data'), 'w', encoding='utf-8') as txtdone:
 	    for key,value in txt_done_data.items():
 		    txtdone.write("( " + key + " \"" + value + "\" )\n")
 
@@ -157,21 +155,21 @@ def init_voice_build(source_dir, voice_name):
         lines = src.readlines()
 
     with open(os.path.join(voice_build_dir, 'database.config'), 'w', encoding='utf-8') as trgt:
-        for line in lines:
-            line = line.replace('VOICENAME', voice_name)
-            line = line.replace('/home/marytts', marytts_home)
+        for line in lines:            
+            line = line.replace('VOICE_BUILD_DIR', voice_build_dir)            
             trgt.write(line)
 
     logging.info("init_voice_build %s completed" % voice_name)
 
 
-def audio_converter(voice_name):
+def audio_converter(source_dir, voice_name):
 
     logging.info("audio converter %s starting" % voice_name)
 
-    voice_build_dir = os.path.join(voices_home, voice_name)
+    voice_build_dir = os.path.join(voices_home, voice_name, "wav")    
+        
+    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, source_dir, voice_build_dir,)
     
-    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s' % (marytts_builder_base, marytts_builder_base, voice_build_dir,)
     return execute_java_cmd(cmd)
 
 
@@ -199,7 +197,7 @@ def generate_voice(source_dir, voice_name):
     success = False
     try:
         init_voice_build(source_dir, voice_name)
-        if audio_converter(voice_name):
+        if audio_converter(source_dir, voice_name):
             if voice_import(voice_name):
                 #voice_install(voice_name)
                 success = True

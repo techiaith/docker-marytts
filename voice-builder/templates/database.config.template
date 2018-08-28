@@ -1,48 +1,48 @@
 # GlobalProperties:
-db.allophonesDir /home/marytts/voice-builder/VOICENAME/allophones/
-db.basenameFile /home/marytts/voice-builder/VOICENAME/basenames.lst
+db.allophonesDir VOICE_BUILD_DIR/allophones/
+db.basenameFile VOICE_BUILD_DIR/basenames.lst
 db.domain general
 db.estDir /usr/
 db.gender male
-db.halfphoneFeatureDir /home/marytts/voice-builder/VOICENAME/halfphonefeatures/
-db.halfphoneLabDir /home/marytts/voice-builder/VOICENAME/halfphonelab/
+db.halfphoneFeatureDir VOICE_BUILD_DIR/halfphonefeatures/
+db.halfphoneLabDir VOICE_BUILD_DIR/halfphonelab/
 db.hplabExtension .hplab
-db.labDir /home/marytts/voice-builder/VOICENAME/lab/
+db.labDir VOICE_BUILD_DIR/lab/
 db.labExtension .lab
 db.locale cy
 db.maryServerHost localhost
 db.maryServerPort 59125
 db.marybase /home/marytts
 db.marybaseversion 5.2
-db.maryxmlDir /home/marytts/voice-builder/VOICENAME/rawmaryxml/
+db.maryxmlDir VOICE_BUILD_DIR/rawmaryxml/
 db.maryxmlExtension .xml
-db.phoneFeatureDir /home/marytts/voice-builder/VOICENAME/phonefeatures/
-db.phoneLabDir /home/marytts/voice-builder/VOICENAME/phonelab/
-db.pmDir /home/marytts/voice-builder/VOICENAME/pm/
+db.phoneFeatureDir VOICE_BUILD_DIR/phonefeatures/
+db.phoneLabDir VOICE_BUILD_DIR/phonelab/
+db.pmDir VOICE_BUILD_DIR/pm/
 db.pmExtension .pm
-db.promptAllophonesDir /home/marytts/voice-builder/VOICENAME/prompt_allophones/
-db.ptcDir /home/marytts/voice-builder/VOICENAME/ptc/
+db.promptAllophonesDir VOICE_BUILD_DIR/prompt_allophones/
+db.ptcDir VOICE_BUILD_DIR/ptc/
 db.ptcExtension .ptc
-db.rootDir /home/marytts/voice-builder/VOICENAME/
+db.rootDir VOICE_BUILD_DIR/
 db.samplingrate 16000
-db.textDir /home/marytts/voice-builder/VOICENAME/text/
+db.textDir VOICE_BUILD_DIR/text/
 db.textExtension .txt
-db.vocalizationsDir /home/marytts/voice-builder/VOICENAME/vocalizations/
+db.vocalizationsDir VOICE_BUILD_DIR/vocalizations/
 db.voicename VOICENAME
-db.wavDir /home/marytts/voice-builder/VOICENAME/wav/
+db.wavDir VOICE_BUILD_DIR/wav/
 
 # Properties for module PraatPitchmarker:
 PraatPitchmarker.command praat
 PraatPitchmarker.maxPitch 300
 PraatPitchmarker.minPitch 75
-PraatPitchmarker.pmDir /home/marytts/voice-builder/VOICENAME/pm/
-PraatPitchmarker.waveDir /home/marytts/voice-builder/VOICENAME/wav/
+PraatPitchmarker.pmDir VOICE_BUILD_DIR/pm/
+PraatPitchmarker.waveDir VOICE_BUILD_DIR/wav/
 
 # Properties for module MCEPMaker:
-MCEPMaker.mcepDir /home/marytts/voice-builder/VOICENAME/mcep/
+MCEPMaker.mcepDir VOICE_BUILD_DIR/mcep/
 
 # Properties for module Festvox2MaryTranscripts:
-Festvox2MaryTranscripts.transcriptFile /home/marytts/voice-builder/VOICENAME/txt.done.data
+Festvox2MaryTranscripts.transcriptFile VOICE_BUILD_DIR/txt.done.data
 
 # Properties for module AllophonesExtractor:
 AllophonesExtractor.styleDefinitionFile 
@@ -50,140 +50,140 @@ AllophonesExtractor.styleDefinitionFile
 # Properties for module EHMMLabeler:
 EHMMLabeler.doAlignment true
 EHMMLabeler.doTraining true
-EHMMLabeler.eDir /home/marytts/voice-builder/VOICENAME/ehmm/
+EHMMLabeler.eDir VOICE_BUILD_DIR/ehmm/
 EHMMLabeler.ehmmDir /project/mary/Festival/festvox/src/ehmm/
 EHMMLabeler.nonDetEndFlag 0
-EHMMLabeler.outputLabDir /home/marytts/voice-builder/VOICENAME/lab/
+EHMMLabeler.outputLabDir VOICE_BUILD_DIR/lab/
 EHMMLabeler.prepareFiles true
-EHMMLabeler.promtallophonesDir /home/marytts/voice-builder/VOICENAME/prompt_allophones/
+EHMMLabeler.promtallophonesDir VOICE_BUILD_DIR/prompt_allophones/
 EHMMLabeler.reTrainFlag false
 EHMMLabeler.startEHMMModelDir /
 
 # Properties for module HTKLabeler:
 HTKLabeler.awkbin /usr/bin/awk
-HTKLabeler.htDir /home/marytts/voice-builder/VOICENAME/htk
+HTKLabeler.htDir VOICE_BUILD_DIR/htk
 HTKLabeler.htkDir /usr/local/bin/
 HTKLabeler.maxNoOfIterations 150
 HTKLabeler.maxshortPauseIteration 10
-HTKLabeler.outputLabDir /home/marytts/voice-builder/VOICENAME/lab/
-HTKLabeler.promtallophonesDir /home/marytts/voice-builder/VOICENAME/prompt_allophones/
+HTKLabeler.outputLabDir VOICE_BUILD_DIR/lab/
+HTKLabeler.promtallophonesDir VOICE_BUILD_DIR/prompt_allophones/
 
 # Properties for module LabelPauseDeleter:
-LabelPauseDeleter.eDir /home/marytts/voice-builder/VOICENAME/ehmm/
-LabelPauseDeleter.outputLabDir /home/marytts/voice-builder/VOICENAME/lab/
+LabelPauseDeleter.eDir VOICE_BUILD_DIR/ehmm/
+LabelPauseDeleter.outputLabDir VOICE_BUILD_DIR/lab/
 LabelPauseDeleter.pauseDurationThreshold 100
 
 # Properties for module HalfPhoneUnitLabelComputer:
 HalfPhoneUnitLabelComputer.energyBasedTransientSplitting false
 
 ## Properties for module FeatureSelection:
-#FeatureSelection.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
+#FeatureSelection.featureFile VOICE_BUILD_DIR/mary/features.txt
 #FeatureSelection.maryServerHost localhost
 #FeatureSelection.maryServerPort 59125
 
 # Properties for module FeatureSelectionHeadless:
-FeatureSelectionHeadless.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
+FeatureSelectionHeadless.featureFile VOICE_BUILD_DIR/mary/features.txt
 FeatureSelectionHeadless.maryServerHost localhost
 FeatureSelectionHeadless.maryServerPort 59125
 
 # Properties for module PhoneUnitFeatureComputer:
-PhoneUnitFeatureComputer.allophonesDir /home/marytts/voice-builder/VOICENAME/allophones/
-PhoneUnitFeatureComputer.featureDir /home/marytts/voice-builder/VOICENAME/phonefeatures/
-PhoneUnitFeatureComputer.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
+PhoneUnitFeatureComputer.allophonesDir VOICE_BUILD_DIR/allophones/
+PhoneUnitFeatureComputer.featureDir VOICE_BUILD_DIR/phonefeatures/
+PhoneUnitFeatureComputer.featureFile VOICE_BUILD_DIR/mary/features.txt
 PhoneUnitFeatureComputer.maryServerHost localhost
 PhoneUnitFeatureComputer.maryServerPort 59125
 
 # Properties for module HalfPhoneUnitFeatureComputer:
-HalfPhoneUnitFeatureComputer.allophonesDir /home/marytts/voice-builder/VOICENAME/allophones/
-HalfPhoneUnitFeatureComputer.featureDir /home/marytts/voice-builder/VOICENAME/halfphonefeatures/
-HalfPhoneUnitFeatureComputer.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
+HalfPhoneUnitFeatureComputer.allophonesDir VOICE_BUILD_DIR/allophones/
+HalfPhoneUnitFeatureComputer.featureDir VOICE_BUILD_DIR/halfphonefeatures/
+HalfPhoneUnitFeatureComputer.featureFile VOICE_BUILD_DIR/mary/features.txt
 HalfPhoneUnitFeatureComputer.maryServerHost localhost
 HalfPhoneUnitFeatureComputer.maryServerPort 59125
 
 # Properties for module WaveTimelineMaker:
-WaveTimelineMaker.waveTimeline /home/marytts/voice-builder/VOICENAME/mary/timeline_waveforms.mry
+WaveTimelineMaker.waveTimeline VOICE_BUILD_DIR/mary/timeline_waveforms.mry
 
 # Properties for module BasenameTimelineMaker:
-BasenameTimelineMaker.timelineFile /home/marytts/voice-builder/VOICENAME/mary/timeline_basenames.mry
+BasenameTimelineMaker.timelineFile VOICE_BUILD_DIR/mary/timeline_basenames.mry
 
 # Properties for module MCepTimelineMaker:
-MCepTimelineMaker.mcepDir /home/marytts/voice-builder/VOICENAME/mcep/
-MCepTimelineMaker.mcepTimeline /home/marytts/voice-builder/VOICENAME/mary/timeline_mcep.mry
+MCepTimelineMaker.mcepDir VOICE_BUILD_DIR/mcep/
+MCepTimelineMaker.mcepTimeline VOICE_BUILD_DIR/mary/timeline_mcep.mry
 
 # Properties for module PhoneUnitfileWriter:
-PhoneUnitfileWriter.unitFile /home/marytts/voice-builder/VOICENAME/mary/phoneUnits.mry
+PhoneUnitfileWriter.unitFile VOICE_BUILD_DIR/mary/phoneUnits.mry
 
 # Properties for module PhoneFeatureFileWriter:
-PhoneFeatureFileWriter.featureDir /home/marytts/voice-builder/VOICENAME/phonefeatures/
-PhoneFeatureFileWriter.featureFile /home/marytts/voice-builder/VOICENAME/mary/phoneFeatures.mry
-PhoneFeatureFileWriter.unitFile /home/marytts/voice-builder/VOICENAME/mary/phoneUnits.mry
-PhoneFeatureFileWriter.weightsFile /home/marytts/voice-builder/VOICENAME/mary/phoneUnitFeatureDefinition.txt
+PhoneFeatureFileWriter.featureDir VOICE_BUILD_DIR/phonefeatures/
+PhoneFeatureFileWriter.featureFile VOICE_BUILD_DIR/mary/phoneFeatures.mry
+PhoneFeatureFileWriter.unitFile VOICE_BUILD_DIR/mary/phoneUnits.mry
+PhoneFeatureFileWriter.weightsFile VOICE_BUILD_DIR/mary/phoneUnitFeatureDefinition.txt
 
 # Properties for module DurationCARTTrainer:
-DurationCARTTrainer.durTree /home/marytts/voice-builder/VOICENAME/mary/dur.tree
-DurationCARTTrainer.featureFile /home/marytts/voice-builder/VOICENAME/mary/phoneFeatures.mry
+DurationCARTTrainer.durTree VOICE_BUILD_DIR/mary/dur.tree
+DurationCARTTrainer.featureFile VOICE_BUILD_DIR/mary/phoneFeatures.mry
 DurationCARTTrainer.isHnmTimeline false
 DurationCARTTrainer.stepwiseTraining false
-DurationCARTTrainer.unitFile /home/marytts/voice-builder/VOICENAME/mary/phoneUnits.mry
-DurationCARTTrainer.waveTimeline /home/marytts/voice-builder/VOICENAME/mary/timeline_waveforms.mry
+DurationCARTTrainer.unitFile VOICE_BUILD_DIR/mary/phoneUnits.mry
+DurationCARTTrainer.waveTimeline VOICE_BUILD_DIR/mary/timeline_waveforms.mry
 
 # Properties for module F0CARTTrainer:
-F0CARTTrainer.f0LeftTreeFile /home/marytts/voice-builder/VOICENAME/mary/f0.left.tree
-F0CARTTrainer.f0MidTreeFile /home/marytts/voice-builder/VOICENAME/mary/f0.mid.tree
-F0CARTTrainer.f0RightTreeFile /home/marytts/voice-builder/VOICENAME/mary/f0.right.tree
-F0CARTTrainer.featureFile /home/marytts/voice-builder/VOICENAME/mary/phoneFeatures.mry
+F0CARTTrainer.f0LeftTreeFile VOICE_BUILD_DIR/mary/f0.left.tree
+F0CARTTrainer.f0MidTreeFile VOICE_BUILD_DIR/mary/f0.mid.tree
+F0CARTTrainer.f0RightTreeFile VOICE_BUILD_DIR/mary/f0.right.tree
+F0CARTTrainer.featureFile VOICE_BUILD_DIR/mary/phoneFeatures.mry
 F0CARTTrainer.isHnmTimeline false
 F0CARTTrainer.stepwiseTraining false
-F0CARTTrainer.unitFile /home/marytts/voice-builder/VOICENAME/mary/phoneUnits.mry
-F0CARTTrainer.waveTimeline /home/marytts/voice-builder/VOICENAME/mary/timeline_waveforms.mry
+F0CARTTrainer.unitFile VOICE_BUILD_DIR/mary/phoneUnits.mry
+F0CARTTrainer.waveTimeline VOICE_BUILD_DIR/mary/timeline_waveforms.mry
 
 # Properties for module HalfPhoneUnitfileWriter:
-HalfPhoneUnitfileWriter.unitFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnits.mry
+HalfPhoneUnitfileWriter.unitFile VOICE_BUILD_DIR/mary/halfphoneUnits.mry
 
 # Properties for module HalfPhoneFeatureFileWriter:
-HalfPhoneFeatureFileWriter.featureDir /home/marytts/voice-builder/VOICENAME/halfphonefeatures/
-HalfPhoneFeatureFileWriter.featureFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneFeatures.mry
-HalfPhoneFeatureFileWriter.unitFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnits.mry
-HalfPhoneFeatureFileWriter.weightsFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnitFeatureDefinition.txt
+HalfPhoneFeatureFileWriter.featureDir VOICE_BUILD_DIR/halfphonefeatures/
+HalfPhoneFeatureFileWriter.featureFile VOICE_BUILD_DIR/mary/halfphoneFeatures.mry
+HalfPhoneFeatureFileWriter.unitFile VOICE_BUILD_DIR/mary/halfphoneUnits.mry
+HalfPhoneFeatureFileWriter.weightsFile VOICE_BUILD_DIR/mary/halfphoneUnitFeatureDefinition.txt
 
 # Properties for module F0PolynomialFeatureFileWriter:
-F0PolynomialFeatureFileWriter.f0FeatureFile /home/marytts/voice-builder/VOICENAME/mary/syllableF0Polynomials.mry
-F0PolynomialFeatureFileWriter.featureFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneFeatures.mry
+F0PolynomialFeatureFileWriter.f0FeatureFile VOICE_BUILD_DIR/mary/syllableF0Polynomials.mry
+F0PolynomialFeatureFileWriter.featureFile VOICE_BUILD_DIR/mary/halfphoneFeatures.mry
 F0PolynomialFeatureFileWriter.interpolate true
 F0PolynomialFeatureFileWriter.isHnmTimeline false
 F0PolynomialFeatureFileWriter.maxPitch 300
 F0PolynomialFeatureFileWriter.minPitch 75
 F0PolynomialFeatureFileWriter.polynomOrder 3
 F0PolynomialFeatureFileWriter.showGraph false
-F0PolynomialFeatureFileWriter.unitFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnits.mry
-F0PolynomialFeatureFileWriter.waveTimeLine /home/marytts/voice-builder/VOICENAME/mary/timeline_waveforms.mry
+F0PolynomialFeatureFileWriter.unitFile VOICE_BUILD_DIR/mary/halfphoneUnits.mry
+F0PolynomialFeatureFileWriter.waveTimeLine VOICE_BUILD_DIR/mary/timeline_waveforms.mry
 
 # Properties for module AcousticFeatureFileWriter:
-AcousticFeatureFileWriter.acFeatDef /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnitFeatureDefinition_ac.txt
-AcousticFeatureFileWriter.acFeatureFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneFeatures_ac.mry
-AcousticFeatureFileWriter.contourFile /home/marytts/voice-builder/VOICENAME/mary/syllableF0Polynomials.mry
-AcousticFeatureFileWriter.featureFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneFeatures.mry
-AcousticFeatureFileWriter.unitFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnits.mry
+AcousticFeatureFileWriter.acFeatDef VOICE_BUILD_DIR/mary/halfphoneUnitFeatureDefinition_ac.txt
+AcousticFeatureFileWriter.acFeatureFile VOICE_BUILD_DIR/mary/halfphoneFeatures_ac.mry
+AcousticFeatureFileWriter.contourFile VOICE_BUILD_DIR/mary/syllableF0Polynomials.mry
+AcousticFeatureFileWriter.featureFile VOICE_BUILD_DIR/mary/halfphoneFeatures.mry
+AcousticFeatureFileWriter.unitFile VOICE_BUILD_DIR/mary/halfphoneUnits.mry
 
 # Properties for module JoinCostFileMaker:
-JoinCostFileMaker.acfeatureFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneFeatures_ac.mry
-JoinCostFileMaker.joinCostFile /home/marytts/voice-builder/VOICENAME/mary/joinCostFeatures.mry
-JoinCostFileMaker.mcepDir /home/marytts/voice-builder/VOICENAME/mcep/
-JoinCostFileMaker.mcepTimeline /home/marytts/voice-builder/VOICENAME/mary/timeline_mcep.mry
-JoinCostFileMaker.unitFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnits.mry
-JoinCostFileMaker.weightsFile /home/marytts/voice-builder/VOICENAME/mary/joinCostWeights.txt
+JoinCostFileMaker.acfeatureFile VOICE_BUILD_DIR/mary/halfphoneFeatures_ac.mry
+JoinCostFileMaker.joinCostFile VOICE_BUILD_DIR/mary/joinCostFeatures.mry
+JoinCostFileMaker.mcepDir VOICE_BUILD_DIR/mcep/
+JoinCostFileMaker.mcepTimeline VOICE_BUILD_DIR/mary/timeline_mcep.mry
+JoinCostFileMaker.unitFile VOICE_BUILD_DIR/mary/halfphoneUnits.mry
+JoinCostFileMaker.weightsFile VOICE_BUILD_DIR/mary/joinCostWeights.txt
 
 # Properties for module CARTBuilder:
-CARTBuilder.acFeatureFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneFeatures_ac.mry
+CARTBuilder.acFeatureFile VOICE_BUILD_DIR/mary/halfphoneFeatures_ac.mry
 CARTBuilder.callWagon false
-CARTBuilder.cartFile /home/marytts/voice-builder/VOICENAME/mary/cart.mry
-CARTBuilder.featureSeqFile /home/marytts/voice-builder/VOICENAME/mary/featureSequence.txt
+CARTBuilder.cartFile VOICE_BUILD_DIR/mary/cart.mry
+CARTBuilder.featureSeqFile VOICE_BUILD_DIR/mary/featureSequence.txt
 CARTBuilder.maxLeafSize 10000000
-CARTBuilder.mcepTimeline /home/marytts/voice-builder/VOICENAME/mary/timeline_mcep.mry
+CARTBuilder.mcepTimeline VOICE_BUILD_DIR/mary/timeline_mcep.mry
 CARTBuilder.numProcesses 1
 CARTBuilder.readFeatureSequence true
-CARTBuilder.topLevelTreeFile /home/marytts/voice-builder/VOICENAME/mary/topLevel.tree
-CARTBuilder.unitFile /home/marytts/voice-builder/VOICENAME/mary/halfphoneUnits.mry
+CARTBuilder.topLevelTreeFile VOICE_BUILD_DIR/mary/topLevel.tree
+CARTBuilder.unitFile VOICE_BUILD_DIR/mary/halfphoneUnits.mry
 
 # Properties for module HMMVoiceDataPreparation:
 HMMVoiceDataPreparation.adaptScripts false
@@ -199,7 +199,7 @@ HMMVoiceConfigure.adaptSpkrMask */cmu_us_arctic_%%%_*
 HMMVoiceConfigure.adaptTrainSpkr 'bdl clb jmk rms'
 HMMVoiceConfigure.adaptTransKind feat
 HMMVoiceConfigure.adaptTreeKind dec
-HMMVoiceConfigure.configureFile /home/marytts/voice-builder/VOICENAME/hts/configure
+HMMVoiceConfigure.configureFile VOICE_BUILD_DIR/hts/configure
 HMMVoiceConfigure.dataSet cmu_us_arctic
 HMMVoiceConfigure.fftLen 512
 HMMVoiceConfigure.frameLen 400
@@ -226,8 +226,8 @@ HMMVoiceConfigure.version 1
 HMMVoiceConfigure.windowType 1
 
 # Properties for module HMMVoiceFeatureSelection:
-HMMVoiceFeatureSelection.featureFile /home/marytts/voice-builder/VOICENAME/mary/features.txt
-HMMVoiceFeatureSelection.hmmFeatureFile /home/marytts/voice-builder/VOICENAME/mary/hmmFeatures.txt
+HMMVoiceFeatureSelection.featureFile VOICE_BUILD_DIR/mary/features.txt
+HMMVoiceFeatureSelection.hmmFeatureFile VOICE_BUILD_DIR/mary/hmmFeatures.txt
 
 # Properties for module HMMVoiceMakeData:
 HMMVoiceMakeData.adaptScripts false
@@ -246,10 +246,10 @@ HMMVoiceMakeData.questionsUttFile hts/data/questions/questions_utt_qst001.hed
 HMMVoiceMakeData.trickyPhonesFile mary/trickyPhones.txt
 
 # Properties for module VoiceCompiler:
-VoiceCompiler.compileDir /home/marytts/voice-builder/VOICENAME/mary/voice-VOICENAME/
+VoiceCompiler.compileDir VOICE_BUILD_DIR/mary/voice-VOICENAME/
 VoiceCompiler.mavenBin /usr/bin/mvn
 
 # Properties for module HMMVoiceCompiler:
-HMMVoiceCompiler.compileDir /home/marytts/voice-builder/VOICENAME/mary/voice-VOICENAME-hsmm/
+HMMVoiceCompiler.compileDir VOICE_BUILD_DIR/mary/voice-VOICENAME-hsmm/
 HMMVoiceCompiler.mavenBin /usr/bin/mvn
 
