@@ -184,22 +184,14 @@ def voice_import(voice_name):
     return execute_java_cmd(cmd)
 
 
-#def voice_install(uid):
-#
-#    logger.info("Initiating installing voice in MaryTTS runtime API")
-#
-#    contents = urlopen("http://marytts-api:8008/install?voice=%s" % uid) 
-#
-#    logger.info("Voice installed")
-
 
 def generate_voice(source_dir, voice_name):
     success = False
     try:
         init_voice_build(source_dir, voice_name)
         if audio_converter(source_dir, voice_name):
-            if voice_import(voice_name):
-                #voice_install(voice_name)
+            if voice_import(voice_name):                
+                logging.info("voice built successfully")
                 success = True
     except:
         logging.error("Unexpected exception: %s", sys.exc_info()[0])

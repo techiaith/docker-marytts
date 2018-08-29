@@ -12,7 +12,7 @@ db.labExtension .lab
 db.locale cy
 db.maryServerHost localhost
 db.maryServerPort 59125
-db.marybase /home/marytts
+db.marybase /opt/marytts
 db.marybaseversion 5.2
 db.maryxmlDir VOICE_BUILD_DIR/rawmaryxml/
 db.maryxmlExtension .xml
