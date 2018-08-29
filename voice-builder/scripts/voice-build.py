@@ -108,13 +108,12 @@ def execute_java_cmd(cmd):
     return True
 
 
-def init_voice_build(source_dir, voice_name):
+def init_voice_build(source_dir, voice_build_dir, voice_name):
 
     logging.info("init_voice_build %s started" % voice_name)
 
     txt_done_data = {}
 
-    voice_build_dir = os.path.join(voices_home, voice_name)
     voice_build_recordings_dir = os.path.join(voice_build_dir, 'recordings')
 
     if not os.path.exists(voice_build_dir):
@@ -133,11 +132,11 @@ def init_voice_build(source_dir, voice_name):
                         wavfile_dest = os.path.join(voice_build_recordings_dir, file)
                         copyfile(wavfile, wavfile_dest)
                         pad_with_silence(wavfile_dest)
-                        key=file.replace('.txt','')
+                        key=file.replace('.wav','')
 
                         with open(txtfile, 'r', encoding='utf-8') as f:
                             value=f.read()
-                            txt_done_data[key]=value
+                            txt_done_data[key]=value.strip()
 
     
     with open(os.path.join(voice_build_dir, 'txt.done.data'), 'w', encoding='utf-8') as txtdone:
@@ -163,13 +162,14 @@ def init_voice_build(source_dir, voice_name):
     logging.info("init_voice_build %s completed" % voice_name)
 
 
-def audio_converter(source_dir, voice_name):
+def audio_converter(voice_build_dir, voice_name):
 
     logging.info("audio converter %s starting" % voice_name)
 
-    voice_build_dir = os.path.join(voices_home, voice_name, "wav")    
+    voice_build_recordings_dir = os.path.join(voice_build_dir, "recordings")
+    voice_build_wavs_dir = os.path.join(voice_build_dir, "wav")    
         
-    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, source_dir, voice_build_dir,)
+    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir,)
     
     return execute_java_cmd(cmd)
 
@@ -189,8 +189,9 @@ def voice_import(voice_name):
 def generate_voice(source_dir, voice_name):
     success = False
     try:
-        init_voice_build(source_dir, voice_name)
-        if audio_converter(source_dir, voice_name):
+        voice_build_dir = os.path.join(voices_home, voice_name)
+        init_voice_build(source_dir, voice_build_dir, voice_name)
+        if audio_converter(voice_build_dir, voice_name):
             if voice_import(voice_name):                
                 logging.info("voice built successfully")
                 success = True
