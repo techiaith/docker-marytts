@@ -156,7 +156,8 @@ def init_voice_build(source_dir, voice_name):
 
     with open(os.path.join(voice_build_dir, 'database.config'), 'w', encoding='utf-8') as trgt:
         for line in lines:            
-            line = line.replace('VOICE_BUILD_DIR', voice_build_dir)            
+            line = line.replace('VOICE_BUILD_DIR', voice_build_dir)
+            line = line.replace('VOICENAME', voice_name)       
             trgt.write(line)
 
     logging.info("init_voice_build %s completed" % voice_name)
