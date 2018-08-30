@@ -29,13 +29,13 @@ build-voicebuild: inject_dockerfile_with_uid_gid
 inject_dockerfile_with_uid_gid:
 	./voice-builder/scripts/inject_uid_gid_into_dockerfile.sh
 
+# add `--user marytts` if wanting to use GUI based voice import
 voicebuild: mysql
 	docker run --name marytts-voicebuild -it \
  		-p 59125:59125 \
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
-		--user marytts \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v ${PWD}/recordings:/recordings \
 		-v ${PWD}/voices:/opt/marytts/voices \
