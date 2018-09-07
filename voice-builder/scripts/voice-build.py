@@ -202,7 +202,12 @@ def generate_voice(source_dir, voice_name):
 
 
 def display_help():
-    print ("python3 voice-build.py -v <voice name> -s <source>")
+    print ("")
+    print ("Build a marytts voice from the command line")
+    print ("")
+    print ("Usage:")
+    print ("")
+    print ("$ voice-build.py -v <voice name> -s <source>")
 
 
 def main(argv):
