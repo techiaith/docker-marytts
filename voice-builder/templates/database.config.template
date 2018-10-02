@@ -9,7 +9,7 @@ db.halfphoneLabDir VOICE_BUILD_DIR/halfphonelab/
 db.hplabExtension .hplab
 db.labDir VOICE_BUILD_DIR/lab/
 db.labExtension .lab
-db.locale cy
+db.locale VOICE_LOCALE
 db.maryServerHost localhost
 db.maryServerPort 59125
 db.marybase /opt/marytts

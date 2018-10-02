@@ -1,15 +1,14 @@
-default: build-runtime
+default: build
 
 
 # --- Vanilla MaryTTS server/runtime ----------------------------------------------------------
-
-build-runtime: 
+build: 
 	docker build --rm -t techiaith/marytts -f Dockerfile.runtime .
 
-runtime:
+run:
 	docker run --name marytts --restart=always \
     	-it -p 59125:59125 \
-	-v ${PWD}/voice-builder:/home/marytts/voice-builder \
+	-v ${PWD}/voices/:/opt/marytts/voices \
 	techiaith/marytts bash
 
 stop:
@@ -21,12 +20,31 @@ clean:
 
 
 
-# --- MaryTTS voice building environment ------------------------------------------------------
+# --- MaryTTS server/runtime with Python REST API  ----------------------------------------------------
+build-runtime-api: build
+	docker build --rm -t techiaith/marytts-api -f Dockerfile.runtimeapi .
 
-build-voicebuild: inject_dockerfile_with_uid_gid
+runtime-api: 
+	docker run --name marytts-api --restart=always \
+    	-d -p 5300:8008  \
+	-v ${PWD}/voices/:/opt/marytts/voices \
+	techiaith/marytts-api
+
+stop-runtime-api:
+	docker stop marytts-api
+	docker rm marytts-api
+
+clean-runtime-api:
+	docker rmi techiaith/marytts-api
+
+
+
+
+# --- MaryTTS voice building environment ------------------------------------------------------
+build-voicebuild: inject_dockerfile_with_uid_gid 
 	docker build --rm -t techiaith/marytts-voicebuild -f Dockerfile.voicebuild .
 
-inject_dockerfile_with_uid_gid:
+inject_dockerfile_with_uid_gid: build
 	./voice-builder/scripts/inject_uid_gid_into_dockerfile.sh
 
 # add `--user marytts` if wanting to use GUI based voice import
@@ -52,8 +70,8 @@ clean-voicebuild:
 
 
 
-# --- MaryTTS headless/non-gui voice building environment -------------------------------------
 
+# --- MaryTTS headless/non-gui voice building api -------------------------------------
 build-voicebuild-api: mysql
 	docker build --rm -t techiaith/marytts-voicebuild-api -f Dockerfile.voicebuildapi .
 
@@ -61,12 +79,9 @@ voicebuild-api:
 	docker run --name marytts-voicebuild-api --restart=always \
  		-d -p 8008:8008 \
 		--link marytts-api:marytts-api \
-		--link marytts-mysql:mysql \
-		--link lleisiwr-mysql:lleisiwr_mysql \
-		-v ${PWD}/voice-builder/:/opt/marytts/voice-builder \
-		-v ${PWD}/../docker-common-voice-lleisiwr/recordings/:/commonvoice-recordings \
-		-v ${PWD}/../docker-common-voice-lleisiwr-en/recordings/:/commonvoice-recordings-en \
-		-v ${PWD}/texts/:/opt/marytts/texts \
+		-v ${PWD}/../docker-common-voice-lleisiwr/recordings/:/recordings/cy \
+		-v ${PWD}/../docker-common-voice-lleisiwr-en/recordings/:/recordings/en_US \
+		-v ${PWD}/voices:/opt/marytts/voices \
 		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts-voicebuild-api
 
@@ -79,38 +94,19 @@ clean-voicebuild-api:
 
 
 
-# --- MaryTTS Server with Python REST API  ----------------------------------------------------
-
-build-runtime-api: 
-	docker build --rm -t techiaith/marytts-api -f Dockerfile.runtimeapi .
-
-runtime-api:
-	docker run --name marytts-api --restart=always \
-    	-d -p 5300:8008  \
-	-v ${PWD}/voice-builder/:/opt/marytts/voice-builder \
-	techiaith/marytts-api
-
-stop-runtime-api:
-	docker stop marytts-api
-	docker rm marytts-api
-
-clean-runtime-api:
-	docker rmi techiaith/marytts-api
-
-
 
 # --- MySQL -----------------------------------------------------------------------------------
-
 mysql-run:
 	docker run --name marytts-mysql --restart=always \
 		-d -v ${PWD}/mysql:/var/lib/mysql \
 		-e MYSQL_ROOT_PASSWORD=wiki123 \
 		mysql
 
-
 mysql-clean:
 	docker stop marytts-mysql
 	docker rm -v marytts-mysql
+
+
 
 
 # --- Fetch MaryTTS CY source code from github ------------------------------------------------
@@ -118,4 +114,3 @@ github:
 	git clone https://github.com/techiaith/marytts.git
 	cd marytts && git checkout branch marytts-lang-cy
 	 
-

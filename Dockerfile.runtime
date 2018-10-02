@@ -1,4 +1,10 @@
 FROM ubuntu:14.04
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+RUN dpkg --add-architecture i386
+
+RUN locale-gen cy_GB.UTF-8
+ENV LANG='cy_GB.UTF-8' LANGUAGE='cy_GB:cy' LC_ALL='cy_GB.UTF-8'
 
 RUN apt-get update \
 	&& apt-get install -y openjdk-7-jdk maven git curl wget zip  \
@@ -8,15 +14,16 @@ RUN apt-get update \
 RUN pip3 install wget 
 
 # Add and Install MaryTTS
-ADD marytts /opt/marytts
-
-WORKDIR /opt/marytts
-
-ENV PATH="/opt/marytts/target/marytts-builder-5.2/bin:/opt/marytts/marytts-languages/marytts-lang-cy/bin:${PATH}"
 ENV MARYTTS_VERSION="5.2"
 ENV MARYTTS_HOME="/opt/marytts"
-ENV MARYTTS_CY_HOME="/opt/marytts/marytts-languages/marytts-lang-cy"
+ENV MARYTTS_VOICES_HOME=${MARYTTS_HOME}/voices
+ENV MARYTTS_CY_HOME="${MARYTTS_HOME}/marytts-languages/marytts-lang-cy"
 
+ADD marytts ${MARYTTS_HOME}
+
+ENV PATH="${MARYTTS_CY_HOME}/bin:${PATH}"
+
+WORKDIR ${MARYTTS_HOME}
 RUN update-marytts-server-cy.sh
 
 EXPOSE 59125

@@ -108,9 +108,9 @@ def execute_java_cmd(cmd):
     return True
 
 
-def init_voice_build(source_dir, voice_build_dir, voice_name):
+def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
 
-    logging.info("init_voice_build %s started" % voice_name)
+    logging.info("init_voice_build: source_dir %s, voice_build_dir %s, voice_name %s - started" % (source_dir, voice_build_dir, voice_name))
 
     txt_done_data = {}
 
@@ -156,7 +156,8 @@ def init_voice_build(source_dir, voice_build_dir, voice_name):
     with open(os.path.join(voice_build_dir, 'database.config'), 'w', encoding='utf-8') as trgt:
         for line in lines:            
             line = line.replace('VOICE_BUILD_DIR', voice_build_dir)
-            line = line.replace('VOICENAME', voice_name)       
+            line = line.replace('VOICENAME', voice_name)
+            line = line.replace('VOICE_LOCALE', locale)
             trgt.write(line)
 
     logging.info("init_voice_build %s completed" % voice_name)
@@ -186,11 +187,13 @@ def voice_import(voice_name):
 
 
 
-def generate_voice(source_dir, voice_name):
+def generate_voice(source_dir, voice_name, locale):
+    logging.info("generate_voice: source_dir %s, voice_name %s, locale %s" % (source_dir, voice_name, locale))
     success = False
     try:
         voice_build_dir = os.path.join(voices_home, voice_name)
-        init_voice_build(source_dir, voice_build_dir, voice_name)
+        init_voice_build(source_dir, voice_build_dir, voice_name, locale)
+
         if audio_converter(voice_build_dir, voice_name):
             if voice_import(voice_name):                
                 logging.info("voice built successfully")
@@ -207,13 +210,13 @@ def display_help():
     print ("")
     print ("Usage:")
     print ("")
-    print ("$ voice-build.py -v <voice name> -s <source>")
+    print ("$ voice-build.py -v <voice name> -s <source> -l <locale>")
 
 
 def main(argv):
 
     try:
-        opts, args = getopt.getopt(argv,"hv:s:", ["voice=","source="])
+        opts, args = getopt.getopt(argv,"hv:s:l:", ["voice=","source=","locale="])
     except getopt.GetoptError:
         display_help()
         return
@@ -222,7 +225,7 @@ def main(argv):
         display_help()
         return
 
-    source_audio_dir, voice_name = '',''
+    source_audio_dir, voice_name, locale = '','',''
     for opt, arg in opts:
         if opt == '-h':
             display_help()
@@ -230,9 +233,11 @@ def main(argv):
             voice_name = arg
         elif opt in ("-s","--source"):
             source_audio_dir = arg
+        elif opt in ("-l","--locale"):
+            locale = arg
 
     if len(source_audio_dir) > 0 and len(voice_name) > 0:        
-        generate_voice(source_audio_dir, voice_name)
+        generate_voice(source_audio_dir, voice_name, locale)
     else:
         display_help()
 

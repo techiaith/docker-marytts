@@ -27,10 +27,10 @@ class GenerateVoice(object):
 
 
     @cherrypy.expose
-    def generate_voice(self, uid, **kwargs):
+    def generate_voice(self, uid, locale, **kwargs):
 
-        cherrypy.log("generating voice for '%s'" % uid)
-        generate_voice.delay(uid)
+        cherrypy.log("generating %s voice for '%s'" % (locale, uid))
+        generate_voice.delay(uid, locale)
         cherrypy.log("generating voice request sent")
 
 
@@ -40,10 +40,11 @@ class GenerateVoice(object):
 <html>
 <head>
 <script type='text/javascript'>
-function llefaru() {
-    var testun = document.getElementById('llais').value.trim();
+function generate() {
+    var uid = document.getElementById('uid').value.trim();
+    var locale = document.getElementById('lang').value.trim();
     var audioElement = document.createElement('audio');
-    var url = location.href + 'generate_voice?uid=' + encodeURI(testun)
+    var url = location.href + 'generate_voice?uid=' + encodeURI(uid) + '&locale=' + encodeURI(locale)
     audioElement.setAttribute('src', url);
     audioElement.play();
 }
@@ -86,10 +87,11 @@ h1, p, textarea {
 
 <h1>DEMO CREU LLAIS TESTUN-I-LEFERYDD MARYTTS ~ MARYTTS TEXT-TO-SPEECH GENERATE DEMO</h1>
 
-<textarea id='llais' placeholder="Ysgrifennwch uid y llais"></textarea>
+<textarea id='uid' placeholder="Ysgrifennwch uid y llais"></textarea>
+<textarea id='lang' placeholder="Ysgrifennwch iaith y llais ('cy' neu 'en_US')"></textarea>
 
 <p>
-<button onclick="llefaru()">Cynhyrchu / Generate</button>
+<button onclick="generate()">Cynhyrchu / Generate</button>
 </p>
 
 """
