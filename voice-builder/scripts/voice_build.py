@@ -7,6 +7,7 @@ import subprocess
 import shlex
 import getopt
 import logging
+import traceback
 
 from shutil import copyfile
 
@@ -43,6 +44,22 @@ def is_valid_wav(wavfile):
         return False
 
     return True
+
+def valid_pitch_pointers(wavfile):
+    if not wavfile.endswith(".wav"):
+        return False
+
+    try:
+        praat_script = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'pitch.praat')
+        praat_output = subprocess.check_output(["praat", praat_script, wavfile, "75", "300"], stderr=subprocess.STDOUT)
+        if len(praat_output) >0 and 'Error' in praat_output:
+            return False
+    except Exception:
+        traceback.print_exc()
+        return False
+
+    return True
+
 
 
 def is_silent(wavfile):
@@ -108,6 +125,7 @@ def execute_java_cmd(cmd):
     return True
 
 
+
 def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
 
     logging.info("init_voice_build: source_dir %s, voice_build_dir %s, voice_name %s - started" % (source_dir, voice_build_dir, voice_name))
@@ -129,14 +147,15 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
             if os.path.isfile(txtfile):
                 if is_valid_wav(wavfile):
                     if not is_silent(wavfile):
-                        wavfile_dest = os.path.join(voice_build_recordings_dir, file)
-                        copyfile(wavfile, wavfile_dest)
-                        pad_with_silence(wavfile_dest)
-                        key=file.replace('.wav','')
+                        if valid_pitch_pointers(wavfile):
+                            wavfile_dest = os.path.join(voice_build_recordings_dir, file)
+                            copyfile(wavfile, wavfile_dest)
+                            pad_with_silence(wavfile_dest)
+                            key=file.replace('.wav','')
 
-                        with open(txtfile, 'r', encoding='utf-8') as f:
-                            value=f.read()
-                            txt_done_data[key]=value.strip()
+                            with open(txtfile, 'r', encoding='utf-8') as f:
+                                value=f.read()
+                                txt_done_data[key]=value.strip()
 
     
     with open(os.path.join(voice_build_dir, 'txt.done.data'), 'w', encoding='utf-8') as txtdone:
