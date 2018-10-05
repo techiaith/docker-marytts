@@ -27,6 +27,7 @@ build-runtime-api: build
 runtime-api: 
 	docker run --name marytts-api --restart=always \
     	-d -p 5300:8008  \
+	-p 59125:59125 \
 	-v ${PWD}/voices/:/opt/marytts/voices \
 	techiaith/marytts-api
 

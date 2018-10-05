@@ -8,6 +8,8 @@ import wave
 import ctypes
 import wave
 import sys
+ 
+import logging
 
 #
 # A simple MARY TTS client in Python, using pulseaudio for playback
@@ -26,7 +28,7 @@ class maryclient:
         self.output_type = "AUDIO"
         self.audio = "WAVE_FILE"
         self.locale = "cy"
-        self.voice = "wispr"
+        self.voice = "wispr-newydd"
 
     def set_host(self, a_host):
         """Set the host for the TTS server."""
@@ -109,6 +111,9 @@ class maryclient:
                 "AUDIO": self.audio,
                 "VOICE": self.voice,
                 }
+
+        logging.info(raw_params)
+
         params = urllib.urlencode(raw_params)
         headers = {}
 

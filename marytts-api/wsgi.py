@@ -78,7 +78,7 @@ class MaryTTSAPI(object):
 
 
     @cherrypy.expose
-    def speak(self, text, uid='wispr', format='mp3', **kwargs):
+    def speak(self, text, uid='wispr-newydd', lang='cy', format='mp3', **kwargs):
         
         cherrypy.log("%s speaking '%s'" % (uid, text))
 
@@ -86,12 +86,14 @@ class MaryTTSAPI(object):
             format = format.lower()
             if format not in ('mp3', 'wav'):
                 raise ValueError("'format' must be either 'mp3' or 'wav")
+            if lang not in ('cy', 'en_US'):
+                raise ValueError("'lang' must be either 'cy' or 'en_US'")
         except ValueError as e:
             return "ERROR: %s" % str(e)
-        
-        is_wispr = (uid.lower() == 'wispr')
+       
+        is_wispr = (uid.lower() == 'wispr-newydd')
         if not is_wispr:
-            self.maryttsclient.set_voice(uid)
+            self.maryttsclient.set_voice(uid + '_' + lang)
    
         is_mp3 = (format.lower() == 'mp3')
         tmpfile = self.ttsToMp3(text.encode('utf-8')) if is_mp3 else self.ttsToWav(text.encode('utf-8'))
