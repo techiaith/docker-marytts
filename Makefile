@@ -55,6 +55,7 @@ voicebuild: mysql
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
+		--user marytts \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v ${PWD}/recordings:/recordings \
 		-v ${PWD}/voices:/opt/marytts/voices \
