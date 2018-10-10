@@ -3,6 +3,7 @@ import os
 import signal
 import shlex
 import subprocess
+import codecs
 
 import cherrypy
 import logging
@@ -16,9 +17,10 @@ class MaryTTSAPI(object):
         self.marytts_pid = 0
         self.maryttsclient = maryclient.maryclient()
 
-        self.install('wispr-newydd')
- 
+        self.reinstall_voices_from_manifest()
+
         self.startMaryTTS()
+
 
     def startMaryTTS(self):
 
@@ -76,10 +78,28 @@ class MaryTTSAPI(object):
     def install(self, voice, **kwargs):
         self.stopMaryTTS()
 
+        self.add_voice_to_manifest(voice)
+        self.exec_marytts_voice_install(voice)
+
+        self.startMaryTTS()
+
+
+    def add_voice_to_manifest(self, voice):
+        marytts_voices_home = os.environ['MARYTTS_VOICES_HOME']
+        with codecs.open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'a', encoding='utf-8') as voices_manifest:
+            voices.manifest.write(voice + '\n')
+
+       
+    def reinstall_voices_from_manifest(self):
+        marytts_voices_home = os.environ['MARYTTS_VOICES_HOME']
+        with codecs.open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'r', encoding='utf-8') as voices_manifest:
+            for voice in voices_manifest:
+                self.exec_marytts_voice_install(voice)
+
+ 
+    def exec_marytts_voice_install(self, voice):
         cmd = "voice-install-cy.sh %s" % voice
         subprocess.Popen(cmd, shell=True).wait()
-        
-        self.startMaryTTS()
 
 
     @cherrypy.expose
@@ -121,3 +141,4 @@ cherrypy.config.update({
 
 cherrypy.tree.mount(MaryTTSAPI(), '/')
 application = cherrypy.tree
+
