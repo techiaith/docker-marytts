@@ -16,18 +16,23 @@ class MaryTTSAPI(object):
         self.marytts_pid = 0
         self.maryttsclient = maryclient.maryclient()
 
+        self.install('wispr-newydd')
+ 
         self.startMaryTTS()
 
-        
     def startMaryTTS(self):
-        marytts_home = os.environ['MARYTTS_HOME']
-        marytts_version = os.environ['MARYTTS_VERSION']
-        marytts_base = os.path.join(marytts_home, 'target', "marytts-" + marytts_version)
-        cherrypy.log("Starting MaryTTS Server...")
-        cmd = 'java -showversion -Xms40m -Xmx1g -cp "%s/lib/*" -Dmary.base="%s" marytts.server.Mary' % (marytts_base, marytts_base,)
-        popen_cmd = shlex.split(cmd)
-        self.marytts_pid = subprocess.Popen(popen_cmd).pid
-        cherrypy.log("Started MaryTTS server successfully pid:%s" % (self.marytts_pid))
+
+        if self.marytts_pid == 0:
+            marytts_home = os.environ['MARYTTS_HOME']
+            marytts_version = os.environ['MARYTTS_VERSION']
+            marytts_base = os.path.join(marytts_home, 'target', "marytts-" + marytts_version)
+
+            cherrypy.log("Starting MaryTTS Server...")
+            cmd = 'java -showversion -Xms40m -Xmx1g -cp "%s/lib/*" -Dmary.base="%s" marytts.server.Mary' % (marytts_base, marytts_base,)
+            popen_cmd = shlex.split(cmd)
+            self.marytts_pid = subprocess.Popen(popen_cmd).pid
+
+            cherrypy.log("Started MaryTTS server successfully pid:%s" % (self.marytts_pid))
     
 
     def stopMaryTTS(self):
@@ -96,7 +101,12 @@ class MaryTTSAPI(object):
             self.maryttsclient.set_voice(uid + '_' + lang)
    
         is_mp3 = (format.lower() == 'mp3')
-        tmpfile = self.ttsToMp3(text.encode('utf-8')) if is_mp3 else self.ttsToWav(text.encode('utf-8'))
+        if is_mp3:
+            tmpfile = self.ttsToMp3(text.encode('utf-8'))
+        else:
+            tmpfile = self.ttsToWav(text.encode('utd-8'))
+
+        #tmpfile = self.ttsToMp3(text.encode('utf-8')) if is_mp3 else self.ttsToWav(text.encode('utf-8'))
 
         cherrypy.response.headers["Content-Type"] = "audio/%s" % ('mpeg' if is_mp3 else 'wav')
         return tmpfile.read()
