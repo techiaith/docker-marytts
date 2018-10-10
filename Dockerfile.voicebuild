@@ -10,7 +10,7 @@ RUN apt-get update \
 
 # Install basic NLP components. 
 RUN pip3 install --upgrade pip && \
-    pip3 install cld2-cffi wget
+    pip3 install cld2-cffi wget praatio
 
 # Install and verify HTK
 ADD HTK-3.4.1.tar.gz /usr/local/src

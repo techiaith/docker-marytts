@@ -45,6 +45,7 @@ def is_valid_wav(wavfile):
 
     return True
 
+
 def valid_pitch_pointers(wavfile):
     if not wavfile.endswith(".wav"):
         return False
@@ -59,7 +60,6 @@ def valid_pitch_pointers(wavfile):
         return False
 
     return True
-
 
 
 def is_silent(wavfile):
