@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import sys
 import signal
 import shlex
 import subprocess
@@ -8,14 +9,20 @@ import codecs
 import cherrypy
 import logging
 import tempfile
-import maryclient
+
+import httplib
+import urllib
+ 
+
 
 class MaryTTSAPI(object):
 
     def __init__(self):
                 
+        self.marytts_host = "127.0.0.1"
+        self.marytts_port = 59125
+
         self.marytts_pid = 0
-        self.maryttsclient = maryclient.maryclient()
 
         self.reinstall_voices_from_manifest()
 
@@ -45,9 +52,10 @@ class MaryTTSAPI(object):
             cherrypy.log("Stopped MaryTTS Server successfully.")
 
 
-    def ttsToMp3(self, text):
+    def ttsToMp3(self, voice, lang, text):
         with tempfile.NamedTemporaryFile() as wavfile:
-            wavfile.write(self.maryttsclient.generate(text))
+
+            wavfile.write(self.exec_marytts_generate(voice, lang, text))
             wavfile.flush()
 
             cmd = "lame --quiet -V 9 %s -" % wavfile.name
@@ -59,9 +67,9 @@ class MaryTTSAPI(object):
             return mp3_file
 
 
-    def ttsToWav(self, text):
+    def ttsToWav(self, voice, lang, text):
         tmp_file = tempfile.SpooledTemporaryFile(max_size=4*1024*1024, mode='wb')
-        tmp_file.write(self.maryttsclient.generate(text))
+        tmp_file.write(self.exec_marytts_generate(voice, lang, text))
         tmp_file.seek(0)
         return tmp_file
 
@@ -102,6 +110,37 @@ class MaryTTSAPI(object):
         subprocess.Popen(cmd, shell=True).wait()
 
 
+    def exec_marytts_generate(self, voice, lang, text):
+        """Given a message in message,
+           return a response in the appropriate
+           format."""
+
+        raw_params = {"INPUT_TEXT": text,
+                "INPUT_TYPE": "TEXT",
+                "OUTPUT_TYPE": "AUDIO",
+                "LOCALE": lang,
+                "AUDIO": "WAVE_FILE",
+                "VOICE": voice,
+                }
+
+        cherrypy.log("marytts request: %s " % raw_params)
+
+        params = urllib.urlencode(raw_params)
+        headers = {}
+
+        # Open connection to self.host, self.port.
+        conn = httplib.HTTPConnection(self.marytts_host, self.marytts_port)
+
+        #conn.set_debuglevel(5)
+        
+        conn.request("POST", "/process", params, headers)
+        response = conn.getresponse()
+        if response.status != 200:
+            #print response.getheaders()
+            raise RuntimeError("{0}: {1}".format(response.status, response.reason))
+        return response.read()
+
+
     @cherrypy.expose
     def speak(self, text, uid='wispr-newydd', lang='cy', format='mp3', **kwargs):
         
@@ -115,18 +154,17 @@ class MaryTTSAPI(object):
                 raise ValueError("'lang' must be either 'cy' or 'en_US'")
         except ValueError as e:
             return "ERROR: %s" % str(e)
-       
+      
+        voice = uid + "_" + lang.lower() 
         is_wispr = (uid.lower() == 'wispr-newydd')
-        if not is_wispr:
-            self.maryttsclient.set_voice(uid + '_' + lang)
+        if is_wispr:
+            voice = uid
    
         is_mp3 = (format.lower() == 'mp3')
         if is_mp3:
-            tmpfile = self.ttsToMp3(text.encode('utf-8'))
+            tmpfile = self.ttsToMp3(voice, lang, text.encode('utf-8'))
         else:
-            tmpfile = self.ttsToWav(text.encode('utd-8'))
-
-        #tmpfile = self.ttsToMp3(text.encode('utf-8')) if is_mp3 else self.ttsToWav(text.encode('utf-8'))
+            tmpfile = self.ttsToWav(voice, lang, text.encode('utf-8'))
 
         cherrypy.response.headers["Content-Type"] = "audio/%s" % ('mpeg' if is_mp3 else 'wav')
         return tmpfile.read()
