@@ -13,8 +13,6 @@ import tempfile
 import httplib
 import urllib
  
-
-
 class MaryTTSAPI(object):
 
     def __init__(self):
@@ -24,6 +22,7 @@ class MaryTTSAPI(object):
 
         self.marytts_pid = 0
 
+        self.installed_voices = []
         self.reinstall_voices_from_manifest()
 
         self.startMaryTTS()
@@ -96,12 +95,14 @@ class MaryTTSAPI(object):
         marytts_voices_home = os.environ['MARYTTS_VOICES_HOME']
         with codecs.open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'a', encoding='utf-8') as voices_manifest:
             voices.manifest.write(voice + '\n')
-
+            self.installed_voices.append(voice)
        
     def reinstall_voices_from_manifest(self):
         marytts_voices_home = os.environ['MARYTTS_VOICES_HOME']
         with codecs.open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'r', encoding='utf-8') as voices_manifest:
             for voice in voices_manifest:
+                cherrypy.log("reinstalling voice : %s " % voice)
+                self.installed_voices.append(voice.strip())
                 self.exec_marytts_voice_install(voice)
 
  
@@ -124,7 +125,6 @@ class MaryTTSAPI(object):
                 }
 
         cherrypy.log("marytts request: %s " % raw_params)
-
         params = urllib.urlencode(raw_params)
         headers = {}
 
@@ -155,11 +155,16 @@ class MaryTTSAPI(object):
         except ValueError as e:
             return "ERROR: %s" % str(e)
       
-        voice = uid + "_" + lang.lower() 
         is_wispr = (uid.lower() == 'wispr-newydd')
         if is_wispr:
             voice = uid
-   
+        else:
+            voice = uid + "_" + lang 
+            if voice in self.installed_voices:
+                voice = uid + "_" + lang.lower()
+            else:
+                voice = 'wispr-newydd'
+            
         is_mp3 = (format.lower() == 'mp3')
         if is_mp3:
             tmpfile = self.ttsToMp3(voice, lang, text.encode('utf-8'))
