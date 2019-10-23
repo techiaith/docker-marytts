@@ -1,15 +1,17 @@
-FROM ubuntu:14.04
-RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+FROM ubuntu:16.04
 
 RUN dpkg --add-architecture i386
 
-RUN locale-gen cy_GB.UTF-8
-ENV LANG='cy_GB.UTF-8' LANGUAGE='cy_GB:cy' LC_ALL='cy_GB.UTF-8'
-
 RUN apt-get update \
-	&& apt-get install -y openjdk-7-jdk maven git curl wget zip  \
+	&& apt-get install -y default-jdk maven git curl wget zip locales  \
 	   python3 python3-pip \
 	&& rm -rf /var/lib/apt/lists/*
+
+# Set the locale
+RUN locale-gen cy_GB.UTF-8
+ENV LANG cy_GB.UTF-8
+ENV LANGUAGE cy_GB:en
+ENV LC_ALL cy_GB.UTF-8
 
 RUN pip3 install wget 
 
