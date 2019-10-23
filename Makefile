@@ -3,6 +3,9 @@ default: build
 
 # --- Vanilla MaryTTS server/runtime ----------------------------------------------------------
 build: 
+	if [ ! -d "marytts" ]; then \
+            git clone https://git.techiaith.bangor.ac.uk/lleferydd/marytts.git; \
+        fi 
 	docker build --rm -t techiaith/marytts -f Dockerfile.runtime .
 
 run:
