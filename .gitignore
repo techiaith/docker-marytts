@@ -1,23 +1,13 @@
 marytts/
-audio/
-texts/wici/*
-!texts/wici/wkdb.conf
-texts/alt/*
-!texts/alt/wkdb.conf
-texts/en/*
-!texts/en/wikipedia/wkdb.conf
 
-texts/wicipedia-titles/lexicon*
-texts/wicipedia-titles/log/*
-texts/wicipedia-titles/init.bin
-texts/wicipedia-titles/overallLog.txt
-texts/wicipedia-titles/selected.log
-texts/wicipedia-titles/selected_text_transcription.log
-texts/wicipedia-titles/selection/*
+
+voicebuilder/audio/
+voicebuilder/texts/
+voicebuilder/mysql/
 
 voices/*
 
-recordings/*
+voicebuilder/recordings/*
 
 HTK-*
 *.pyc
