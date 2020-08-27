@@ -15,9 +15,8 @@ marytts_home = os.environ['MARYTTS_HOME']
 marytts_version = os.environ['MARYTTS_VERSION']
 marytts_builder_base = os.path.join(marytts_home, 'target', 'marytts-builder-' + marytts_version)
 
-voices_builder_base = os.path.join(marytts_home,'voice-builder')
+voices_builder_base = os.path.join(marytts_home,'voicebuilder')
 voices_home = os.environ['MARYTTS_VOICES_HOME']
-
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -52,8 +51,9 @@ def valid_pitch_pointers(wavfile):
 
     try:
         praat_script = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'pitch.praat')
-        praat_output = subprocess.check_output(["praat", praat_script, wavfile, "75", "300"], stderr=subprocess.STDOUT)
-        if len(praat_output) >0 and 'Error' in praat_output:
+        cmd = "praat --run %s %s 75 300" % (praat_script, wavfile)
+        praat_output = subprocess.check_output(shlex.split(cmd), stderr=subprocess.STDOUT)
+        if len(praat_output) >0 and b'Error' in praat_output:
             return False
     except Exception:
         traceback.print_exc()
@@ -132,37 +132,43 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
 
     txt_done_data = {}
 
-    voice_build_recordings_dir = os.path.join(voice_build_dir, 'recordings')
+    voice_wavs_dir = os.path.join(voice_build_dir, 'wav')
+    voice_prompts_dir = os.path.join(voice_build_dir, 'recordings')
 
-    if not os.path.exists(voice_build_dir):
-        os.makedirs(voice_build_dir)
-
-    if not os.path.exists(voice_build_recordings_dir):
-        os.makedirs(voice_build_recordings_dir)
-
-    for file in os.listdir(source_dir):
+    for file in os.listdir(voice_wavs_dir):
         if file.endswith(".wav"):
-            wavfile = os.path.join(source_dir, file)
-            txtfile = wavfile.replace(".wav",".txt")
-            if os.path.isfile(txtfile):
-                if is_valid_wav(wavfile):
-                    if not is_silent(wavfile):
-                        if valid_pitch_pointers(wavfile):
-                            wavfile_dest = os.path.join(voice_build_recordings_dir, file)
-                            copyfile(wavfile, wavfile_dest)
-                            pad_with_silence(wavfile_dest)
-                            key=file.replace('.wav','')
+            wavfile = os.path.join(voice_wavs_dir, file)
+            txtfile = os.path.join(voice_prompts_dir, file.replace(".wav",".txt"))
 
-                            with open(txtfile, 'r', encoding='utf-8') as f:
-                                value=f.read()
-                                txt_done_data[key]=value.strip()
+            if not os.path.isfile(txtfile):
+                logging.info("txtfile not found: %s " % txtfile)
+                continue
+              
+            if not is_valid_wav(wavfile):
+                logging.info("not a valid wavfile: %s " % wavfile)
+                continue
+               
+            if is_silent(wavfile):
+                logging.info("%s is silent" % wavfile)
+                continue
+
+            if not valid_pitch_pointers(wavfile):
+                logging.info("Invalid pitch pointers: %s " % wavfile)
+                continue
+ 
+            pad_with_silence(wavfile)
+            key=file.replace('.wav','')
+
+            with open(txtfile, 'r', encoding='utf-8') as f:
+                value=f.read()
+                txt_done_data[key]=value.strip()
 
     
     with open(os.path.join(voice_build_dir, 'txt.done.data'), 'w', encoding='utf-8') as txtdone:
-	    for key,value in txt_done_data.items():
-		    txtdone.write("( " + key + " \"" + value + "\" )\n")
+        for key,value in txt_done_data.items():
+            txtdone.write("( " + key + " \"" + value + "\" )\n")
 
-
+    #
     logging.info("init_voice_build %s copying templates.." % voice_name)
 
     # importMain.config
@@ -184,11 +190,13 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
 
 def audio_converter(voice_build_dir, voice_name):
 
-    logging.info("audio converter %s starting" % voice_name)
-
     voice_build_recordings_dir = os.path.join(voice_build_dir, "recordings")
     voice_build_wavs_dir = os.path.join(voice_build_dir, "wav")    
         
+    if os.path.isdir(voice_build_wavs_dir):
+        logging.info("Audio converter %s starting" % voice_name)
+        return True
+
     cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir,)
     
     return execute_java_cmd(cmd)
@@ -211,9 +219,8 @@ def generate_voice(source_dir, voice_name, locale):
     success = False
     try:
         voice_build_dir = os.path.join(voices_home, voice_name)
-        init_voice_build(source_dir, voice_build_dir, voice_name, locale)
-
         if audio_converter(voice_build_dir, voice_name):
+            init_voice_build(source_dir, voice_build_dir, voice_name, locale)
             if voice_import(voice_name):                
                 logging.info("voice built successfully")
                 success = True

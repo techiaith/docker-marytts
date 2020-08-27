@@ -18,14 +18,15 @@ RUN pip3 install wget
 # Add and Install MaryTTS
 ENV MARYTTS_VERSION="5.2"
 ENV MARYTTS_HOME="/opt/marytts"
-ENV MARYTTS_VOICES_HOME=${MARYTTS_HOME}/voices
+ENV MARYTTS_VOICES_HOME="/voices"
 ENV MARYTTS_CY_HOME="${MARYTTS_HOME}/marytts-languages/marytts-lang-cy"
 
 ADD marytts ${MARYTTS_HOME}
 
-ENV PATH="${MARYTTS_CY_HOME}/bin:${PATH}"
+ENV PATH="${MARYTTS_HOME}/target/marytts-builder-${MARYTTS_VERSION}/bin:${MARYTTS_CY_HOME}/bin:${PATH}"
 
 WORKDIR ${MARYTTS_HOME}
+
 RUN update-marytts-server-cy.sh
 
 EXPOSE 59125

@@ -13,3 +13,6 @@ HTK-*
 *.pyc
 mysql/*
 .vscode/*
+*.PointProcess
+
+marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor/*

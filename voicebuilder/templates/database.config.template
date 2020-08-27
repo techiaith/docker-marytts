@@ -32,7 +32,7 @@ db.voicename VOICENAME
 db.wavDir VOICE_BUILD_DIR/wav/
 
 # Properties for module PraatPitchmarker:
-PraatPitchmarker.command praat
+PraatPitchmarker.command praat --run
 PraatPitchmarker.maxPitch 300
 PraatPitchmarker.minPitch 75
 PraatPitchmarker.pmDir VOICE_BUILD_DIR/pm/

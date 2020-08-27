@@ -1,15 +1,22 @@
 default: build
 
-
 build: 
 	if [ ! -d "marytts" ]; then \
             git clone https://github.com/techiaith/marytts.git; \
+        fi 
+	if [ ! -d "marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor" ]; then \
+            git clone https://git.techiaith.bangor.ac.uk/lleferydd/ffoneteg/geiriadur-ynganu-bangor.git marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor; \
+	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor; \
+	    git checkout v20.09; \
+	    cd -; \
         fi 
 	docker build --rm -t techiaith/marytts .
 
 run:
 	docker run --name marytts --restart=always \
     	-it  \
+	-p 59125:59125 \
+        -v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
 	-v ${PWD}/voices/:/voices \
 	techiaith/marytts bash
 

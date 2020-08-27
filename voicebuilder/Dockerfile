@@ -1,10 +1,12 @@
 FROM techiaith/marytts
 
 RUN apt-get update \
-	&& apt-get install -y python3-mysql.connect mysql-client \
+	&&  curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
+	&&  apt-get install -y python3-mysql.connect mysql-client \
    	  			build-essential speech-tools praat tclsh libsnack2 libffi-dev \
 				gcc-multilib libx11-dev:i386 zlib1g-dev libtool autotools-dev automake \
-				sox alsa-utils pulseaudio audacity vim sudo \
+				sox alsa-utils pulseaudio audacity vim sudo git-lfs \
+	&& git lfs install \
 	&& rm -rf /var/lib/apt/lists/*
 
 
@@ -12,15 +14,18 @@ RUN apt-get update \
 RUN pip3 install --upgrade pip && \
     pip3 install cld2-cffi wget praatio
 
+
 # Install and verify HTK
 ADD HTK-3.4.1.tar.gz /usr/local/src
 ADD HTK-samples-3.4.1.tar.gz /usr/local/src/htk/
+
 
 WORKDIR /usr/local/src/htk
 RUN ./configure \
 	&& find . -type f -name Makefile -exec sed -i.bak 's/ \+ /\t/g' {} \; \
 	&& make all \
 	&& make install
+
 
 RUN perl -i -pe 'y|\r||d' /usr/local/src/htk/samples/RMHTK/perl_scripts/*.prl
 
@@ -32,7 +37,7 @@ RUN mkdir -p proto test hmms/hmm.0 hmms/hmm.1 hmms/hmm.2 hmms/tmp  \
 ADD templates ${MARYTTS_HOME}/voicebuilder/templates
 ADD scripts ${MARYTTS_HOME}/voicebuilder/scripts
 
-ENV PATH="${MARYTTS_HOME}/target/marytts-builder-${MARYTTS_VERSION}/bin:${MARYTTS_HOME}/voicebuilder/scripts:${PATH}"
+ENV PATH="${MARYTTS_HOME}/voicebuilder/scripts:${PATH}"
 
 WORKDIR ${MARYTTS_HOME}
 

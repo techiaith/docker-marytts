@@ -11,15 +11,15 @@ inject_dockerfile_with_uid_gid:
 # add `--user marytts` if wanting to use GUI based voice import
 run: mysql
 	docker run --name marytts-voicebuild-gui -it \
- 		-p 59125:59125 \
+ 		-p 59126:59125 \
 		--link marytts-mysql:mysql \
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
-		--user marytts \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v ${PWD}/recordings:/recordings \
 		-v ${PWD}/../voices:/voices \
 		-v ${PWD}/texts:/texts \
+		-v ${PWD}/scripts:/opt/marytts/voicebuilder/scripts \
 		-v ${PWD}/../marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts-voicebuild-gui bash
 
