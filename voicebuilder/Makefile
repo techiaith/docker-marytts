@@ -20,6 +20,7 @@ run: mysql
 		-v ${PWD}/../voices:/voices \
 		-v ${PWD}/texts:/texts \
 		-v ${PWD}/scripts:/opt/marytts/voicebuilder/scripts \
+		-v ${PWD}/egs:/opt/marytts/voicebuilder/egs \
 		-v ${PWD}/../marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
 		techiaith/marytts-voicebuild-gui bash
 

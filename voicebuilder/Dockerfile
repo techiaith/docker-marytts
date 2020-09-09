@@ -39,7 +39,7 @@ ADD scripts ${MARYTTS_HOME}/voicebuilder/scripts
 
 ENV PATH="${MARYTTS_HOME}/voicebuilder/scripts:${PATH}"
 
-WORKDIR ${MARYTTS_HOME}
+WORKDIR ${MARYTTS_HOME}/voicebuilder
 
 # Running GUI apps with Docker : http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker
 RUN export uid=1000 gid=1000 && \

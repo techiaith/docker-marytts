@@ -4,5 +4,3 @@ DATA_SRC="https://git.techiaith.bangor.ac.uk/Data-Porth-Technolegau-Iaith/Corpws
 
 git clone ${DATA_SRC} /recordings/Corpws-WISPR
 
-python3 ${CWD_DIR}/python/convert_wispr_to_marytts.py
-

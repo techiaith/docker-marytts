@@ -114,6 +114,7 @@ def pad_with_silence(wavfile):
 
 def execute_java_cmd(cmd):
     try:
+        print ("JAVA CMD: " + cmd)
         logging.info(cmd)
         cmd_output = subprocess.check_output(shlex.split(cmd)).decode('utf-8')
     except:
@@ -198,7 +199,8 @@ def audio_converter(voice_build_dir, voice_name):
         return True
 
     cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir,)
-    
+    print (cmd)
+ 
     return execute_java_cmd(cmd)
 
 
