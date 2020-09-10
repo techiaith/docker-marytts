@@ -77,11 +77,11 @@ def Processllj(in_file, start_id, source_wavfile_dir, target_wavfile_dir):
 	
 def main():
 
-	if not os.path.exists("/voices/wispr/recordings"):
-		os.makedirs("/voices/wispr/recordings")
+	if not os.path.exists("/voices/wispr/data"):
+		os.makedirs("/voices/wispr/data")
 
-	last_id = ProcessBasic('/recordings/Corpws-WISPR/basic/basic-000-264.txt', '/recordings/Corpws-WISPR/basic/wav', '/voices/wispr/recordings')
-	Processllj('/recordings/Corpws-WISPR/llj/llj.txt', last_id + 1, '/recordings/Corpws-WISPR/llj/wav', '/voices/wispr/recordings')
+	last_id = ProcessBasic('/data/Corpws-WISPR/basic/basic-000-264.txt', '/data/Corpws-WISPR/basic/wav', '/voices/wispr/data')
+	Processllj('/data/Corpws-WISPR/llj/llj.txt', last_id + 1, '/data/Corpws-WISPR/llj/wav', '/voices/wispr/data')
 
 
 if __name__ == "__main__":

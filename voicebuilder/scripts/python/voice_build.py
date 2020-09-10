@@ -134,7 +134,7 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
     txt_done_data = {}
 
     voice_wavs_dir = os.path.join(voice_build_dir, 'wav')
-    voice_prompts_dir = os.path.join(voice_build_dir, 'recordings')
+    voice_prompts_dir = os.path.join(voice_build_dir, 'data')
 
     for file in os.listdir(voice_wavs_dir):
         if file.endswith(".wav"):
@@ -191,7 +191,7 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
 
 def audio_converter(voice_build_dir, voice_name):
 
-    voice_build_recordings_dir = os.path.join(voice_build_dir, "recordings")
+    voice_build_recordings_dir = os.path.join(voice_build_dir, "data")
     voice_build_wavs_dir = os.path.join(voice_build_dir, "wav")    
         
     if os.path.isdir(voice_build_wavs_dir):

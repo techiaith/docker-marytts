@@ -16,7 +16,7 @@ run: mysql
 		-e DISPLAY=${DISPLAY} \
 		--device /dev/snd \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v ${PWD}/recordings:/recordings \
+		-v ${PWD}/data:/data \
 		-v ${PWD}/../voices:/voices \
 		-v ${PWD}/texts:/texts \
 		-v ${PWD}/scripts:/opt/marytts/voicebuilder/scripts \

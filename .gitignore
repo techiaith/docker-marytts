@@ -7,7 +7,7 @@ voicebuilder/mysql/
 
 voices/*
 
-voicebuilder/recordings/*
+voicebuilder/data/*
 
 HTK-*
 *.pyc
