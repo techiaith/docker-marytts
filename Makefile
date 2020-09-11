@@ -5,11 +5,10 @@ build:
             git clone https://github.com/techiaith/marytts.git; \
         fi 
 	if [ ! -d "marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor" ]; then \
-            git clone https://git.techiaith.bangor.ac.uk/lleferydd/ffoneteg/geiriadur-ynganu-bangor.git marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor; \
-	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor; \
-	    git checkout v20.09; \
-	    cd -; \
-        fi 
+	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon && git clone https://git.techiaith.bangor.ac.uk/lleferydd/ffoneteg/geiriadur-ynganu-bangor.git && git checkout v20.09; \
+	else \
+	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor && git pull; \
+	fi 
 	docker build --rm -t techiaith/marytts .
 
 run:

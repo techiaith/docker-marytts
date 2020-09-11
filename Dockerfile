@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 RUN dpkg --add-architecture i386
 
 RUN apt-get update \
-	&& DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk git curl wget zip locales maven  \
+	&& DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk vim git curl wget zip locales maven  \
 	   python3 python3-pip \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -13,7 +13,7 @@ ENV LANG cy_GB.UTF-8
 ENV LANGUAGE cy_GB:en
 ENV LC_ALL cy_GB.UTF-8
 
-RUN pip3 install wget 
+RUN pip3 install wget py-marytts
 
 # Add and Install MaryTTS
 ENV MARYTTS_VERSION="5.2"
