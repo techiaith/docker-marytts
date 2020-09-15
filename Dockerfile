@@ -24,6 +24,7 @@ ENV MARYTTS_CY_HOME="${MARYTTS_HOME}/marytts-languages/marytts-lang-cy"
 ADD marytts ${MARYTTS_HOME}
 
 ENV PATH="${MARYTTS_HOME}/target/marytts-builder-${MARYTTS_VERSION}/bin:${MARYTTS_CY_HOME}/bin:${PATH}"
+ENV PYTHONPATH "${PYTHONPATH}:${MARYTTS_HOME}/marytts-languages/marytts-lang-cy/bin/python"
 
 WORKDIR ${MARYTTS_HOME}
 

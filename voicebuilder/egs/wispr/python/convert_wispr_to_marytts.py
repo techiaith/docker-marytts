@@ -1,11 +1,24 @@
 #!/usr/bin/python3
 import os
+import collections
+import bangor_dict_utils
+
 from shutil import copyfile
+
+lexicon_file_path = os.path.join(os.environ['MARYTTS_CY_HOME'], 'lib/modules/cy/lexicon/geiriadur-ynganu-bangor/bangordict.dict')
+valid_graphemes = bangor_dict_utils.get_graphemes(lexicon_file_path)
+valid_graphemes_upper =set([x.upper() for x in valid_graphemes])
+
+prompt_count = 0
+unreliable_count = 0
+ignored_count = 0
+missing_graphemes = []
 
 
 def writePromptFile(target_wav_filepath, prompt):
 	with open (target_wav_filepath.replace('.wav','.txt'), 'w', encoding='utf-8') as text_file:
 		text_file.write(prompt)
+
 
 def cleanPrompt(line):
 
@@ -17,9 +30,29 @@ def cleanPrompt(line):
 
 	return line
 
+
+def isReliable(text):
+    global prompt_count
+    global unreliable_count
+
+    prompt_count += 1
+    words = set(text.split())
+    diff = words - valid_graphemes_upper
+    if len(diff) > 0:
+        #print ("WARNING: %s is not in bangor dict" % diff)
+        unreliable_count += 1
+        for d in diff:
+            missing_graphemes.append(d)
+        return False
+    return True
+ 
 	
 def ProcessBasic(in_file, source_wavfile_dir, target_wavfile_dir):
+	global ignored_count
+	basic_ignored_count = 0
 
+	ignored_file_path = os.path.join(target_wavfile_dir, "BASIC_ignored.txt")
+	ignored_file = open(ignored_file_path, 'w')
 	transcript_file = open(in_file,'r')
 
 	for line in transcript_file:
@@ -30,23 +63,35 @@ def ProcessBasic(in_file, source_wavfile_dir, target_wavfile_dir):
 			orig_id, prompt = line.split('\t')
 
 			if any(char.isdigit() for char in prompt):
-				print (orig_id, prompt)
-			new_id = int(orig_id) + 1
-			prompt = prompt.upper()
+				ignored_count += 1
+				basic_ignored_count += 1
+				ignored_file.write("%s %s\n" % (new_id, line))
+				print ("IGNORED: ", orig_id, prompt)
+			else:
+				new_id = int(orig_id) + 1
+				prompt = prompt.upper()
+				isReliable(prompt)
 
-			source_wav_filepath = os.path.join(source_wavfile_dir,"BASIC_%s.wav" % orig_id) 
-			target_wav_filepath = os.path.join(target_wavfile_dir,"sample%s.wav" % new_id)
-			writePromptFile(target_wav_filepath, prompt)
+				source_wav_filepath = os.path.join(source_wavfile_dir,"BASIC_%s.wav" % orig_id) 
+				target_wav_filepath = os.path.join(target_wavfile_dir,"sample%s.wav" % new_id)
+				writePromptFile(target_wav_filepath, prompt)
 
-			copyfile(source_wav_filepath, target_wav_filepath) 
+				copyfile(source_wav_filepath, target_wav_filepath) 
 
+	if basic_ignored_count > 0:
+		print ("Ignored prompts logged in %s" % ignored_file_path)
 
 	return new_id
 
 
+
 def Processllj(in_file, start_id, source_wavfile_dir, target_wavfile_dir):
-	
+	global ignored_count
+	llj_ignored_count = 0
+
 	transcript_file = open(in_file, 'r')
+	ignored_file_path = os.path.join(target_wavfile_dir, "llj_ignored.txt")
+	ignored_file = open(ignored_file_path, 'w')
 
 	orig_id = 0
 	new_id = start_id
@@ -58,10 +103,13 @@ def Processllj(in_file, start_id, source_wavfile_dir, target_wavfile_dir):
 		if len(line) > 0:
 
 			if any(char.isdigit() for char in line):
-				print (new_id, line)
+				ignored_count += 1
+				llj_ignored_count += 1
+				ignored_file.write("%s %s\n" % (new_id, line))
+				print ("IGNORED: ", new_id, line)
 			else:
-
 				prompt = line.upper()
+				isReliable(prompt)
 			
 				src_wav_filename = 'llj_ed_%03d.wav' % (orig_id,)
 				src_wav_filepath = os.path.join(source_wavfile_dir, src_wav_filename)
@@ -73,7 +121,10 @@ def Processllj(in_file, start_id, source_wavfile_dir, target_wavfile_dir):
 				new_id += 1
 
 			orig_id += 1 
-				
+
+	if llj_ignored_count > 0:
+		print ("Ignored sentences logged in %s" % ignored_file_path)
+
 	
 def main():
 
@@ -82,6 +133,14 @@ def main():
 
 	last_id = ProcessBasic('/data/Corpws-WISPR/basic/basic-000-264.txt', '/data/Corpws-WISPR/basic/wav', '/voices/wispr/data')
 	Processllj('/data/Corpws-WISPR/llj/llj.txt', last_id + 1, '/data/Corpws-WISPR/llj/wav', '/voices/wispr/data')
+
+	missing_graphemes_counts = collections.Counter(missing_graphemes)
+	with open ("/voices/wispr/data/missing_graphemes.txt", 'w', encoding='utf-8') as missing_graphemes_file:
+		for k,v in missing_graphemes_counts.most_common():
+			missing_graphemes_file.write("{} {}\n".format(k,v))
+
+	print ("Accepted %s (although %s unreliable) prompts. Ignored %s prompts." % (prompt_count, unreliable_count, ignored_count))
+	print ("%s missing graphemes written to missing_graphemes.txt" % (len(missing_graphemes_counts)))
 
 
 if __name__ == "__main__":
