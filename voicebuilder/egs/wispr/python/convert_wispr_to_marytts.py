@@ -20,31 +20,49 @@ def writePromptFile(target_wav_filepath, prompt):
 		text_file.write(prompt)
 
 
-def cleanPrompt(line):
-
+def cleanLine(line):
 	line = line.rstrip()
 	line = line.replace('\uFEFF','')
 	line = line.replace(';','')
 	line = line.replace(',','')
 	line = line.replace('.','')
-
+	line = line.replace('(','')
+	line = line.replace(')','')
+	line = line.replace(":",'')
 	return line
 
 
-def isReliable(text):
-    global prompt_count
-    global unreliable_count
+def cleanPrompt(prompt):
+	tokens_array = prompt.split(' ')
+	for i, t in enumerate(tokens_array):
+		if len(t) == 0:
+			continue
+		if not t[0].isalpha():
+			t = t[1:]
+		elif not t[-1].isalpha():
+			t = t[:-1]
+		
+		tokens_array[i]=t
 
-    prompt_count += 1
-    words = set(text.split())
-    diff = words - valid_graphemes_upper
-    if len(diff) > 0:
-        #print ("WARNING: %s is not in bangor dict" % diff)
-        unreliable_count += 1
-        for d in diff:
-            missing_graphemes.append(d)
-        return False
-    return True
+	prompt = ' '.join(tokens_array)
+	return prompt
+
+
+def isReliable(text):
+	global prompt_count
+	global unreliable_count
+
+	prompt_count += 1
+	words = set(text.split())
+	diff = words - valid_graphemes_upper
+	if len(diff) > 0:
+		#print ("WARNING: %s is not in bangor dict" % diff)
+		unreliable_count += 1
+		for d in diff:
+			missing_graphemes.append(d)
+		return False
+
+	return True
  
 	
 def ProcessBasic(in_file, source_wavfile_dir, target_wavfile_dir):
@@ -56,11 +74,12 @@ def ProcessBasic(in_file, source_wavfile_dir, target_wavfile_dir):
 	transcript_file = open(in_file,'r')
 
 	for line in transcript_file:
-
-		line = cleanPrompt(line)		
+		line = cleanLine(line)
 
 		if len(line) > 0:
+
 			orig_id, prompt = line.split('\t')
+			prompt = cleanPrompt(prompt)
 
 			if any(char.isdigit() for char in prompt):
 				ignored_count += 1
@@ -84,7 +103,6 @@ def ProcessBasic(in_file, source_wavfile_dir, target_wavfile_dir):
 	return new_id
 
 
-
 def Processllj(in_file, start_id, source_wavfile_dir, target_wavfile_dir):
 	global ignored_count
 	llj_ignored_count = 0
@@ -98,10 +116,10 @@ def Processllj(in_file, start_id, source_wavfile_dir, target_wavfile_dir):
 
 	for line in transcript_file:
 		
-		line = cleanPrompt(line)
+		line = cleanLine(line)
 
 		if len(line) > 0:
-
+			line = cleanPrompt(line)
 			if any(char.isdigit() for char in line):
 				ignored_count += 1
 				llj_ignored_count += 1
