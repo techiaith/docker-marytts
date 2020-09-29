@@ -12,7 +12,7 @@ RUN apt-get update \
 
 # Install basic NLP components. 
 RUN pip3 install --upgrade pip && \
-    pip3 install cld2-cffi wget praatio
+    pip3 install cld2-cffi wget praatio praat-parselmouth pandas webrtcvad
 
 
 # Install and verify HTK
