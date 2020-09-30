@@ -1,4 +1,4 @@
-FROM techiaith/marytts
+FROM techiaith/marytts:20.10
 
 RUN apt-get update \
 	&&  curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \

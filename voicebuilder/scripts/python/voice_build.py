@@ -224,14 +224,7 @@ def generate_voice(source_dir, voice_name, locale, peform_speech_analysis=False)
     try:
         voice_build_dir = os.path.join(voices_home, voice_name)
         print("adapting wavs")
-        if audio_converter(voice_build_dir, voice_name):
-            print ("Audio conversion completed")
-            #if perform_speech_analysis:
-            #    for wavfile in os.listdir(os.path.join(voice_build_dir, "wav")):
-            #        detect_voice(os.path.join(voice_build_dir, "wav", wavfile))
-            #        analyze_speech(os.path.join(voice_build_dir, "wav", wavfile)) 
-            #    save_speech_analysis(os.path.join(voice_build_dir, "speech_analysis.csv"))
-            print ("Building voice...") 
+        if audio_converter(voice_build_dir, voice_name):            
             init_voice_build(source_dir, voice_build_dir, voice_name, locale)
             if voice_import(voice_name):                
                 logging.info("voice built successfully")
