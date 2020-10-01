@@ -3,17 +3,12 @@ import os
 import collections
 import bangor_dict_utils
 
-import numpy as np
-import pandas as pd
-
-import parselmouth
-from parselmouth.praat import call
-
 from shutil import copyfile
 
 lexicon_file_path = os.path.join(os.environ['MARYTTS_CY_HOME'], 'lib/modules/cy/lexicon/geiriadur-ynganu-bangor/bangordict.dict')
+
 valid_graphemes = bangor_dict_utils.get_graphemes(lexicon_file_path)
-valid_graphemes_upper =set([x.upper() for x in valid_graphemes])
+valid_graphemes_upper = set([x.upper() for x in valid_graphemes])
 
 prompt_count = 0
 unreliable_count = 0
@@ -172,9 +167,6 @@ def main():
 	print ("Accepted %s (although %s unreliable) prompts. Ignored %s prompts." % (prompt_count, unreliable_count, ignored_count))
 	print ("%s missing graphemes written to missing_from_dict.txt" % (len(missing_graphemes_counts)))
 
-
-
 if __name__ == "__main__":
 	main()
 	
-

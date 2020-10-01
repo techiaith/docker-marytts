@@ -9,8 +9,6 @@ import getopt
 import logging
 import traceback
 
-from analyze_speech import analyze_speech, detect_voice
-
 from shutil import copyfile
 
 marytts_home = os.environ['MARYTTS_HOME']
