@@ -48,6 +48,9 @@ flush privileges;"
 echo "$MYSQLDB database has been created at host $MYSQLHOST, all privileges are granted to user $MYSQLUSER in the $MYSQLHOST and the password $MYSQLPASSWD"
 
 mysql --host=$MYSQLHOST --user="root" --password=$MYSQLPASSWD --database=$MYSQLDB -e \
+"DROP TABLE IF EXISTS ${LOCALE}_cleanText;"
+
+mysql --host=$MYSQLHOST --user="root" --password=$MYSQLPASSWD --database=$MYSQLDB -e \
 "CREATE TABLE IF NOT EXISTS ${LOCALE}_cleanText (id int UNSIGNED NOT NULL AUTO_INCREMENT, \
                  cleanText MEDIUMBLOB NOT NULL, processed BOOLEAN, page_id int UNSIGNED NOT NULL, \
                  text_id int UNSIGNED NOT NULL, PRIMARY KEY id (id) \

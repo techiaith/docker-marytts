@@ -19,11 +19,14 @@ connection = mysql.connector.connect(user=mysql_user,
 fullsourcetablename = locale + "_" + selectedsentencestable + "_selectedSentences"
 cursor = connection.cursor()
 
-print ("Dropping " + fullsourcetablename)
+try:
+    print ("Dropping " + fullsourcetablename)
+    cursor.execute("DROP TABLE " + fullsourcetablename)
+except:
+    print (fullsourcetablename + " does not exist")
 
-cursor.execute("DROP TABLE " + fullsourcetablename)
-
-print ("Reseting selected flag in " + locale + "_dbselection")
-
-cursor.execute("UPDATE " + locale + "_dbselection set selected=0") 
-
+try:
+    print ("Reseting selected flag in " + locale + "_dbselection")
+    cursor.execute("UPDATE " + locale + "_dbselection set selected=0")
+except:
+    print (locale + "_dbselection does not exist")

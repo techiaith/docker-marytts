@@ -3,7 +3,10 @@
 import os
 import sys
 import csv
+
 import mysql.connector
+
+from pathlib import  Path
 
 mysql_host = sys.argv[1]
 mysql_user = sys.argv[2]
@@ -11,6 +14,8 @@ mysql_password = sys.argv[3]
 mysql_db = sys.argv[4]
 locale = sys.argv[5]
 selectedsentencestable = sys.argv[6]
+
+import cld3
 
 outfile = sys.argv[7]
 
@@ -23,36 +28,20 @@ fullsourcetablename = locale + "_" + selectedsentencestable + "_selectedSentence
 cursor = connection.cursor()
 cursor.execute("SELECT * FROM " + fullsourcetablename)
 
+ext = Path(outfile).suffix
+
+outfile_cy = open(outfile.replace(ext, ".cy" + ext), 'w', encoding='utf-8')
+outfile_en = open(outfile.replace(ext, ".en" + ext), 'w', encoding='utf-8')
+
 with open(outfile, 'w', encoding='utf-8') as out_file:
+    for row in cursor:
+        text = row[1].decode('utf-8')
+        out_file.write(text + '\n')
+        lang_detect = cld3.get_language(text)
+        if (lang_detect.language == "cy"):
+            outfile_cy.write(text + '\n')
+        elif (lang_detect.language == "en"):
+            outfile_en.write(text +'\n')
 
-    if outfile.endswith('.csv'):
-        csv_writer = csv.writer(out_file, delimiter='|')
-        csv_writer.writerow([i[0] for i in cursor.description])
-        csv_writer.writerows(cursor)
-    elif outfile.endswith('.txt'):
-        for row in cursor:
-            out_file.write(row[1].decode('utf-8') + '\n')
-    elif outfile.endswith('.py'):
-        out_file.write("""
-#!/usr/bin/env python 
-# #encoding: UTF-8 
-# PROMPTS = [    
-""")
-        sample_id = 1
-        for row in cursor:
-            text = row[1].decode('utf-8')
-            if not any(i.isdigit() for i in text):
-                if len(text) < 90:
-                    # tidy up
-                    text = text.upper()
-                    text = text.replace('?', '')
-                    text = text.replace(',', '')
-                    text = text.replace('.', '')
-                    text = text.replace(':', '')
-                    out_file.write("    {\"identifier\": \"sample" + str(sample_id) + "\"" \
-                                   ", \"text\": u\"" + text + "\"},\n")
-                    sample_id += 1
-
-        out_file.write("]")
-
-out_file.close()
+outfile_cy.close()
+outfile_en.close()
