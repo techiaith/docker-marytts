@@ -51,10 +51,18 @@ mysql --host=$MYSQLHOST --user="root" --password=$MYSQLPASSWD --database=$MYSQLD
 "DROP TABLE IF EXISTS ${LOCALE}_cleanText;"
 
 mysql --host=$MYSQLHOST --user="root" --password=$MYSQLPASSWD --database=$MYSQLDB -e \
+"DROP TABLE IF EXISTS ${LOCALE}_dbselection;"
+
+mysql --host=$MYSQLHOST --user="root" --password=$MYSQLPASSWD --database=$MYSQLDB -e \
+"DROP TABLE IF EXISTS tablesDescription;"
+
+mysql --host=$MYSQLHOST --user="root" --password=$MYSQLPASSWD --database=$MYSQLDB -e \
+"DROP TABLE IF EXISTS ${LOCALE}_${SELECTEDSENTENCESTABLENAME}_selectedSentences;"
+
+mysql --host=$MYSQLHOST --user="root" --password=$MYSQLPASSWD --database=$MYSQLDB -e \
 "CREATE TABLE IF NOT EXISTS ${LOCALE}_cleanText (id int UNSIGNED NOT NULL AUTO_INCREMENT, \
                  cleanText MEDIUMBLOB NOT NULL, processed BOOLEAN, page_id int UNSIGNED NOT NULL, \
                  text_id int UNSIGNED NOT NULL, PRIMARY KEY id (id) \
                  ) MAX_ROWS=250000 AVG_ROW_LENGTH=10240 CHARACTER SET utf8;"
 
 echo "$MYSQLDB::${LOCALE}_cleanText has been created"
-

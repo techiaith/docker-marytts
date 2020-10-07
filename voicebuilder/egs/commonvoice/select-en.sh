@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-COMMONVOICE_TEXTS="/texts/commonvoice/cy"
+COMMONVOICE_TEXTS="/texts/commonvoice/en"
 VOICEBUILDER_SCRIPTS="/opt/marytts/voicebuilder/scripts"
 
 LEXICON_SRC="${MARYTTS_CY_HOME}/lib/modules/cy/lexicon"
@@ -13,16 +13,15 @@ PYTHON_LEXICON_ADAPT_SCRIPT=${MARYTTS_CY_HOME}/bin/python/adapt_lexicon.py
 
 
 # Creating/Reset MySQL database for texts
-source ${VOICEBUILDER_SCRIPTS}/create-database-docker.sh db_cy.conf
+source ${VOICEBUILDER_SCRIPTS}/create-database-docker.sh db_en.conf
 
 
 #  Importing texts into MySQL
-source ${VOICEBUILDER_SCRIPTS}/alt-cleantext-import.sh db_cy.conf ${COMMONVOICE_TEXTS}/cy.txt
+source ${VOICEBUILDER_SCRIPTS}/alt-cleantext-import.sh db_en.conf ${COMMONVOICE_TEXTS}/en.txt
 
 
 # create a new LTS lexicon and model based on CMUDict with Welsh phonemes
-cat ${LEXICON_SRC}/geiriadur-ynganu-bangor/bangordict.dict ${LEXICON_SRC}/geiriadur-ynganu-bangor/bangordict.en.dict > ${LEXICON_SRC}/bangordict.dict
-cat ${LEXICON_SRC}/bangordict.dict | python3 ${PYTHON_LEXICON_ADAPT_SCRIPT} ${LEXICON_SRC}/allophones.cy.xml > ${LEXICON_SRC}/bangor.g2p
+cat ${LEXICON_SRC}/geiriadur-ynganu-bangor/cmudict.dict | python3 ${PYTHON_LEXICON_ADAPT_SCRIPT} ${LEXICON_SRC}/allophones.cy.xml > ${LEXICON_SRC}/bangor.g2p
 cat ${LEXICON_SRC}/bangor.g2p | uniq > ${LEXICON_SRC}/cy.txt
 
 
@@ -47,8 +46,8 @@ cp -v ${MARYTTS_CY_HOME}/marytts-lang-cy-${MARYTTS_VERSION}-component.xml ${MARY
 cd -
 
 # Select sentences with new LTS lexicon and model from MySQL texts.
-wkdb_featuremaker.sh db_cy.conf
+wkdb_featuremaker.sh db_en.conf
 
-wkdb_database_selector.sh db_cy.conf
+wkdb_database_selector.sh db_en.conf
 
-selectedtext-dbexport.sh db_cy.conf
+selectedtext-dbexport.sh db_en.conf
