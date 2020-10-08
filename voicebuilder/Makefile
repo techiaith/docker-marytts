@@ -46,5 +46,3 @@ mysql-clean:
 	-docker stop marytts-mysql-${MARYTTS_CY_VERSION}
 	-docker rm -v marytts-mysql-${MARYTTS_CY_VERSION}
 	sudo rm -rf mysql
-
-

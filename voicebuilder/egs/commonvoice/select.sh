@@ -29,6 +29,7 @@ cat ${LEXICON_SRC}/bangor.g2p | uniq > ${LEXICON_SRC}/cy.txt
 # Training new LTS models
 lexicon_lts_pos_builder.sh ${LEXICON_SRC}/allophones.cy.xml ${LEXICON_SRC}/cy.txt
 
+
 cp ${LEXICON_SRC}/allophones.cy.xml ${MARYTTS_CY_SRC}/
 cp ${LEXICON_SRC}/cy.lts ${MARYTTS_CY_SRC}/
 cp ${LEXICON_SRC}/cy_lexicon.fst ${MARYTTS_CY_SRC}/
