@@ -8,10 +8,7 @@ RUN apt-get update \
 # Install voice-builder-api
 ENV MARYTTS_VOICEBUILDER_API="${MARYTTS_HOME}/voicebuilder-api"
 
-ENV SOURCE_RECORDINGS="/recordings"
-ENV C_FORCE_ROOT="true"
-
-ADD voice-builder-api ${MARYTTS_VOICEBUILDER_API}
+ADD cherrypy ${MARYTTS_VOICEBUILDER_API}
 
 WORKDIR ${MARYTTS_VOICEBUILDER_API}
 
@@ -23,4 +20,3 @@ RUN pip3 install -r requirements.txt \
 EXPOSE 8008 
 
 CMD ["/bin/bash", "-c", "${MARYTTS_VOICEBUILDER_API}/start.sh"]
-

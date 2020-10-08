@@ -3,21 +3,25 @@ default: build
 MARYTTS_CY_VERSION := 20.10
 
 
-# --- MaryTTS headless/non-gui voice building api -------------------------------------
-build-voicebuild-api: mysql
-	docker build --rm -t techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION} .
+build:
+	docker build --rm -t techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION} \
+	--build-arg MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} \
+	.
 
-voicebuild-api:
+
+run:
 	docker run --name marytts-voicebuild-api-${MARYTTS_CY_VERSION} --restart=always \
- 		-d -p 8010:8008 \
-		--link marytts-api:marytts-api \
-		-v ${PWD}/../../recordings/:/recordings \	
+ 		-d -p 32010:8008 \
+		--link marytts-server-${MARYTTS_CY_VERSION}:marytts-server \
+		-v ${PWD}/../../recordings/:/recordings \
 		-v ${PWD}/../../voices:/opt/marytts/voices \
 		techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION}
 
-stop-voicebuild-api:
+
+stop:
 	docker stop marytts-voicebuild-api-${MARYTTS_CY_VERSION}
 	docker rm marytts-voicebuild-api-${MARYTTS_CY_VERSION}
 
-clean-voicebuild-api:
+
+clean:
 	docker rmi techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION}
