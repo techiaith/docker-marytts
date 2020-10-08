@@ -1,14 +1,15 @@
-FROM techiaith/marytts
+ARG MARYTTS_CY_VERSION
+FROM techiaith/marytts:${MARYTTS_CY_VERSION}
 
 RUN apt-get update \
  && apt-get install -y \
 	libpq-dev lame supervisor python python-pip python-dev \
- && pip install --upgrade pip 
+ && rm -rf /var/lib/apt/lists/*
 
-ADD marytts-api /opt/marytts-api
-ADD marytts-api/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD cherrypy /opt/marytts-server
+ADD cherrypy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-WORKDIR /opt/marytts-api
+WORKDIR /opt/marytts-server
 
 RUN pip install -r requirements.txt 
 

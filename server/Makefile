@@ -1,25 +1,29 @@
 default: build
 
+MARYTTS_CY_VERSION := 20.10
 
-# --- Vanilla MaryTTS server/runtime ----------------------------------------------------------
-build: 
-	if [ ! -d "marytts" ]; then \
-            git clone https://github.com/techiaith/marytts.git; \
-        fi 
-	docker build --rm -t techiaith/marytts -f Dockerfile.runtime .
+build: 	
+	docker build --rm -t techiaith/marytts-server:${MARYTTS_CY_VERSION} \
+	--build-arg MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} \
+	.
+
 
 run:
-	docker run --name marytts --restart=always \
-    	-it -p 59125:59125 \
-	-v ${PWD}/voices/:/opt/marytts/voices \
-	techiaith/marytts bash
+	docker run --name marytts-server-${MARYTTS_CY_VERSION} --restart=always \
+    	-d -p 59200:59125 \
+		-v ${PWD}/../voices/:/opt/marytts/voices \	
+	techiaith/marytts-server:${MARYTTS_CY_VERSION}
+
 
 stop:
-	docker stop marytts
-	docker rm marytts
+	docker stop marytts-server-${MARYTTS_CY_VERSION}
+	docker rm marytts-server-${MARYTTS_CY_VERSION}
+
 
 clean:
-	docker rmi techiaith/marytts
+	docker rmi techiaith/marytts-server:${MARYTTS_CY_VERSION}
+
+
 
 
 
@@ -29,9 +33,8 @@ build-runtime-api: build
 
 runtime-api: 
 	docker run --name marytts-api --restart=always \
-    	-d -p 5300:8008  \
-	-p 59125:59125 \
-	-v ${PWD}/voices/:/opt/marytts/voices \
+    	-d -p 5300:8008  \		
+		-v ${PWD}/../voices/:/opt/marytts/voices \
 	techiaith/marytts-api
 
 stop-runtime-api:

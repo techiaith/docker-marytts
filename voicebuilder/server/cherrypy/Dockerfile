@@ -1,12 +1,13 @@
-FROM techiaith/marytts-voicebuild
+ARG MARYTTS_CY_VERSION
+FROM techiaith/marytts-voicebuild:${MARYTTS_CY_VERSION}
 
 RUN apt-get update \
 	&& apt-get install -y libpq-dev supervisor python3-dev rabbitmq-server \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install voice-builder-api
-ENV MARYTTS_VOICEBUILDER_API="/opt/voice-builder-api"
-ENV PYTHONPATH="${MARYTTS_HOME}/voice-builder/scripts:${PYTHONPATH}"
+ENV MARYTTS_VOICEBUILDER_API="${MARYTTS_HOME}/voicebuilder-api"
+
 ENV SOURCE_RECORDINGS="/recordings"
 ENV C_FORCE_ROOT="true"
 

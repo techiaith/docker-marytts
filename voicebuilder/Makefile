@@ -4,14 +4,14 @@ MARYTTS_CY_VERSION := 20.10
 
 # --- MaryTTS voice building environment ------------------------------------------------------
 build: inject_dockerfile_with_uid_gid 
-	docker build --rm -t techiaith/marytts-voicebuild-gui:${MARYTTS_CY_VERSION} .
+	docker build --rm -t techiaith/marytts-voicebuild:${MARYTTS_CY_VERSION} .
 
 inject_dockerfile_with_uid_gid: 
 	./scripts/inject_uid_gid_into_dockerfile.sh
 
 # add `--user marytts` if wanting to use GUI based voice import
 run: mysql
-	docker run --name marytts-voicebuild-gui-${MARYTTS_CY_VERSION} -it \
+	docker run --name marytts-voicebuild-${MARYTTS_CY_VERSION} -it \
  		-p 59136:59125 \
 		--link marytts-mysql-${MARYTTS_CY_VERSION}:mysql \
 		-e DISPLAY=${DISPLAY} \
@@ -23,14 +23,14 @@ run: mysql
 		-v ${PWD}/scripts:/opt/marytts/voicebuilder/scripts \
 		-v ${PWD}/egs:/opt/marytts/voicebuilder/egs \
 		-v ${PWD}/../marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
-		techiaith/marytts-voicebuild-gui:${MARYTTS_CY_VERSION} bash
+		techiaith/marytts-voicebuild:${MARYTTS_CY_VERSION} bash
 
 stop:
-	-docker stop marytts-voicebuild-gui-${MARYTTS_CY_VERSION}
-	-docker rm marytts-voicebuild-gui-${MARYTTS_CY_VERSION}
+	-docker stop marytts-voicebuild-${MARYTTS_CY_VERSION}
+	-docker rm marytts-voicebuild-${MARYTTS_CY_VERSION}
 
 clean:	
-	-docker rmi techiaith/marytts-voicebuild-gui:${MARYTTS_CY_VERSION}
+	-docker rmi techiaith/marytts-voicebuild:${MARYTTS_CY_VERSION}
 
 
 
