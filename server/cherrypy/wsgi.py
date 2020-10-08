@@ -10,7 +10,7 @@ import cherrypy
 import logging
 import tempfile
 
-import httplib
+import http.client
 import urllib
  
 class MaryTTSAPI(object):
@@ -97,6 +97,7 @@ class MaryTTSAPI(object):
             voices.manifest.write(voice + '\n')
             self.installed_voices.append(voice)
        
+       
     def reinstall_voices_from_manifest(self):
         marytts_voices_home = os.environ['MARYTTS_VOICES_HOME']
         with codecs.open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'r', encoding='utf-8') as voices_manifest:
@@ -129,7 +130,7 @@ class MaryTTSAPI(object):
         headers = {}
 
         # Open connection to self.host, self.port.
-        conn = httplib.HTTPConnection(self.marytts_host, self.marytts_port)
+        conn = http.client.HTTPConnection(self.marytts_host, self.marytts_port)
 
         #conn.set_debuglevel(5)
         
@@ -142,7 +143,7 @@ class MaryTTSAPI(object):
 
 
     @cherrypy.expose
-    def speak(self, text, uid='wispr-newydd', lang='cy', format='mp3', **kwargs):
+    def speak(self, text, uid='wispr', lang='cy', format='mp3', **kwargs):
         
         cherrypy.log("%s speaking '%s'" % (uid, text))
 
@@ -155,7 +156,7 @@ class MaryTTSAPI(object):
         except ValueError as e:
             return "ERROR: %s" % str(e)
       
-        is_wispr = (uid.lower() == 'wispr-newydd')
+        is_wispr = (uid.lower() == 'wispr')
         if is_wispr:
             voice = uid
         else:
@@ -163,7 +164,7 @@ class MaryTTSAPI(object):
             if voice in self.installed_voices:
                 voice = uid + "_" + lang.lower()
             else:
-                voice = 'wispr-newydd'
+                voice = 'wispr'
             
         is_mp3 = (format.lower() == 'mp3')
         if is_mp3:

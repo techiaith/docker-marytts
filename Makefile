@@ -5,8 +5,8 @@ MARYTTS_CY_VERSION := 20.10
 
 build: 
 	if [ ! -d "marytts" ]; then \
-            git clone https://git.techiaith.bangor.ac.uk/lleferydd/marytts.git; \
-        fi 
+        git clone https://git.techiaith.bangor.ac.uk/lleferydd/marytts.git; \
+    fi 
 	if [ ! -d "marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor" ]; then \
 	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon && git clone https://git.techiaith.bangor.ac.uk/lleferydd/ffoneteg/geiriadur-ynganu-bangor.git && git checkout issue_5; \
 	else \
