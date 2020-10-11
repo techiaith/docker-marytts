@@ -25,8 +25,10 @@ cursor = connection.cursor()
 insertsql = "INSERT INTO " + locale + "_cleanText" + " (page_id, text_id, processed, cleanText) VALUES (%s, %s, %s, %s)"
 text_id = int(1)
 page_id = int(1)
+
 text_per_page = int(1000)
 
+#
 with open(infile, 'r', encoding='utf-8') as in_file:
 
     # shuffle..

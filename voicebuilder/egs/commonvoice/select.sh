@@ -48,8 +48,15 @@ cp -v ${MARYTTS_CY_HOME}/marytts-lang-cy-${MARYTTS_VERSION}-component.xml ${MARY
 cd -
 
 # Select sentences with new LTS lexicon and model from MySQL texts.
+. db_cy.conf
+mkdir -p ${WIKIDATAPATH}
 wkdb_featuremaker.sh db_cy.conf
-
 wkdb_database_selector.sh db_cy.conf
-
 selectedtext-dbexport.sh db_cy.conf
+
+#   
+. db_cy_2.conf
+mkdir -p ${WIKIDATAPATH}
+wkdb_featuremaker.sh db_cy_2.conf
+wkdb_database_selector.sh db_cy_2.conf
+selectedtext-dbexport.sh db_cy_2.conf
