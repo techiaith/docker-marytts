@@ -41,7 +41,7 @@ cd -
 
 
 # Creating/Reset MySQL database for texts
-rm -rf ${COMMONVOICE_TEXTS_DIR
+rm -rf ${COMMONVOICE_TEXTS_DIR}
 mkdir -p ${COMMONVOICE_TEXTS_DIR}
 
 echo "--- Starting data download ---"
