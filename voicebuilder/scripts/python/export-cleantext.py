@@ -59,14 +59,13 @@ del_connection.close()
 drop_connection, drop_cursor = new_cursor()
 
 drop_cursor.execute("DROP TABLE " + locale + "_dbselection")
-drop_cursor.commit()
+drop_connection.commit()
 
 drop_cursor.execute("DROP TABLE " + fullsourcetablename)
-drop_cursor.commit()
+drop_connection.commit()
 
 drop_cursor.execute("UPDATE " + locale + "_cleanText SET processed=0")
-drop_cursor.commit()
+drop_connection.commit()
 
 drop_cursor.close()
 drop_connection.close()
-    
