@@ -7,6 +7,7 @@ import collections
 import contextlib
 import sys
 import wave
+import contextlib
 
 import parselmouth
 
@@ -18,6 +19,7 @@ DESCRIPTION = """
 """
 
 file_list = []
+duration = []
 mean_F0_list = []
 sd_F0_list = []
 hnr_list = []
@@ -34,8 +36,16 @@ apq11Shimmer_list = []
 ddaShimmer_list = []
 
 
+def get_duration(wav_filepath):
+    with contextlib.closing(wave.open(wav_filepath,'r')) as f:
+        frames = f.getnframes()
+        rate = f.getframerate()
+        duration = frames / float(rate)
+        return duration
+
+
 def analyze_speech(wav_filepath, f0min, f0max, unit):
-    sound = parselmouth.Sound(wav_filepath)
+    sound = parselmouth.Sound(wav_filepath)    
     pitch = call(sound, "To Pitch", 0.0, f0min, f0max) #create a praat pitch object
     meanF0 = call(pitch, "Get mean", 0, 0, unit) # get mean pitch
     stdevF0 = call(pitch, "Get standard deviation", 0 ,0, unit) # get standard deviation
@@ -55,6 +65,7 @@ def analyze_speech(wav_filepath, f0min, f0max, unit):
     ddaShimmer = call([sound, pointProcess], "Get shimmer (dda)", 0, 0, 0.0001, 0.02, 1.3, 1.6)
         
     file_list.append(wav_filepath) # make an ID list
+    duration.append(get_duration(wav_filepath))
     mean_F0_list.append(meanF0) # make a mean F0 list
     sd_F0_list.append(stdevF0) # make a sd F0 list
     hnr_list.append(hnr)
@@ -74,10 +85,10 @@ def analyze_speech(wav_filepath, f0min, f0max, unit):
 
 
 def save_speech_analysis(output_filepath):
-    df = pd.DataFrame(np.column_stack([file_list, mean_F0_list, sd_F0_list, hnr_list, localJitter_list, localabsoluteJitter_list,
+    df = pd.DataFrame(np.column_stack([file_list, duration, mean_F0_list, sd_F0_list, hnr_list, localJitter_list, localabsoluteJitter_list,
                                        rapJitter_list, ppq5Jitter_list, ddpJitter_list, localShimmer_list, localdbShimmer_list,
                                        apq3Shimmer_list, aqpq5Shimmer_list, apq11Shimmer_list, ddaShimmer_list]),
-                      columns=['voiceID', 'meanF0Hz', 'stdevF0Hz', 'HNR', 'localJitter', 'localabsoluteJitter', 'rapJitter',
+                      columns=['voiceID', 'duration', 'meanF0Hz', 'stdevF0Hz', 'HNR', 'localJitter', 'localabsoluteJitter', 'rapJitter',
                                        'ppq5Jitter', 'ddpJitter', 'localShimmer', 'localdbShimmer', 'apq3Shimmer', 'apq5Shimmer',
                                        'apq11Shimmer', 'ddaShimmer'])
 
@@ -90,6 +101,10 @@ def main(wav_dirpath, **args):
     for wavfile in os.listdir(os.path.join(wav_dirpath, "wav")):
         analyze_speech(os.path.join(wav_dirpath, "wav", wavfile), 75, 500, "Hertz") 
         save_speech_analysis(os.path.join(wav_dirpath, "speech_analysis.csv"))
+    
+    total_duration = sum(duration)
+    print ("%s recordings\t\t%.2f hours\t(%.2f seconds)" % (len(duration), total_duration/60.0/60.0, total_duration))
+
 
 
 if __name__ == '__main__':
