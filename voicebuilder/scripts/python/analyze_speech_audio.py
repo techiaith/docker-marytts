@@ -35,6 +35,9 @@ aqpq5Shimmer_list = []
 apq11Shimmer_list = []
 ddaShimmer_list = []
 
+wordcount = []
+charactercount = []
+
 
 def get_duration(wav_filepath):
     with contextlib.closing(wave.open(wav_filepath,'r')) as f:
@@ -84,11 +87,18 @@ def analyze_speech(wav_filepath, f0min, f0max, unit):
     print (wav_filepath, str(meanF0), str(stdevF0), str(hnr))
 
 
+def analyze_text(text_filepath):
+    with open(text_filepath, 'r', encoding='utf-8') as textfile:
+        prompt = textfile.read().strip()
+        wordcount.append(len(prompt.split()))
+        charactercount.append(len(prompt))
+
+
 def save_speech_analysis(output_filepath):
-    df = pd.DataFrame(np.column_stack([file_list, duration, mean_F0_list, sd_F0_list, hnr_list, localJitter_list, localabsoluteJitter_list,
+    df = pd.DataFrame(np.column_stack([file_list, duration, wordcount, charactercount, mean_F0_list, sd_F0_list, hnr_list, localJitter_list, localabsoluteJitter_list,
                                        rapJitter_list, ppq5Jitter_list, ddpJitter_list, localShimmer_list, localdbShimmer_list,
                                        apq3Shimmer_list, aqpq5Shimmer_list, apq11Shimmer_list, ddaShimmer_list]),
-                      columns=['voiceID', 'duration', 'meanF0Hz', 'stdevF0Hz', 'HNR', 'localJitter', 'localabsoluteJitter', 'rapJitter',
+                      columns=['voiceID', 'duration', 'wordcount', 'charactercount', 'meanF0Hz', 'stdevF0Hz', 'HNR', 'localJitter', 'localabsoluteJitter', 'rapJitter',
                                        'ppq5Jitter', 'ddpJitter', 'localShimmer', 'localdbShimmer', 'apq3Shimmer', 'apq5Shimmer',
                                        'apq11Shimmer', 'ddaShimmer'])
 
@@ -98,9 +108,12 @@ def save_speech_analysis(output_filepath):
 
 
 def main(wav_dirpath, **args):
+    
     for wavfile in os.listdir(os.path.join(wav_dirpath, "wav")):
+        analyze_text(os.path.join(wav_dirpath, "text", wavfile.replace(".wav",".txt")))        
         analyze_speech(os.path.join(wav_dirpath, "wav", wavfile), 75, 500, "Hertz") 
-        save_speech_analysis(os.path.join(wav_dirpath, "speech_analysis.csv"))
+    
+    save_speech_analysis(os.path.join(wav_dirpath, "speech_analysis.csv"))
     
     total_duration = sum(duration)
     print ("%s recordings\t\t%.2f hours\t(%.2f seconds)" % (len(duration), total_duration/60.0/60.0, total_duration))
