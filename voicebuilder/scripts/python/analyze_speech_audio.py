@@ -9,6 +9,8 @@ import sys
 import wave
 import contextlib
 
+import cld3
+
 import parselmouth
 
 from parselmouth.praat import call
@@ -37,6 +39,7 @@ ddaShimmer_list = []
 
 wordcount = []
 charactercount = []
+language = []
 
 
 def get_duration(wav_filepath):
@@ -92,13 +95,14 @@ def analyze_text(text_filepath):
         prompt = textfile.read().strip()
         wordcount.append(len(prompt.split()))
         charactercount.append(len(prompt))
+        language.append(cld3.get_language(prompt).language)
 
 
 def save_speech_analysis(output_filepath):
-    df = pd.DataFrame(np.column_stack([file_list, duration, wordcount, charactercount, mean_F0_list, sd_F0_list, hnr_list, localJitter_list, localabsoluteJitter_list,
+    df = pd.DataFrame(np.column_stack([file_list, duration, wordcount, charactercount, language, mean_F0_list, sd_F0_list, hnr_list, localJitter_list, localabsoluteJitter_list,
                                        rapJitter_list, ppq5Jitter_list, ddpJitter_list, localShimmer_list, localdbShimmer_list,
                                        apq3Shimmer_list, aqpq5Shimmer_list, apq11Shimmer_list, ddaShimmer_list]),
-                      columns=['voiceID', 'duration', 'wordcount', 'charactercount', 'meanF0Hz', 'stdevF0Hz', 'HNR', 'localJitter', 'localabsoluteJitter', 'rapJitter',
+                      columns=['voiceID', 'duration', 'wordcount', 'charactercount', 'language', 'meanF0Hz', 'stdevF0Hz', 'HNR', 'localJitter', 'localabsoluteJitter', 'rapJitter',
                                        'ppq5Jitter', 'ddpJitter', 'localShimmer', 'localdbShimmer', 'apq3Shimmer', 'apq5Shimmer',
                                        'apq11Shimmer', 'ddaShimmer'])
 
@@ -123,7 +127,7 @@ def main(wav_dirpath, **args):
 if __name__ == '__main__':
 
     parser = ArgumentParser(description=DESCRIPTION, formatter_class=RawTextHelpFormatter) 
-    parser.add_argument("--wav_dirpath", dest="wav_dirpath", required=True, help="path to bangor dict")
+        parser.add_argument("--wav_dirpath", dest="wav_dirpath", required=True, help="path to bangor dict")
     parser.set_defaults(func=main)
     args = parser.parse_args()
     args.func(**vars(args))

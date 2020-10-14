@@ -1,16 +1,16 @@
 default: build
 
 MARYTTS_CY_VERSION := 20.10
-
+BANGORDICT_BRANCH := 'hunspell'
 
 build: 
 	if [ ! -d "marytts" ]; then \
         git clone https://git.techiaith.bangor.ac.uk/lleferydd/marytts.git; \
     fi 
 	if [ ! -d "marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor" ]; then \
-	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon && git clone https://git.techiaith.bangor.ac.uk/lleferydd/ffoneteg/geiriadur-ynganu-bangor.git && git checkout issue_5; \
+	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon && git clone https://git.techiaith.bangor.ac.uk/lleferydd/ffoneteg/geiriadur-ynganu-bangor.git && git checkout ${BANGORDICT_BRANCH}; \
 	else \
-	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor && git pull && git checkout issue_5; \
+	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor && git pull && git checkout ${BANGORDICT_BRANCH}; \
 	fi 
 	docker build --rm -t techiaith/marytts:${MARYTTS_CY_VERSION} .
 
