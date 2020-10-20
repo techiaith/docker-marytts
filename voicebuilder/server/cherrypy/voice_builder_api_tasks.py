@@ -10,7 +10,7 @@ logger = get_task_logger(__name__)
 
 import voice_build
 
-source_recordings = os.environ['SOURCE_RECORDINGS']
+source_recordings = '/recordings'  #os.environ['SOURCE_RECORDINGS']
 
 app = Celery('voice_builder_api_tasks', broker='pyamqp://guest@localhost//')
 

@@ -34,74 +34,12 @@ class GenerateVoice(object):
         cherrypy.log("generating voice request sent")
 
 
-    @cherrypy.expose
-    def index(self):
-        return """
-<html>
-<head>
-<script type='text/javascript'>
-function generate() {
-    var uid = document.getElementById('uid').value.trim();
-    var locale = document.getElementById('lang').value.trim();
-    var audioElement = document.createElement('audio');
-    var url = location.href + 'generate_voice?uid=' + encodeURI(uid) + '&locale=' + encodeURI(locale)
-    audioElement.setAttribute('src', url);
-    audioElement.play();
-}
-</script>
-<style>
-.logos {
- 	background-color: #333333;
-    	height: 90px;
-}
-
-.uti {
-    float: left;
-    padding-left: 32px;
-    padding-top: 12px;
-}
-
-.pb {
-    float: right;
-    padding-right: 24px;
-    padding-top: 12px;
-}
-
-h1, p, textarea {
- 	font-family: "Vectora W02_55 Roman","Voces";
-}
-
-#llais {
-        width:100%;
-        display:block;
-	padding:10px;
-}
-
-</style>
-</head>
-<body>
-<div class="logos">
-	<div class="uti"><a href="http://www.bangor.ac.uk"><img src="http://techiaith.cymru/wp-content/uploads/2017/10/pb.jpg"></a></div>
-	<div class="pb"><a href="http://techiaith.bangor.ac.uk"><img src="http://techiaith.cymru/wp-content/uploads/2017/10/uti.jpg"></a></div>
-</div>
-
-<h1>DEMO CREU LLAIS TESTUN-I-LEFERYDD MARYTTS ~ MARYTTS TEXT-TO-SPEECH GENERATE DEMO</h1>
-
-<textarea id='uid' placeholder="Ysgrifennwch uid y llais"></textarea>
-<textarea id='lang' placeholder="Ysgrifennwch iaith y llais ('cy' neu 'en_US')"></textarea>
-
-<p>
-<button onclick="generate()">Cynhyrchu / Generate</button>
-</p>
-
-"""
-
 cherrypy.config.update({
     'environment': 'production',
     'log.screen': False,
     'response.stream': True,
-    'log.access_file': 'voice-builder-api.access.log',
-    'log.error_file': 'voice-builder-api.error.log',
+    'log.access_file': '/var/log/voice-builder-api/voice-builder-api.access.log',
+    'log.error_file': '/var/log/voice-builder-api/voice-builder-api.error.log',
 })
 
 # Tell CherryPy to call "connect" for each thread, when it starts up 

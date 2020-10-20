@@ -38,7 +38,7 @@ ADD templates ${MARYTTS_HOME}/voicebuilder/templates
 ADD scripts ${MARYTTS_HOME}/voicebuilder/scripts
 
 ENV PATH="${MARYTTS_HOME}/voicebuilder/scripts:${PATH}"
-ENV PYTHONPATH="${PYTHONPATH}:${MARYTTS_HOME}/voicebuilder/scripts"
+ENV PYTHONPATH="${PYTHONPATH}:${MARYTTS_HOME}/voicebuilder/scripts/python"
 
 
 WORKDIR ${MARYTTS_HOME}/voicebuilder

@@ -6,7 +6,7 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install voice-builder-api
-ENV MARYTTS_VOICEBUILDER_API="${MARYTTS_HOME}/voicebuilder-api"
+ENV MARYTTS_VOICEBUILDER_API="${MARYTTS_HOME}/voice-builder-api"
 
 ADD cherrypy ${MARYTTS_VOICEBUILDER_API}
 

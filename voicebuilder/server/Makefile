@@ -15,13 +15,15 @@ run:
 		--link marytts-server-${MARYTTS_CY_VERSION}:marytts-server \
 		-v ${PWD}/../../recordings/:/recordings \
 		-v ${PWD}/../../voices:/opt/marytts/voices \
+		-v ${PWD}/log:/var/log/voice-builder-api \
 		techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION}
 
 
 stop:
-	docker stop marytts-voicebuild-api-${MARYTTS_CY_VERSION}
-	docker rm marytts-voicebuild-api-${MARYTTS_CY_VERSION}
+	-docker stop marytts-voicebuild-api-${MARYTTS_CY_VERSION}
+	-docker rm marytts-voicebuild-api-${MARYTTS_CY_VERSION}
+	-sudo rm ${PWD}/log/*
 
 
 clean:
-	docker rmi techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION}
+	-docker rmi techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION}
