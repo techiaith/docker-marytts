@@ -180,7 +180,7 @@ cherrypy.config.update({
     'environment': 'production',
     'log.screen': False,
     'response.stream': True,
-    'log.error_file': 'marytts-api.log',
+    'log.error_file': '/var/log/marytts-server/marytts-server.error.log',
 })
 
 cherrypy.tree.mount(MaryTTSAPI(), '/')

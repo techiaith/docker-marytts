@@ -12,8 +12,8 @@ WORKDIR /opt/marytts-server
 
 RUN pip3 install -r requirements.txt 
 
-RUN mkdir -p /var/log/gunicorn \
- && touch /var/log/gunicorn/marytts-api.error.log
+#RUN mkdir -p /var/log/gunicorn \
+# && touch /var/log/gunicorn/marytts-api.error.log
 
 EXPOSE 8008
 

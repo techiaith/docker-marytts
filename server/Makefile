@@ -15,14 +15,16 @@ build:
 
 run:
 	docker run --name marytts-server-${MARYTTS_CY_VERSION} --restart=always \
-    	-d -p 52010:59125 \
+    		-d -p 52010:59125 \
+		-v ${PWD}/log:/var/log/marytts-server \
 		-v ${PWD}/../voices/:/voices \
-	techiaith/marytts-server:${MARYTTS_CY_VERSION}
+		techiaith/marytts-server:${MARYTTS_CY_VERSION}
 
 
 stop:
-	docker stop marytts-server-${MARYTTS_CY_VERSION}
-	docker rm marytts-server-${MARYTTS_CY_VERSION}
+	-docker stop marytts-server-${MARYTTS_CY_VERSION}
+	-docker rm marytts-server-${MARYTTS_CY_VERSION}
+	sudo rm ${PWD}/log/*
 
 
 clean:
