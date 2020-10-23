@@ -1,9 +1,15 @@
 default: build
 
 MARYTTS_CY_VERSION := 20.10
+BANGORDICT_BRANCH := 'hunspell'
 
 # --- MaryTTS voice building environment ------------------------------------------------------
-build: inject_dockerfile_with_uid_gid 
+build: inject_dockerfile_with_uid_gid
+	if [ ! -d "marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor" ]; then \
+	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon && git clone https://git.techiaith.bangor.ac.uk/lleferydd/ffoneteg/geiriadur-ynganu-bangor.git && git checkout ${BANGORDICT_BRANCH}; \
+	else \
+	    cd marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor && git pull && git checkout ${BANGORDICT_BRANCH}; \
+	fi 
 	docker build --rm -t techiaith/marytts-voicebuild:${MARYTTS_CY_VERSION} .
 
 inject_dockerfile_with_uid_gid: 
