@@ -131,6 +131,12 @@ def execute_java_cmd(cmd):
 
 
 
+def rename_file_extension(filepath, newextension):
+    base = os.path.splitext(filepath)[0]
+    os.rename(filepath, base + newextension)
+    
+
+
 def init_voice_build(voice_build_dir, voice_name, locale):
 
     logging.info("init_voice_build: voice_build_dir %s, voice_name %s - started" % (voice_build_dir, voice_name))
@@ -140,6 +146,7 @@ def init_voice_build(voice_build_dir, voice_name, locale):
     voice_wavs_dir = os.path.join(voice_build_dir, 'wav')
     voice_prompts_dir = os.path.join(voice_build_dir, 'data')
 
+    # renaming will exclude wav files from MaryTTS basenamelist
     for file in os.listdir(voice_wavs_dir):
         if file.endswith(".wav"):
             wavfile = os.path.join(voice_wavs_dir, file)
@@ -147,18 +154,22 @@ def init_voice_build(voice_build_dir, voice_name, locale):
 
             if not os.path.isfile(txtfile):
                 logging.info("voice_build.py couldn't find txtfile %s " % txtfile)
+                rename_file_extension(wavfile, ".notextfile")
                 continue
               
             if not is_valid_wav(wavfile):
                 logging.info("voice_build.py found that %s not a valid wavfile " % wavfile)
+                rename_file_extension(wavfile, ".notvalidwavfile")
                 continue
                
             if is_silent(wavfile):
                 logging.info("voice_build.py found that %s is silent" % wavfile)
+                rename_file_extension(wavfile, ".silentwavfile")
                 continue
 
             if not valid_pitch_pointers(wavfile):
                 logging.info("voice_build.py found that %s has invalid pitch pointers" % wavfile)
+                rename_file_extension(wavfile, ".invalidpitchpointers")
                 continue
  
             pad_with_silence(wavfile)
