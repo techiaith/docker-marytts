@@ -1,4 +1,4 @@
-default: build
+ls -default: build
 
 MARYTTS_CY_VERSION := 20.10
 VOICES_DIR := ${PWD}/../voices

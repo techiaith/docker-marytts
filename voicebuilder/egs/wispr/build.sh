@@ -8,4 +8,4 @@ python3 ${CWD_DIR}/python/convert_wispr_to_marytts.py
 
 ${MARYTTS_HOME}/target/marytts-${MARYTTS_VERSION}/bin/marytts-server &
 
-python3 ${CWD_DIR}/../../scripts/python/voice_build.py -v wispr -s /voices/wispr -l cy
+python3 ${CWD_DIR}/../../scripts/python/voice_build.py -s /voices/wispr/data -v wispr -l cy

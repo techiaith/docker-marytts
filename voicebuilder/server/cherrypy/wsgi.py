@@ -27,10 +27,10 @@ class GenerateVoice(object):
 
 
     @cherrypy.expose
-    def generate_voice(self, uid, locale, **kwargs):
+    def generate_voice(self, uid, **kwargs):
 
-        cherrypy.log("generating %s voice for '%s'" % (locale, uid))
-        generate_voice.delay(uid, locale)
+        cherrypy.log("generating voice for '%s'" % (uid))
+        generate_voice.delay(uid)
         cherrypy.log("generating voice request sent")
 
 

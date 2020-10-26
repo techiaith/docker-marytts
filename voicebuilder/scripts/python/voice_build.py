@@ -9,6 +9,7 @@ import getopt
 import logging
 import traceback
 
+from pathlib import Path
 from shutil import copyfile
 
 marytts_home = os.environ['MARYTTS_HOME']
@@ -113,23 +114,26 @@ def pad_with_silence(wavfile):
 
 
 def execute_java_cmd(cmd):
-    try:
-        print ("JAVA CMD: " + cmd)
+    try:        
         logging.info(cmd)
         cmd_output = subprocess.check_output(shlex.split(cmd)).decode('utf-8')
-    except:
+    except Exception as ex:
+        logging.info("voice_build.py::execute_java_cmd exception " + ex)
         raise
 
     if 'Exception' in cmd_output:
+        logging.info("voice_build.py::execute_java_cmd, 'Exception' in output: " + cmd_output)
         return False 
+
+    logging.info("voice_build.py::execute_java_cmd completed successfully")
 
     return True
 
 
 
-def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
+def init_voice_build(voice_build_dir, voice_name, locale):
 
-    logging.info("init_voice_build: source_dir %s, voice_build_dir %s, voice_name %s - started" % (source_dir, voice_build_dir, voice_name))
+    logging.info("init_voice_build: voice_build_dir %s, voice_name %s - started" % (voice_build_dir, voice_name))
 
     txt_done_data = {}
 
@@ -142,19 +146,19 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
             txtfile = os.path.join(voice_prompts_dir, file.replace(".wav",".txt"))
 
             if not os.path.isfile(txtfile):
-                logging.info("txtfile not found: %s " % txtfile)
+                logging.info("voice_build.py couldn't find txtfile %s " % txtfile)
                 continue
               
             if not is_valid_wav(wavfile):
-                logging.info("not a valid wavfile: %s " % wavfile)
+                logging.info("voice_build.py found that %s not a valid wavfile " % wavfile)
                 continue
                
             if is_silent(wavfile):
-                logging.info("%s is silent" % wavfile)
+                logging.info("voice_build.py found that %s is silent" % wavfile)
                 continue
 
             if not valid_pitch_pointers(wavfile):
-                logging.info("Invalid pitch pointers: %s " % wavfile)
+                logging.info("voice_build.py found that %s has invalid pitch pointers" % wavfile)
                 continue
  
             pad_with_silence(wavfile)
@@ -170,7 +174,7 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
             txtdone.write("( " + key + " \"" + value + "\" )\n")
 
     #
-    logging.info("init_voice_build %s copying templates.." % voice_name)
+    logging.info("voice_build.py::init_voice_build %s copying templates.." % voice_name)
 
     # importMain.config
     copyfile(os.path.join(voices_builder_base ,'templates', 'importMain.config.template'), os.path.join(voice_build_dir,'importMain.config'))
@@ -186,44 +190,43 @@ def init_voice_build(source_dir, voice_build_dir, voice_name, locale):
             line = line.replace('VOICE_LOCALE', locale)
             trgt.write(line)
 
-    logging.info("init_voice_build %s completed" % voice_name)
+    logging.info("voice_build.py::init_voice_build %s completed" % voice_name)
 
 
-def audio_converter(voice_build_dir, voice_name):
 
-    voice_build_recordings_dir = os.path.join(voice_build_dir, "data")
-    voice_build_wavs_dir = os.path.join(voice_build_dir, "wav")    
-        
-    if os.path.isdir(voice_build_wavs_dir):
-        logging.info("Audio converter %s starting" % voice_name)
-        return True
+def audio_converter(voice_build_recordings_dir, voice_build_dir, voice_name):
 
-    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir,)
-    print (cmd)
+    logging.info("audio_converter %s " % voice_build_dir)
+    voice_build_wavs_dir = os.path.join(voice_build_dir, "wav")
+
+    Path(voice_build_wavs_dir).mkdir(parents=True, exist_ok=True)
+    
+    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir)
  
     return execute_java_cmd(cmd)
 
 
 def voice_import(voice_name):
 
-    logging.info("voice import starting %s" % voice_name)
+    logging.info("voice_build.py::voice import starting %s" % voice_name)
 
     voice_build_dir = os.path.join(voices_home, voice_name)
 
-    cmd = 'java -showversion -Xmx1024m -Dmary.base="%s" -cp "%s/lib/*" marytts.tools.voiceimport.DatabaseImportMainHeadless %s' % (marytts_builder_base, marytts_builder_base, voice_build_dir,)
+    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.tools.voiceimport.DatabaseImportMainHeadless %s' % (marytts_builder_base, marytts_builder_base, voice_build_dir)
     
     return execute_java_cmd(cmd)
 
 
 
-def generate_voice(source_dir, voice_name, locale, peform_speech_analysis=False):
-    logging.info("generate_voice: source_dir %s, voice_name %s, locale %s" % (source_dir, voice_name, locale))
+def generate_voice(audio_source_dir, voice_name, locale, peform_speech_analysis=False):
+    logging.info("generate_voice: source_dir %s, voice_name %s, locale %s" % (audio_source_dir, voice_name, locale))
     success = False
     try:
         voice_build_dir = os.path.join(voices_home, voice_name)
-        print("adapting wavs")
-        if audio_converter(voice_build_dir, voice_name):            
-            init_voice_build(source_dir, voice_build_dir, voice_name, locale)
+        logging.info("Creating voice in dir %s" % voice_build_dir)
+
+        if audio_converter(audio_source_dir, voice_build_dir, voice_name):            
+            init_voice_build(voice_build_dir, voice_name, locale)
             if voice_import(voice_name):                
                 logging.info("voice built successfully")
                 success = True
@@ -239,13 +242,13 @@ def display_help():
     print ("")
     print ("Usage:")
     print ("")
-    print ("$ voice-build.py -v <voice name> -s <source> -l <locale>")
+    print ("$ voice-build.py -v <voice name> -l <locale>")
 
 
 def main(argv):
 
     try:
-        opts, args = getopt.getopt(argv,"hv:s:l:", ["voice=","source=","locale="])
+         opts, args = getopt.getopt(argv,"hv:s:l:", ["voice=","source=","locale="])
     except getopt.GetoptError:
         display_help()
         return

@@ -2,6 +2,8 @@ import os
 import re
 import sys
 
+from pathlib import Path
+import shutil
 from celery import Celery
 from urllib.request import urlopen
 
@@ -10,20 +12,50 @@ logger = get_task_logger(__name__)
 
 import voice_build
 
-source_recordings = '/recordings'  #os.environ['SOURCE_RECORDINGS']
+source_recordings = '/recordings/lleisiwr'  #os.environ['SOURCE_RECORDINGS']
 
 app = Celery('voice_builder_api_tasks', broker='pyamqp://guest@localhost//')
 
 @app.task
-def generate_voice(uid, locale):
-    source_audio_dir = os.path.join(source_recordings, locale, uid)
-    voice_name = '%s_%s' % (uid, locale)
-    success = voice_build.generate_voice(source_audio_dir, voice_name, locale) 
+def generate_voice(uid):
+    source_audio_dir = os.path.join(source_recordings, uid)
+    voice_name = '%s_cy' % (uid)
 
-    if not success:
-        logger.info('Generate voice not successful')
+    # place recordings in suitable location for marytts voicebuild 
+    if os.path.isdir(source_audio_dir):
+
+        # copy every file over to /voices/<voice_name>/data
+        voice_dir = os.path.join("/voices", voice_name)
+        if os.path.exists(voice_dir):
+            shutil.rmtree(voice_dir)
+
+        #
+        voice_data_dir = os.path.join(voice_dir, "data")
+
+        Path(voice_data_dir).mkdir(parents=True, exist_ok=True)
+        
+        logger.info("Copying audio recordings from %s to %s" % (source_audio_dir, voice_data_dir))
+        
+        src_files = os.listdir(source_audio_dir)
+        for filename in src_files:
+            full_filepath = os.path.join(source_audio_dir, filename)
+            if os.path.isfile(full_filepath):
+                shutil.copy(full_filepath, voice_data_dir)
+
+
+        # generate
+        logger.info("Copying completed. Starting building voice in %s" % (voice_dir))
+        success = voice_build.generate_voice(voice_data_dir, voice_name, "cy") 
+
+
+        #
+        if not success:
+            logger.info('Generate voice not successful') 
+        else:
+            logger.info('Generating voice completed and successful')
+            voice_install(voice_name)
     else:
-        voice_install(voice_name)
+        logger.info("%s doesn't exist" % source_audio_dir)
 
     return success
 

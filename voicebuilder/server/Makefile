@@ -13,8 +13,8 @@ run:
 	docker run --name marytts-voicebuild-api-${MARYTTS_CY_VERSION} --restart=always \
  		-d -p 32010:8008 \
 		--link marytts-server-${MARYTTS_CY_VERSION}:marytts-server \
-		-v ${PWD}/../../recordings/:/recordings \
-		-v ${PWD}/../../voices:/opt/marytts/voices \
+		-v ${PWD}/../../../docker-common-voice-lleisiwr/recordings/:/recordings/lleisiwr \
+		-v ${PWD}/../../voices:/voices \
 		-v ${PWD}/log:/var/log/voice-builder-api \
 		techiaith/marytts-voicebuild-api:${MARYTTS_CY_VERSION}
 
