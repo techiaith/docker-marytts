@@ -4,7 +4,6 @@ import sys
 import signal
 import shlex
 import subprocess
-import codecs
 
 import cherrypy
 import logging
@@ -28,6 +27,7 @@ class MaryTTSAPI(object):
         self.startMaryTTS()
 
 
+
     def startMaryTTS(self):
 
         if self.marytts_pid == 0:
@@ -43,12 +43,14 @@ class MaryTTSAPI(object):
             cherrypy.log("Started MaryTTS server successfully pid:%s" % (self.marytts_pid))
     
 
+
     def stopMaryTTS(self):
         if self.marytts_pid > 0:
             cherrypy.log("Stopping MaryTTS Server...")
             os.kill(self.marytts_pid, signal.SIGKILL)
             self.marytts_pid = 0
             cherrypy.log("Stopped MaryTTS Server successfully.")
+
 
 
     def ttsToMp3(self, voice, lang, text):
@@ -66,11 +68,13 @@ class MaryTTSAPI(object):
             return mp3_file
 
 
+
     def ttsToWav(self, voice, lang, text):
         tmp_file = tempfile.SpooledTemporaryFile(max_size=4*1024*1024, mode='wb')
         tmp_file.write(self.exec_marytts_generate(voice, lang, text))
         tmp_file.seek(0)
         return tmp_file
+
 
 
     @cherrypy.expose
@@ -81,8 +85,10 @@ class MaryTTSAPI(object):
         self.startMaryTTS()
 
 
+
     @cherrypy.expose
     def install(self, voice, **kwargs):
+        cherrypy.log("Installing voice %s" % voice)
         self.stopMaryTTS()
 
         self.add_voice_to_manifest(voice)
@@ -90,26 +96,41 @@ class MaryTTSAPI(object):
 
         self.startMaryTTS()
 
+ 
 
-    def add_voice_to_manifest(self, voice):
+    def add_voice_to_manifest(self, voice):        
         marytts_voices_home = os.environ['MARYTTS_VOICES_HOME']
-        with codecs.open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'a', encoding='utf-8') as voices_manifest:
-            voices.manifest.write(voice + '\n')
-            self.installed_voices.append(voice)
-       
-       
+        installed_voice_manifest_filepath = os.path.join(marytts_voices_home, 'installed-voices.txt')
+        existing_voices = set()
+
+        cherrypy.log("Add voice %s to installed manifest in %s" % (voice, installed_voice_manifest_filepath))
+
+        with open(installed_voice_manifest_filepath, 'r', encoding='utf-8') as voices_manifest:
+            for v in voices_manifest:
+                existing_voices.add(v)
+        
+        existing_voices.add(voice)
+
+        with open(installed_voice_manifest_filepath, 'w', encoding='utf-8') as voices_manifest:
+            for v in existing_voices:
+                voices_manifest.write(v + "\n")
+            
+
+
     def reinstall_voices_from_manifest(self):
         marytts_voices_home = os.environ['MARYTTS_VOICES_HOME']
-        with codecs.open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'r', encoding='utf-8') as voices_manifest:
-            for voice in voices_manifest:
-                cherrypy.log("reinstalling voice : %s " % voice)
+        with open(os.path.join(marytts_voices_home, 'installed-voices.txt'), 'r', encoding='utf-8') as voices_manifest:
+            for voice in voices_manifest:                
                 self.installed_voices.append(voice.strip())
                 self.exec_marytts_voice_install(voice)
 
  
+
     def exec_marytts_voice_install(self, voice):
+        cherrypy.log("Installing voice : %s " % voice)
         cmd = "voice-install-cy.sh %s" % voice
         subprocess.Popen(cmd, shell=True).wait()
+
 
 
     def exec_marytts_generate(self, voice, lang, text):

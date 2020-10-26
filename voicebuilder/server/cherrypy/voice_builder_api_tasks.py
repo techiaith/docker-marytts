@@ -62,7 +62,7 @@ def generate_voice(uid):
 
 
 def voice_install(voice_name):
-    logger.info("Initiating installing voice in MaryTTS runtime API")
-    contents = urlopen("http://marytts-api:8008/install?voice=%s" % voice_name) 
+    logger.info("Initiating installing voice in MaryTTS runtime API")    
+    contents = urlopen("http://marytts-server-%s:8008/install?voice=%s" % (os.environ['MARYTTS_CY_VERSION'], voice_name)) 
     logger.info("Voice installed")
 

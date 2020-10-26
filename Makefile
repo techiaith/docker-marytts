@@ -5,17 +5,16 @@ MARYTTS_CY_VERSION := 20.10
 build: 
 	if [ ! -d "marytts" ]; then \
         git clone https://git.techiaith.bangor.ac.uk/lleferydd/marytts.git; \
-    fi 
-	
-	docker build --rm -t techiaith/marytts:${MARYTTS_CY_VERSION} .
+    fi 	
+	docker build --rm --build-arg BUILDARG_MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} -t techiaith/marytts:${MARYTTS_CY_VERSION} .
 
 
 run:
 	docker run --name marytts-${MARYTTS_CY_VERSION} --restart=always \
     	-it  \
-	-p 59135:59125 \
+		-p 59135:59125 \
         -v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
-	-v ${PWD}/voices/:/voices \
+		-v ${PWD}/voices/:/voices \
 	techiaith/marytts:${MARYTTS_CY_VERSION} bash
 
 
