@@ -1,31 +1,19 @@
 marytts/
-audio/
-texts/wici/*
-!texts/wici/wkdb.conf
-texts/alt/*
-!texts/alt/wkdb.conf
+server/log
 
-texts/wicipedia-titles/lexicon*
-texts/wicipedia-titles/log/*
-texts/wicipedia-titles/init.bin
-texts/wicipedia-titles/overallLog.txt
-texts/wicipedia-titles/selected.log
-texts/wicipedia-titles/selected_text_transcription.log
-texts/wicipedia-titles/selection/*
+voicebuilder/audio/
+voicebuilder/texts/
+voicebuilder/mysql/
 
-voice-builder/*
+voices/*
 
-voice-builder/cmu_arctic/*
-!voice-builder/cmu_arctic/prepare.sh
-!voice-builder/cmu_arctic/*.config
-
-voice-builder/recorder/*
-!voice-builder/recorder/*.sh
-!voice-builder/recorder/*.py
-!voice-builder/recorder/*.txt
-!voice-builder/recorder/*.template
-
-voice-builder/recorder/audio/*
+voicebuilder/data/*
+voicebuilder/server/log
 
 HTK-*
 *.pyc
+mysql/*
+.vscode/*
+*.PointProcess
+
+marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor/*

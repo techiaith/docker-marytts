@@ -1,18 +1,21 @@
 # docker-marytts
 
-Yma ceir adnoddau ar gyfer rhedeg a ddatblygu testun-i-leferydd Cymraeg eich hunain yn hwylus iawn gan ddefnyddio MaryTTS a Docker*. 
+Yma ceir adnoddau ar gyfer rhedeg a ddatblygu testun-i-leferydd Cymraeg eich 
+hunain yn hwylus gan ddefnyddio MaryTTS a Docker. 
 
-## Dewisiadau defnyddio
+<hr/>
 
-Y dewisiadau defnyddio ar gyfer docker-marytts yw:
+## Defnyddio lleisiau testun-i-leferydd o'r Porth Technolegau Iaith
 
-<br/>
+Mae'r Uned Technolegau Iaith wedi defnyddio recordiadau o [Corpws WISPR]
+(https://git.techiaith.bangor.ac.uk/Data-Porth-Technolegau-Iaith/Corpws-WISPR) 
+i greu, gyda MaryTTS, llais naturiol gogleddol gwrywaidd. Mae modd arbrofi gyda'r 
+llais ar wefan y Porth Technolegau Iaith (http://techiaith.cymru/lleferydd/testun-i-leferydd/) 
+a'i defnyddio o fewn wasanaeth API ar-lein 
+(https://github.com/PorthTechnolegauIaith/marytts/tree/master/doc/)
 
-### Defnyddio llais testun-i-leferydd o'r Porth Technolegau Iaith
-
-Mae'r Uned Technolegau Iaith wedi defnyddio recordiadau o [Corpws WISPR](https://git.techiaith.bangor.ac.uk/Data-Porth-Technolegau-Iaith/Corpws-WISPR) i greu, gyda MaryTTS, llais naturiol gogleddol gwrywaidd. Mae modd arbrofi gyda'r llais ar wefan y Porth Technolegau Iaith (http://techiaith.cymru/lleferydd/testun-i-leferydd/) a'i defnyddio o fewn wasanaeth API ar-lein (https://github.com/PorthTechnolegauIaith/marytts/tree/master/doc/)
-
-Os hoffwch chi ei defnyddio'n lleol ar eich cyfrifiadur eich hunain, yna defnyddiwch ar gyfrifiadur Linux neu Mac OS X:
+Os hoffwch chi ei defnyddio'n lleol ar eich cyfrifiadur eich hunain, yna defnyddiwch 
+ar gyfrifiadur Linux neu Mac OS X:
 
 `$ git clone https://github.com/techiaith/docker-marytts.git`
 
@@ -26,34 +29,40 @@ Ac yna:
 
 `$ make runtime`
 
-Bydd hyn yn cychwyn amgylchedd Docker lle mae modd llwytho'r llais i lawr a dechrau gweinydd lleferydd MaryTTS:
+Bydd hyn yn cychwyn amgylchedd Docker lle mae modd llwytho'r llais i lawr a dechrau 
+gweinydd lleferydd MaryTTS:
 
 `root@9dcf4f9f904b:~# voice-download.sh wispr`
 
 `root@9dcf4f9f904b:~# ./target/marytts-5.2/bin/marytts-server `
 
-Mae modd dod allan o'r amgylchedd gan adael y gweinydd i redeg drwy bwyso CTRL-P ac yna CTRL-Q
+Mae modd dod allan o'r amgylchedd gan adael y gweinydd i redeg drwy bwyso **CTRL-P** 
+ac yna **CTRL-Q**
 
 Yna agorwch borwr ac ewch i `http://localhost:59125` i arbrofi rhagor.
 
-<br/>
+<hr/>
 
-### Datblygu llais testun-i-lefrydd eich hunain
+## Datblygu llais testun-i-lefrydd eich hunain
 
 Mae modd defnyddio'r adnoddau MaryTTS hyn i greu lleisiau synthetig Cymraeg eich hunain. 
 
-Dyma engreifftiau o'r leisiau o'r rhai aelodau Uned Technolegau Iaith sydd wedi'i trosi i lais synthetig gyda'r adnoddau hyn:
+Dyma engreifftiau o'r leisiau o'r rhai aelodau Uned Technolegau Iaith sydd wedi'i 
+trosi i lais synthetig gyda'r adnoddau hyn:
 
  - [Gwryw](http://techiaith.cymru/wp-content/uploads/2017/03/MaryTTS-CY-1.wav)
 
  - [Benyw](http://techiaith.cymru/wp-content/uploads/2017/03/MaryTTS-CY-2.wav)
 
-Bydd angen defnyddio'r meddalwedd i recordio unigolyn yn darllen sgript recordio arbennig. Mae modd i chi hefyd cynhyrchu sgript recordio eich hunain er mwyn cynhyrchu lleisiau gorau ar gyfer parthau penodol.
+Bydd angen defnyddio'r meddalwedd i recordio unigolyn yn darllen sgript recordio 
+arbennig. Mae modd i chi hefyd cynhyrchu sgript recordio eich hunain er mwyn 
+cynhyrchu lleisiau gorau ar gyfer parthau penodol.
 
 
-#### Cychwyn arni
+### Cychwyn arni
 
-Er mwyn cychwyn arni i cynhyrchu lleisiau eich hunain, llwythwch yr adnoddau i lawr drwy ddefnyddio git:
+Er mwyn cychwyn arni i cynhyrchu lleisiau eich hunain, llwythwch yr adnoddau i 
+lawr drwy ddefnyddio git:
 
 `$ git clone https://github.com/techiaith/docker-marytts.git`
 
@@ -65,7 +74,10 @@ Ac yna:
 
 `$ make mysql`
 
-Mae'r project yn ogystal yn defnyddio'r HTK i gynhyrchu modelau acwstig. Mae rhaid i chi gofrestru ar wefan http://htk.eng.cam.ac.uk, er mwyn derbyn enw defnyddiwr a chyfrinair ar gyfer caniatáu llwytho cod ffynhonnell i lawr. Wedi i chi cael eich manylion, mae modd llwytho'r HTK i lawr fel hyn:
+Mae'r project yn ogystal yn defnyddio'r HTK i gynhyrchu modelau acwstig. Mae rhaid 
+i chi gofrestru ar wefan http://htk.eng.cam.ac.uk, er mwyn derbyn enw defnyddiwr a 
+chyfrinair ar gyfer caniatáu llwytho cod ffynhonnell i lawr. Wedi i chi cael eich 
+manylion, mae modd llwytho'r HTK i lawr fel hyn:
 
 `$ wget --user <eich enw defnyddiwr HTK> --ask-password http://htk.eng.cam.ac.uk/ftp/software/HTK-3.4.1.tar.gz`
 
@@ -74,9 +86,11 @@ Mae'r project yn ogystal yn defnyddio'r HTK i gynhyrchu modelau acwstig. Mae rha
 
 Bydd yn gofyn am eich cyfrinair yn y man.
 
-Bydd ddwy ffeil, `HTK-3.4.1.tar.gz` a `HTK-samples-3.4.1.tar.gz` yn bodoli o fewn y cyfeiriadur `docker-marytts`
+Bydd ddwy ffeil, `HTK-3.4.1.tar.gz` a `HTK-samples-3.4.1.tar.gz` yn bodoli o fewn 
+y cyfeiriadur `docker-marytts`
 
-Defnyddiwch y ddau orchymyn canlynol er mwyn adeiladu'r amgylchedd Mary TTS ar eich cyfrifiadur:
+Defnyddiwch y ddau orchymyn canlynol er mwyn adeiladu'r amgylchedd Mary TTS ar 
+eich cyfrifiadur:
 
 `$ make`
 
@@ -93,13 +107,12 @@ Mae'r camau nesaf yn dibynol ar beth hoffwch chi ei gyflawni:
  * [gosod a rhedeg eich llais newydd](#defnyddiollais) 
 
 
----
+#### <a name="creusgript"></a> Paratoi Sgriptiau Recordio
 
-##### <a name="creusgript"></a> Paratoi Sgriptiau Recordio
+Bydd angen gorff swmpus o destun er mwyn cael ddigon o ddewis ar gyfer brawddegau 
+addas ar gyfer sgript recordio. Y ffynonellau bosib yw:
 
-Bydd angen gorff swmpus o destun er mwyn cael ddigon o ddewis ar gyfer brawddegau addas ar gyfer sgript recordio. Y ffynonellau bosib yw:
-
-###### Wicipedia Cymraeg fel ffynhonnell testun
+##### Wicipedia Cymraeg fel ffynhonnell testun
 
 Defnyddiwch y gorchmynion canlynol:
 
@@ -110,7 +123,7 @@ Defnyddiwch y gorchmynion canlynol:
 `$ wkdb_collect.sh wkdb.conf`
 
 
-###### Ffynhonnell testun amgen...
+##### Ffynhonnell testun amgen...
 
 Os oes gennych chi gasgliad o destunau amgen a glan eisoes yna :
 
@@ -128,7 +141,7 @@ Bydd angen mewnforio'r pwy bynnag testun i amgylchedd MaryTTS trwy ddefnyddio:
 `$ alt-cleantext-import.sh wkdb.conf alt-cleantext/CofnodYCynulliad/CofnodYCynulliad.cy`
 
 
-###### Cynhyrchu sgriptiau recordio
+##### Cynhyrchu sgriptiau recordio
 
 Ar ôl casglu testunau, ewch i'ch cyfeiriadur texts/wici neu texts/alt ac yna 
 defnyddiwch:
@@ -148,11 +161,9 @@ eich hunain fel y disgrifir yn y camau nesaf.
 
 <br/>
 
----
+#### <a name="recordiosgript"></a> Recordio a chynhyrchu llais testun-i-leferydd newydd
 
-##### <a name="recordiosgript"></a> Recordio a chynhyrchu llais testun-i-leferydd newydd
-
-###### Recordio
+##### Recordio
 
 Mae sgript eisoes, neu'r un rydych wedi cynhyrchu gyda sgriptiau docker-marytts
 wedi ei chadw yn:
@@ -180,7 +191,7 @@ Ac yna,
 Bydd rhaglen fach syml ymddangos ar gyfer recordio pob prompt yn y sgript. 
 
 
-###### Cynhyrchu llais testun-i-leferydd
+##### Cynhyrchu llais testun-i-leferydd
 
 Ar ôl cwblhau'r recordio, defnyddiwch y gorchymyn canlynol i ddynodi enw i'ch 
 llais newydd. Yma rydyn yn dewis 'macsen'
@@ -230,9 +241,9 @@ Yn benodol:
  - `voice-macsen-5.2-component.xml`
  - `voice-macsen-5.2.zip`
 
---- 
 
-#### <a name="defnyddiollais"></a> Defnyddio llais newydd 
+
+### <a name="defnyddiollais"></a> Defnyddio llais newydd 
 
 Os oes gennych chi'r ffeiliau `voice-macsen-5.2-component.xml` a 
 `voice-macsen-5.2.zip` ar gyfer llais newydd yna defnyddiwch y gorchymyn canlynol 
@@ -248,5 +259,4 @@ Defnyddiwch y gorchymyn canlynol i gychwyn gweinydd MaryTTS a'ch llais newydd:
 
 Agorwch borwr ac ewch i `http://localhost:59125` i brofi a mwynhau eich llais 
 synthetig Cymraeg newydd.
-
 

@@ -1,46 +1,28 @@
-default: build-runtime
+default: build
 
-build-runtime: 
-	docker build -t techiaith/marytts -f Dockerfile.runtime .
+MARYTTS_CY_VERSION := 20.10
 
-build-voicebuild: inject_dockerfile_with_uid_gid
-	docker build -t techiaith/marytts -f Dockerfile.voicebuild .
+build: 
+	if [ ! -d "marytts" ]; then \
+        git clone https://git.techiaith.bangor.ac.uk/lleferydd/marytts.git; \
+    fi 	
+	docker build --rm --build-arg BUILDARG_MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} -t techiaith/marytts:${MARYTTS_CY_VERSION} .
 
-inject_dockerfile_with_uid_gid:
-	./scripts/inject_uid_gid_into_dockerfile.sh
 
-runtime:
-	docker run --name marytts -p 59125:59125 -it \
-		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
-		-v ${PWD}/texts:/home/marytts/texts \
-		techiaith/marytts bash
+run:
+	docker run --name marytts-${MARYTTS_CY_VERSION} --restart=always \
+    	-it  \
+		-p 59135:59125 \
+        -v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/opt/marytts/marytts-languages/marytts-lang-cy \
+		-v ${PWD}/voices/:/voices \
+	techiaith/marytts:${MARYTTS_CY_VERSION} bash
 
-voicebuild:
-	docker run --name marytts -p 59125:59125 -it \
-		--link marytts-mysql:mysql \
-		-e DISPLAY=${DISPLAY} \
-		--device /dev/snd \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-v ${PWD}/voice-builder:/home/marytts/voice-builder \
-		-v ${PWD}/texts:/home/marytts/texts \
-		-v ${PWD}/marytts/marytts-languages/marytts-lang-cy:/home/marytts/marytts-languages/marytts-lang-cy \
-		techiaith/marytts bash
 
 stop:
-	docker stop marytts
-	docker rm marytts
+	-docker stop marytts-${MARYTTS_CY_VERSION}
+	-docker rm marytts-${MARYTTS_CY_VERSION}
+
 
 clean:
-	docker rmi techiaith/marytts
+	-docker rmi techiaith/marytts:${MARYTTS_CY_VERSION}
 
-mysql:
-	docker run --name marytts-mysql -e MYSQL_ROOT_PASSWORD=wiki123 -d mysql
-
-mysql-clean:
-	docker stop marytts-mysql
-	docker rm -v marytts-mysql
-
-github:
-	git clone https://github.com/techiaith/marytts.git
-	cd marytts && git checkout branch marytts-lang-cy
-	 
