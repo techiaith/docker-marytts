@@ -11,6 +11,7 @@ import tempfile
 
 import http.client
 import urllib
+import urllib.parse
  
 class MaryTTSAPI(object):
 
@@ -147,7 +148,7 @@ class MaryTTSAPI(object):
                 }
 
         cherrypy.log("marytts request: %s " % raw_params)
-        params = urllib.urlencode(raw_params)
+        params = urllib.parse.urlencode(raw_params)
         headers = {}
 
         # Open connection to self.host, self.port.
