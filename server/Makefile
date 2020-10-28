@@ -16,6 +16,7 @@ build:
 run:
 	docker run --name marytts-server-${MARYTTS_CY_VERSION} --restart=always \
     		-d -p 52010:59125 \
+		-p 5301:8008 \
 		-v ${PWD}/log:/var/log/marytts-server \
 		-v ${PWD}/../voices/:/voices \
 		techiaith/marytts-server:${MARYTTS_CY_VERSION}
