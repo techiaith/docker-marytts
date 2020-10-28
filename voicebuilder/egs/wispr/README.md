@@ -1,4 +1,5 @@
 # Sgriptiau hyfforddi llais WISPR
+# *Scripts for training the WISPR voice*
 
 Mae'r ffolder hon yn cynnwys y sgriptiau ar gyfer hyfforddi llais MaryTTS gyda recordiadau a trawsgrifiadau [Corpws WISR](https://git.techiaith.bangor.ac.uk/Data-Porth-Technolegau-Iaith/Corpws-WISPR)
 
