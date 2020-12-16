@@ -1,6 +1,6 @@
 default: build
 
-MARYTTS_CY_VERSION := 20.10
+MARYTTS_CY_VERSION := 20.12
 BANGORDICT_BRANCH := 'master'
 
 # --- MaryTTS voice building environment ------------------------------------------------------
@@ -10,7 +10,7 @@ build: inject_dockerfile_with_uid_gid
 	else \
 	    cd ../marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor && git pull && git checkout ${BANGORDICT_BRANCH}; \
 	fi 
-	docker build --rm -t techiaith/marytts-voicebuild:${MARYTTS_CY_VERSION} .
+	docker build --rm --build-arg BUILDARG_MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} -t techiaith/marytts-voicebuild:${MARYTTS_CY_VERSION} .
 
 inject_dockerfile_with_uid_gid: 
 	./scripts/inject_uid_gid_into_dockerfile.sh

@@ -1,6 +1,6 @@
 default: build
 
-MARYTTS_CY_VERSION := 20.10
+MARYTTS_CY_VERSION := 20.12
 
 build: 
 	if [ ! -d "marytts" ]; then \
