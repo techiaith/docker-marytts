@@ -1,9 +1,7 @@
 #!/bin/bash
 set -e
 
-COMMONVOICE_URL="https://raw.githubusercontent.com/mozilla/common-voice/main/server/data/cy/sentence-collector.txt"
-COMMONVOICE_TEXTS_DIR="/texts/commonvoice/cy"
-
+# constants for initialising lts appropriately
 VOICEBUILDER_SCRIPTS="/opt/marytts/voicebuilder/scripts"
 
 LEXICON_SRC="${MARYTTS_CY_HOME}/lib/modules/cy/lexicon"
@@ -12,6 +10,11 @@ MARYTTS_CY_SRC="${MARYTTS_CY_HOME}/src/main/resources/marytts/language/cy/lexico
 MYDIR="$(dirname "${BASH_SOURCE[0]}")"
 
 PYTHON_LEXICON_ADAPT_SCRIPT=${MARYTTS_CY_HOME}/bin/python/adapt_lexicon.py
+
+# constants for fetching sentences from CommonVoice GitHub repo
+COMMONVOICE_SHA=9689734045be3c933acc903408e25abc2f848b3f
+COMMONVOICE_URL="https://raw.githubusercontent.com/common-voice/common-voice/${COMMONVOICE_SHA}/server/data/cy/sentence-collector.txt"
+COMMONVOICE_TEXTS_DIR="/texts/commonvoice/cy"
 
 
 # create a new LTS lexicon and model based on CMUDict with Welsh phonemes

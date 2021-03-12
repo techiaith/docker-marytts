@@ -1,6 +1,6 @@
 ls -default: build
 
-MARYTTS_CY_VERSION := 20.10
+MARYTTS_CY_VERSION := 21.03
 VOICES_DIR := ${PWD}/../voices
 
 build:
@@ -9,16 +9,16 @@ build:
 		cp installed-voices.txt ${VOICES_DIR}/; \
 	fi
 	docker build --rm -t techiaith/marytts-server:${MARYTTS_CY_VERSION} \
-	--build-arg MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} \
-	.
+				 --build-arg MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} \
+				.
 
 
 run:
 	docker run --name marytts-server-${MARYTTS_CY_VERSION} --restart=always \
-    		-d -p 52010:59125 \
+		-d -p 52010:59125 \
 		-p 5301:8008 \
 		-v ${PWD}/log:/var/log/marytts-server \
-		-v ${PWD}/../voices/:/voices \
+		-v ${VOICES_DIR}/:/voices \
 		techiaith/marytts-server:${MARYTTS_CY_VERSION}
 
 
@@ -30,7 +30,4 @@ stop:
 
 clean:
 	docker rmi techiaith/marytts-server:${MARYTTS_CY_VERSION}
-
-
-
 

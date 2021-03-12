@@ -1,0 +1,27 @@
+helo 'na, fy enw i ydy Bob, dwi'n llais T T S y uned technoleg iaith cymraeg.
+Arddangosyn o'r enw “Among His Troops: Washington's War Tent in a Newly Discovered Watercolour.”
+Ar ôl y profiad hwnnw mabwysiadodd yr enw Tenskwatawa, sy'n golygu “Prophet” yn Saesneg.
+Mae llawer o lyfrau a ffilmiau yn ei phortreadu fel “tywysoges” brodorol hardd.
+Galwodd ei theulu hi yn Matoaka, sef “blodyn rhwng dwy nant.”
+Roedd Linwood “Little Bear”  Custalow yn aelod o lwyth y Mattaponi.
+Priododd Rolfe â Pocahontas ym 1614, a ganed mab, Thomas, iddynt.
+Ond fe wnaeth deddfwr o’r Unol Daleithiau, a glywodd yr alwad ffôn, alw sylwadau’r arlywydd yn amharchus.
+Trydarodd yr arlywydd fod y deddfwr yn “wallgof” ac yn “dweud celwydd noeth.”
+Ac ychwanegodd ei bod yn “gasgen wag” sydd ond yn gwneud sŵn.
+Yn ôl yr erthygl, dywedodd Sanders, “Dyma arlywydd sy'n ymladd tân â thân.”
+Rhybuddiodd George W. Bush Americanwyr yn erbyn “creulondeb achlysurol.”
+Rhybuddiodd Barack Obama yn erbyn “gwleidyddiaeth sy'n ein rhannu.”
+Dywedodd Jeff Flake, “Mr. Llywydd, codaf heddiw i ddweud: Digon. ”
+Mae’r arlywydd wedi beirniadu Flake yn y gorffennol, gan ei alw’n “wenwynig” ac yn “wan.”
+Ar Twitter, galwodd Corker Trump yn “wirion” a’r Tŷ Gwyn yn “ganolfan gofal dydd i oedolion.”
+Fe drydarodd: “Bydd y #JFKFiles hir-ddisgwyliedig yn cael ei ryddhau yfory. Mor ddiddorol!"
+Ysgrifennodd Gerald Posner y llyfr “Case Closed” yn 1993.
+Ond roedd y Dwight ifanc - a ddefnyddiodd y llysenw “Ike” - yn mwynhau darllen.
+Lansiodd ei eiriau “Okay, let’s go” oresgyniad Normandi.
+Yn 1922, ganwyd ail fab i'r Eisenhowers - a'i enwyd yn John.
+Roedd yn ymddangos eu bod yn cytuno â’i slogan ymgyrchu.
+Ni ddaeth y Rhyfel Oer i ben; mewn gwirionedd, cynyddodd y tensiynau rhwng yr Unol Daleithiau a’r Undeb Sofietaidd.
+To create our speech personas, we select and record professional voice talents. In the resulting speech database, each utterance is segmented into individual parts, such as phones, syllables, and words. We then apply a technique called Unit Selection Synthesis (USS). USS selects segments (units) of speech that can be ‘glued’ together in such a way that high-quality synthetic speech is produced.
+Once a voice talent has been selected, she or he works with our voice development team for several weeks. A diverse script is used for the recordings, designed to contain all the sound patterns of the language in development. The team closely monitors the recording process to check for consistency in pronunciation, accentuation, and style.
+Mae technolegau testun-i-leferydd yn caniatáu i system gyfrifiadurol lefaru unrhyw destun gyda llais synthetig neu naturiol. Gall y testun ddeillio o ddogfennau, gwefan, negeseuon testun neu system meddalwedd wedi’i mewnblannu (lle nad oes modd dangos testun ar sgrin).
+Mae adnoddau testun-i-leferydd Cymraeg y Porth Technolegau Iaith wedi’i seilio ar ddwy system cod agored sef:
