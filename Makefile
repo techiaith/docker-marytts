@@ -1,11 +1,11 @@
 default: build
 
-MARYTTS_CY_VERSION := 20.12
+MARYTTS_CY_VERSION := 21.03
 
-build: 
+build:
 	if [ ! -d "marytts" ]; then \
-        git clone https://git.techiaith.bangor.ac.uk/lleferydd/marytts.git; \
-    fi 	
+        	git clone https://github.com/techiaith/marytts.git; \
+    	fi 	
 	docker build --rm --build-arg BUILDARG_MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} -t techiaith/marytts:${MARYTTS_CY_VERSION} .
 
 

@@ -4,7 +4,7 @@ RUN dpkg --add-architecture i386
 
 RUN apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk vim git curl wget zip locales maven  \
-	   python3 python3-pip \
+	   python3 python3-pip software-properties-common \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Set the locale
@@ -32,6 +32,8 @@ ENV PYTHONPATH "${PYTHONPATH}:${MARYTTS_HOME}/marytts-languages/marytts-lang-cy/
 WORKDIR ${MARYTTS_HOME}
 
 RUN update-marytts-server-cy.sh
+
+RUN voice-download.sh wispr
 
 EXPOSE 59125
 

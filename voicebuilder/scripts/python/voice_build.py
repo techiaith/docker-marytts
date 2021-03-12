@@ -22,9 +22,9 @@ voices_home = os.environ['MARYTTS_VOICES_HOME']
 logging.getLogger().setLevel(logging.INFO)
 
 def get_silence_file(samplerate):
-       
+
     silence_file = os.path.join(voices_builder_base, "silence_%skHz.wav" % samplerate)
-    
+
     if not os.path.isfile(silence_file):
        cmd = "sox -n -r %s -b 16 -c 1 %s trim 0.0 2.0" % (samplerate, silence_file,)
        subprocess.Popen(shlex.split(cmd)).wait()
@@ -64,7 +64,7 @@ def valid_pitch_pointers(wavfile):
 
 
 def is_silent(wavfile):
-    # Typical sox output.... (not necessarily of a silent file)   
+    # Typical sox output.... (not necessarily of a silent file)
     # Samples read:             57920
     # Length (seconds):      3.620000
     # Scaled by:         2147483647.0
@@ -80,7 +80,7 @@ def is_silent(wavfile):
     # RMS     delta:         0.013970
     # Rough   frequency:          480
     # Volume adjustment:        1.388
-    try: 
+    try:
         sox_output = subprocess.check_output(["sox", wavfile, "-n", "stat"], stderr=subprocess.STDOUT).decode('utf-8')
         for attribute in sox_output.split('\n'):
             attribute = re.sub(' +', ' ', attribute)
@@ -108,13 +108,12 @@ def pad_with_silence(wavfile):
 
         cmd = "sox %s %s %s %s" % (silence_file, tmpwavfile, silence_file, wavfile)
         subprocess.Popen(shlex.split(cmd)).wait()
-        os.remove(tmpwavfile)   
-    
+        os.remove(tmpwavfile)
     return True
 
 
 def execute_java_cmd(cmd):
-    try:        
+    try:
         logging.info(cmd)
         cmd_output = subprocess.check_output(shlex.split(cmd)).decode('utf-8')
     except Exception as ex:
@@ -123,18 +122,16 @@ def execute_java_cmd(cmd):
 
     if 'Exception' in cmd_output:
         logging.info("voice_build.py::execute_java_cmd, 'Exception' in output: " + cmd_output)
-        return False 
+        return False
 
     logging.info("voice_build.py::execute_java_cmd completed successfully")
 
     return True
 
 
-
 def rename_file_extension(filepath, newextension):
     base = os.path.splitext(filepath)[0]
     os.rename(filepath, base + newextension)
-    
 
 
 def init_voice_build(voice_build_dir, voice_name, locale):
@@ -156,22 +153,22 @@ def init_voice_build(voice_build_dir, voice_name, locale):
                 logging.info("voice_build.py couldn't find txtfile %s " % txtfile)
                 rename_file_extension(wavfile, ".notextfile")
                 continue
-              
+
             if not is_valid_wav(wavfile):
                 logging.info("voice_build.py found that %s not a valid wavfile " % wavfile)
                 rename_file_extension(wavfile, ".notvalidwavfile")
                 continue
-               
-            if is_silent(wavfile):
-                logging.info("voice_build.py found that %s is silent" % wavfile)
-                rename_file_extension(wavfile, ".silentwavfile")
-                continue
+
+            #if is_silent(wavfile):
+                #logging.info("voice_build.py found that %s is silent" % wavfile)
+                #rename_file_extension(wavfile, ".silentwavfile")
+                #continue
 
             if not valid_pitch_pointers(wavfile):
                 logging.info("voice_build.py found that %s has invalid pitch pointers" % wavfile)
                 rename_file_extension(wavfile, ".invalidpitchpointers")
                 continue
- 
+
             pad_with_silence(wavfile)
             key=file.replace('.wav','')
 
@@ -179,7 +176,7 @@ def init_voice_build(voice_build_dir, voice_name, locale):
                 value=f.read()
                 txt_done_data[key]=value.strip()
 
-    
+
     with open(os.path.join(voice_build_dir, 'txt.done.data'), 'w', encoding='utf-8') as txtdone:
         for key,value in txt_done_data.items():
             txtdone.write("( " + key + " \"" + value + "\" )\n")
@@ -189,13 +186,13 @@ def init_voice_build(voice_build_dir, voice_name, locale):
 
     # importMain.config
     copyfile(os.path.join(voices_builder_base ,'templates', 'importMain.config.template'), os.path.join(voice_build_dir,'importMain.config'))
-    
+
     # database.config
     with open(os.path.join(voices_builder_base, 'templates', 'database.config.template'), 'r', encoding='utf-8') as src:
         lines = src.readlines()
 
     with open(os.path.join(voice_build_dir, 'database.config'), 'w', encoding='utf-8') as trgt:
-        for line in lines:            
+        for line in lines:
             line = line.replace('VOICE_BUILD_DIR', voice_build_dir)
             line = line.replace('VOICENAME', voice_name)
             line = line.replace('VOICE_LOCALE', locale)
@@ -211,9 +208,10 @@ def audio_converter(voice_build_recordings_dir, voice_build_dir, voice_name):
     voice_build_wavs_dir = os.path.join(voice_build_dir, "wav")
 
     Path(voice_build_wavs_dir).mkdir(parents=True, exist_ok=True)
-    
-    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir)
- 
+
+    #cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir)
+    cmd = 'java -cp "%s/lib/*" -Dmary.base="%s" marytts.util.data.audio.AudioConverterHeadless %s %s' % (marytts_builder_base, marytts_builder_base, voice_build_recordings_dir, voice_build_wavs_dir)
+
     return execute_java_cmd(cmd)
 
 
@@ -223,8 +221,8 @@ def voice_import(voice_name):
 
     voice_build_dir = os.path.join(voices_home, voice_name)
 
-    cmd = 'java -showversion -Xmx1024m -cp "%s/lib/*" -Dmary.base="%s" marytts.tools.voiceimport.DatabaseImportMainHeadless %s' % (marytts_builder_base, marytts_builder_base, voice_build_dir)
-    
+    cmd = 'java -cp "%s/lib/*" -Dmary.base="%s" marytts.tools.voiceimport.DatabaseImportMainHeadless %s' % (marytts_builder_base, marytts_builder_base, voice_build_dir)
+
     return execute_java_cmd(cmd)
 
 
@@ -236,9 +234,9 @@ def generate_voice(audio_source_dir, voice_name, locale, peform_speech_analysis=
         voice_build_dir = os.path.join(voices_home, voice_name)
         logging.info("Creating voice in dir %s" % voice_build_dir)
 
-        if audio_converter(audio_source_dir, voice_build_dir, voice_name):            
+        if audio_converter(audio_source_dir, voice_build_dir, voice_name):
             init_voice_build(voice_build_dir, voice_name, locale)
-            if voice_import(voice_name):                
+            if voice_import(voice_name):
                 logging.info("voice built successfully")
                 success = True
     except:
@@ -279,12 +277,12 @@ def main(argv):
         elif opt in ("-l","--locale"):
             locale = arg
 
-    if len(source_audio_dir) > 0 and len(voice_name) > 0:        
+    if len(source_audio_dir) > 0 and len(voice_name) > 0:
         generate_voice(source_audio_dir, voice_name, locale, False)
     else:
         display_help()
 
 
 if __name__ == "__main__":
-    
+
     main(sys.argv[1:])

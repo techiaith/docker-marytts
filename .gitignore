@@ -4,6 +4,7 @@ server/log
 voicebuilder/audio/
 voicebuilder/texts/
 voicebuilder/mysql/
+voicebuilder/egs/talentau-llais/test_audio
 
 voices/*
 
@@ -17,3 +18,4 @@ mysql/*
 *.PointProcess
 
 marytts/marytts-languages/marytts-lang-cy/lib/modules/cy/lexicon/geiriadur-ynganu-bangor/*
+.DS_Store
