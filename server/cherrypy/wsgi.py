@@ -177,9 +177,10 @@ class MaryTTSAPI(object):
                 raise ValueError("'lang' must be either 'cy' or 'en_US'")
         except ValueError as e:
             return "ERROR: %s" % str(e)
-      
-        is_wispr = (uid.lower() == 'wispr')
-        if is_wispr:
+     
+        cherrypy.log(str(self.installed_voices))
+        is_voice = uid.lower() in self.installed_voices
+        if is_voice:
             voice = uid
         else:
             voice = uid + "_" + lang 

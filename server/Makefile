@@ -9,8 +9,7 @@ build:
 		cp installed-voices.txt ${VOICES_DIR}/; \
 	fi
 	docker build --rm -t techiaith/marytts-server:${MARYTTS_CY_VERSION} \
-				 --build-arg MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} \
-				.
+		--build-arg MARYTTS_CY_VERSION=${MARYTTS_CY_VERSION} .
 
 
 run:
