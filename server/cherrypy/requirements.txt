@@ -1,4 +1,4 @@
 CherryPy==3.6.0
 gunicorn==19.5.0
-aiohttp==0.12.0
+aiohttp==3.7.4
 psutil==5.6.6
