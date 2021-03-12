@@ -33,7 +33,8 @@ WORKDIR ${MARYTTS_HOME}
 
 RUN update-marytts-server-cy.sh
 
-RUN voice-download.sh wispr
+RUN voice-download.sh wispr \
+ && voice-download.sh benyw-gogledd
 
 EXPOSE 59125
 
