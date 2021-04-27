@@ -1,6 +1,6 @@
 default: build
 
-MARYTTS_CY_VERSION := 20.10
+MARYTTS_CY_VERSION := 21.03
 
 
 build:
