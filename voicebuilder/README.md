@@ -13,4 +13,18 @@ Gweler:
 
 Y dull mwya hwylus, sydd dim angen gosod unrhyw feddalwedd yn lleol ar eich cyfrifiadur yw defnyddio'r gwasanaeth Lleisiwr, sef gwefan bancio lleisiau. Gellir defnyddio'r wefan i recordio brawddegau wedi'i dewis gan yr uned technolegau iaith ac yna clicio botwm i gynhyrchu llais TTS ddwyieithog Cymraeg a Saesneg newydd ac yna i'w ddefnyddio gyda blwch testun neu drwy API. Ewch i https://lleisiwr.techiaith.cymru neu cysylltwch â techiaith@bangor.ac.uk. 
 
-Cysylltwch â techiaith@bangor.ac.uk os hoffwch chi ddatblygu testun-i-leferydd fwy parth benodol sydd angen ffurfio sgriptiau recordio amgen. 
+## HTK
+
+Mae'r meddalwedd adeiladu lleisiau angen cod y llyfrgell HTK i gynhyrchu modelau acwstig. Cofrestrwch ar wefan http://htk.eng.cam.ac.uk, creu enw defnyddiwr a chyfrinair, ac yna defnyddiwch y gorchmynion canlynol i lwytho'r cod i lawr:
+
+`$ wget --user <eich enw defnyddiwr HTK> --ask-password http://htk.eng.cam.ac.uk/ftp/software/HTK-3.4.1.tar.gz`
+
+`$ wget --user <eich enw defnyddiwr HTK> --ask-password http://htk.eng.cam.ac.uk/ftp/software/HTK-samples-3.4.1.tar.gz`
+
+Bydd yn gofyn am eich cyfrinair yn y man.
+
+Bydd ddwy ffeil, `HTK-3.4.1.tar.gz` a `HTK-samples-3.4.1.tar.gz` yn bodoli o fewn y cyfeiriadur 'voicebuilder'
+
+## Cysylltu
+
+Cysylltwch â techiaith@bangor.ac.uk os hoffwch chi creu a ddefnyddio testun-i-leferydd fwy parth benodol.
