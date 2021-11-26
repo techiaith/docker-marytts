@@ -6,6 +6,7 @@ VOICES_DIR := ${PWD}/../voices
 build:
 	if [ ! -f "${VOICES_DIR}/installed-voices.txt" ]; then \
 		echo "Copying default installed-voices.txt"; \
+		mkdir -p ${VOICES_DIR}/; \
 		cp installed-voices.txt ${VOICES_DIR}/; \
 	fi
 	docker build --rm -t techiaith/marytts-server:${MARYTTS_CY_VERSION} \
