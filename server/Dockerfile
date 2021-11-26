@@ -11,10 +11,7 @@ ADD cherrypy/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 WORKDIR /opt/marytts-server
 
 RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt 
-
-#RUN mkdir -p /var/log/gunicorn \
-# && touch /var/log/gunicorn/marytts-api.error.log
+RUN python3 -m pip install -r requirements.txt 
 
 EXPOSE 8008
 

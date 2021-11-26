@@ -4,8 +4,17 @@ RUN dpkg --add-architecture i386
 
 RUN apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk vim git curl wget zip locales maven  \
-	   python3 python3-pip software-properties-common \
+	   software-properties-common build-essential cmake libssl-dev libboost-all-dev zlib1g-dev libffi-dev \
 	&& rm -rf /var/lib/apt/lists/*
+
+# Upgrade to Python3.7
+RUN wget -c https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tar.xz && \
+    tar xf Python-3.7.4.tar.xz && \
+    cd Python-3.7.4 && ./configure -q && make && make install && \
+    apt update && \
+    apt install -y python3 python3-dev python3-setuptools python3-pip
+
+RUN python3 -m pip install --upgrade pip 
 
 # Set the locale
 RUN locale-gen cy_GB.UTF-8
