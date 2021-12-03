@@ -35,7 +35,7 @@ Ac yna:
 
 Bydd hyn yn cychwyn gweinydd testun-i-leferydd gyda'r llais Cymraeg (wispr-cy-male-unitselection-general) yn barod i'w ddefnyddio. 
 
-Agorwch borwr ac ewch i `http://localhost:52010` i'w glywed yn ynganu eich testunau neu defnyddiwch y gorchymyn CURL:
+Agorwch borwr ac ewch i (http://localhost:52010)[http://localhost:52010] i'w glywed yn ynganu eich testunau neu defnyddiwch y gorchymyn CURL:
 
  $ curl -o sound.wav "http://localhost:52010/process?INPUT_TEXT=Helo+pawb&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&AUDIO=WAVE&VOICE=wispr&LOCALE=cy"
 
