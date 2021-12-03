@@ -31,6 +31,8 @@ Ac yna:
 
 `$ make`
 
+`$ make run`
+
 Bydd hyn yn cychwyn gweinydd testun-i-leferydd gyda'r llais Cymraeg (wispr-cy-male-unitselection-general) yn barod i'w ddefnyddio. 
 
 Agorwch borwr ac ewch i `http://localhost:52010` i'w glywed yn ynganu eich testunau neu defnyddiwch y gorchymyn CURL:
